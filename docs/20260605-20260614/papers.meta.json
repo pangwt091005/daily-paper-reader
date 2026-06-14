@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-05 ~ 2026-06-14",
+  "date": "2026-06-05 ~ 2026-06-14",
+  "generated_at": "2026-06-14T14:06:23",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "20260605-20260614/2606.11682v1-parameter-efficient-adapter-tuning-for-tabular-image-multimodal-learning",
+      "section": "quick",
+      "title_en": "Parameter-Efficient Adapter Tuning for Tabular-Image Multimodal Learning",
+      "authors": "Jiaqi Luo",
+      "date": "2026-06-10",
+      "pdf": "https://arxiv.org/pdf/2606.11682v1",
+      "score": "7.0",
+      "evidence": "表格-图像多模态学习方法，可应用于食品营养",
+      "tldr": "表格-图像多模态学习需高效适应预训练编码器，全微调成本高而冻结则限制任务适应。TI-Adapter冻结表格编码器并在其后加适配器，图像分支使用嵌入级和瓶颈级适配器。在20个数据集上取得与全微调相当或更优性能，可训练参数大幅减少。消融研究证实适配器放置对平衡性能与效率至关重要。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Tabular-image multimodal learning aims to improve predictive modeling by jointly using structured tabular attributes and visual data. Although pretrained encoders provide strong modality-specific representations, full fine-tuning can be computationally expensive, while keeping encoders frozen may limit task-specific adaptation. We propose the Tabular-Image Adapter (TI-Adapter), a modality-specific adapter-based fine-tuning framework for efficient multimodal adaptation. TI-Adapter freezes the pretrained tabular encoder and learns an adapter after the extracted tabular embedding, while adapting the image branch with embedding-level and bottleneck-level adapters instead of full fine-tuning. Experiments on 20 tabular-image datasets show that TI-Adapter achieves competitive or better predictive performance than full fine-tuning while using substantially fewer trainable parameters. Ablation studies further demonstrate the importance of adapter placement for balancing performance and practical efficiency.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
