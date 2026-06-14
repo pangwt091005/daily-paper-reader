@@ -1,0 +1,221 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-14T13:46:51.911507+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 2,
+    "deep_cap": 6,
+    "deep_selected": 2,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2606.04986v1",
+      "source": "arxiv",
+      "title": "Food-R1: A Unified Multi-Task Food Vision-Language Model with Reinforcement Learning",
+      "abstract": "Recent studies have explored Vision-Language Models (VLMs) for food analysis. However, most existing methods rely primarily on supervised fine-tuning (SFT), which often limits reasoning and generalization capabilities. Moreover, high-quality large-scale nutritional annotations remain scarce. To address these issues, we introduce CalorieBench-80K, a large-scale benchmark with curated calorie labels and dietary advice annotations. To the best of our knowledge, it is the first food image benchmark to incorporate Chain-of-Thought (CoT) annotations for calorie reasoning. We also propose Food-R1, a unified food VLM trained in a multi-task learning paradigm to equip the model with broad capabilities. Food-R1 undergoes CoT-based cold-start instruction tuning, followed by reinforcement fine-tuning (RFT) using Group Relative Policy Optimization (GRPO) to improve reasoning and performance. Experiments on CalorieBench-80K and representative benchmarks show that Food-R1 consistently outperforms strong baselines across food-related tasks. The code, model weights, and benchmark annotations are available at the project repository.",
+      "authors": [
+        "Yu Zhu",
+        "Yongkang Li",
+        "Wenjie Zhu",
+        "Haoyi Jiang",
+        "Wenyu Liu",
+        "Wei Yang",
+        "Bin Li",
+        "Xinggang Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-03T15:07:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.04986v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "food VLM for calorie and nutrition prediction with RL",
+      "llm_evidence_cn": "用于热量和营养预测的食物多模态大模型，结合强化学习",
+      "llm_evidence": "用于热量和营养预测的食物多模态大模型，结合强化学习",
+      "canonical_evidence": "用于热量和营养预测的食物多模态大模型，结合强化学习",
+      "llm_tldr_en": "Food-R1 is a unified multi-task food vision-language model trained with CoT-based cold-start instruction and reinforcement learning, achieving improved reasoning and generalization for calorie and nutrition prediction, validated on the novel CalorieBench-80K benchmark.",
+      "llm_tldr_cn": "现有食物视觉语言模型主要依赖监督微调，推理和泛化能力受限，且缺乏大规模高质量营养标注数据。本文提出了Food-R1，一个统一的多任务食物视觉语言模型，通过链式思维冷启动指令和强化学习训练，增强了模型在热量推理和营养预测方面的性能。同时构建了CalorieBench-80K基准，包含首个食物图像链式思维注释。实验表明Food-R1在多种食物分析任务上优于现有方法。",
+      "llm_tldr": "现有食物视觉语言模型主要依赖监督微调，推理和泛化能力受限，且缺乏大规模高质量营养标注数据。本文提出了Food-R1，一个统一的多任务食物视觉语言模型，通过链式思维冷启动指令和强化学习训练，增强了模型在热量推理和营养预测方面的性能。同时构建了CalorieBench-80K基准，包含首个食物图像链式思维注释。实验表明Food-R1在多种食物分析任务上优于现有方法。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "research on image based food nutritional composition estimation with vision language models",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.08948v1",
+      "source": "arxiv",
+      "title": "NutriMLLM: Multimodal Large Language Models for Dietary Micronutrient Analysis",
+      "abstract": "Comprehensive estimation of dietary micronutrients from food images could improve clinical nutrition care, but training such models requires large multimodal datasets linking diverse foods to complete nutrient profiles. We first show that existing multimodal large language models (MLLMs), including leading proprietary models, are unreliable for this task. Across five model families and four independent evaluation benchmarks (ASA24, SNAPMe, FNDDS, and NutriBench), models frequently abstained or returned statistically implausible values. To address this gap without costly expert annotation, we repurposed a decade of population-scale 24-hour dietary recalls as structured prompts for text-to-image generation. This pipeline produced a synthetic corpus of about 1.1 million image-description-nutrient triplets, each pairing a generated food image with a complete 65-nutrient label. To our knowledge, this is the largest synthetic food-image corpus with comprehensive micronutrient annotation planned for public release upon publication. Fine-tuning Qwen3-VL (2B/4B/8B/30B) and GLM-4.6V-Flash on this corpus yielded NutriMLLM, the first family of vision-language models specialized for comprehensive dietary micronutrient estimation. We evaluate these models with a four-component framework that separately measures abstention, hallucination, overall usability, and per-nutrient numerical accuracy. On real food images, every NutriMLLM variant achieved near-complete coverage across all 65 nutrients, and the largest variant matched or exceeded proprietary baselines (GPT-5, Gemini 3, and Claude Sonnet 4.5) in accuracy on most nutrients. These results show that recall-driven synthetic supervision can make image-based comprehensive micronutrient estimation a tractable engineering problem and support dietary assessment, personalized nutrition guidance, and population-scale micronutrient surveillance.",
+      "authors": [
+        "Runze Yan",
+        "Minxiao Wang",
+        "Jiaying Lu",
+        "Darren Liu",
+        "Xiao Hu",
+        "Hanqi Luo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-08T02:50:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.08948v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "directly addresses food image based micronutrient prediction using multimodal LLMs",
+      "llm_evidence_cn": "直接针对基于食物图像的微量营养素预测，使用多模态大语言模型",
+      "llm_evidence": "直接针对基于食物图像的微量营养素预测，使用多模态大语言模型",
+      "canonical_evidence": "直接针对基于食物图像的微量营养素预测，使用多模态大语言模型",
+      "llm_tldr_en": "NutriMLLM uses multimodal large language models to estimate dietary micronutrients from food images, showing existing MLLMs are unreliable and proposing a synthetic data pipeline to train models without expert annotation.",
+      "llm_tldr_cn": "针对现有多模态大语言模型在食品图像微量营养素估计中不可靠的问题，本文提出NutriMLLM，利用十年规模的人口膳食回顾数据通过文本到图像生成构建合成训练集。实验表明该方法能有效预测多种微量营养素，为临床营养评估提供了无需专家标注的可行方案。",
+      "llm_tldr": "针对现有多模态大语言模型在食品图像微量营养素估计中不可靠的问题，本文提出NutriMLLM，利用十年规模的人口膳食回顾数据通过文本到图像生成构建合成训练集。实验表明该方法能有效预测多种微量营养素，为临床营养评估提供了无需专家标注的可行方案。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "food image based nutritional composition prediction",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2605.31410v1",
+      "source": "arxiv",
+      "title": "FAM-Bench: A Multimodal Benchmark for Condition-Aware Food-as-Medicine Reasoning",
+      "abstract": "Food-as-Medicine requires models to reason beyond what a dish is or what nutrition it contains: they must decide whether a concrete food choice is appropriate for a specific health condition. Existing food AI benchmarks primarily evaluate dish recognition, recipe understanding, nutrient estimation, or general nutrition question answering, leaving this health-aware decision layer largely untested. We introduce FAM-Bench, a multi-modal Food-as-Medicine benchmark with 2500 nutrition-expert-verified instances across 13 diet-related health conditions. The benchmark contains two complementary tasks: dish-level suitability assessment, where models judge whether a dish is suitable for a condition from its image and ingredient list, and comparative dish analysis, where models rank four candidate dishes by condition-specific suitability. Both tasks require integrating ingredient evidence, visual preparation cues, and clinical nutrition constraints, providing a standardized testbed for grounded health-aware reasoning in language and vision-language models.",
+      "authors": [
+        "Mingyang Mao",
+        "Bhargav Rishi Medisetti",
+        "Utkarsh Grover",
+        "Tanvir Ibrahim",
+        "Wenyan Li",
+        "Tingting Zhang",
+        "Xiaomin Lin"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-05-29T15:13:53+00:00",
+      "link": "https://arxiv.org/pdf/2605.31410v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "multimodal benchmark for food-as-medicine reasoning involving food images and nutrition",
+      "llm_evidence_cn": "涉及食品图像和营养推理的多模态基准测试",
+      "llm_evidence": "涉及食品图像和营养推理的多模态基准测试",
+      "canonical_evidence": "涉及食品图像和营养推理的多模态基准测试",
+      "llm_tldr_en": "FAM-Bench introduces a multimodal benchmark for condition-aware food-as-medicine reasoning, testing models on dish suitability and comparative dish tasks across 13 health conditions.",
+      "llm_tldr_cn": "现有食品AI基准主要评估菜肴识别和营养估计，缺乏健康情境下的决策推理。本文提出FAM-Bench，包含2500个营养专家验证的多模态实例，覆盖13种饮食相关健康条件，评估模型在菜肴适宜性和比较选择上的能力。",
+      "llm_tldr": "现有食品AI基准主要评估菜肴识别和营养估计，缺乏健康情境下的决策推理。本文提出FAM-Bench，包含2500个营养专家验证的多模态实例，覆盖13种饮食相关健康条件，评估模型在菜肴适宜性和比较选择上的能力。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2605.27950v1",
+      "source": "arxiv",
+      "title": "Evaluating the Feasibility of Inferring Dietary Behavior Change Receptivity from Egocentric Images of Eating Environment",
+      "abstract": "Accurately assessing dietary behavior change receptivity is essential for designing effective just-in-time adaptive interventions (JITAIs) that promote healthier eating habits. However, self-report-based assessment of behavior change receptivity is sparse and delayed, limiting its practical use in continuous monitoring. To explore whether passive sensing may help address this challenge, this study conducts a pilot investigation of inferring participants' self-reported behavior change receptivity from egocentric eating images collected by a wearable camera. We use pilot data obtained from free-living eating episodes using the Automatic Ingestion Monitor v2 (AIM-2). The data included egocentric image sequences captured during eating and paired with responses to questions assessing specific dimensions of behavior change receptivity (awareness, interaction capability, and motivation). To examine whether visual information contained any relevancy to these responses, we evaluated a transfer-learning-assisted framework that combines a pre-trained Contrastive Language-Image Pre-Training (CLIP) vision encoder with a lightweight transformer classifier. The model processes eating episode image sequences to extract potential semantic and temporal cues related to behavior change receptivity. Preliminary experimental results show promising improvements over simple baseline models for behavior change receptivity indicators. These early findings suggest that egocentric eating episode images may contain cues related to dietary behavior change receptivity, and warrant further investigation with larger and more comprehensive datasets.",
+      "authors": [
+        "Long Li",
+        "Yuning Huang",
+        "Heather A. Eicher-Miller",
+        "J. Graham Thomas",
+        "Fengqing Zhu",
+        "Edward Sazonov"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-05-27T04:44:35+00:00",
+      "link": "https://arxiv.org/pdf/2605.27950v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses egocentric food images from a wearable camera to infer dietary behavior change receptivity, related to dietary assessment",
+      "llm_evidence_cn": "利用可穿戴相机拍摄的第一人称饮食图像推断饮食行为改变接受度，与饮食评估相关",
+      "llm_evidence": "利用可穿戴相机拍摄的第一人称饮食图像推断饮食行为改变接受度，与饮食评估相关",
+      "canonical_evidence": "利用可穿戴相机拍摄的第一人称饮食图像推断饮食行为改变接受度，与饮食评估相关",
+      "llm_tldr_en": "Pilot study inferring dietary behavior change receptivity from egocentric eating images using AIM-2 wearable camera, exploring passive sensing for just-in-time interventions.",
+      "llm_tldr_cn": "饮食行为改变接受度的准确评估对于设计及时适应性干预至关重要，但自我报告方法稀疏且有延迟。本文利用AIM-2可穿戴相机采集的自由生活饮食图像，首次尝试从第一人称图像中推断受试者的饮食行为改变接受度。实验结果表明被动感知有望弥补自我报告的不足。该研究为基于图像的饮食评估提供了新视角。",
+      "llm_tldr": "饮食行为改变接受度的准确评估对于设计及时适应性干预至关重要，但自我报告方法稀疏且有延迟。本文利用AIM-2可穿戴相机采集的自由生活饮食图像，首次尝试从第一人称图像中推断受试者的饮食行为改变接受度。实验结果表明被动感知有望弥补自我报告的不足。该研究为基于图像的饮食评估提供了新视角。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "deep learning dietary assessment from food images",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.02021v1",
+      "source": "arxiv",
+      "title": "PerBite: A Curated Diagnostic Workflow for Bite-Aware Food Volume Estimation",
+      "abstract": "Can a visually plausible food mesh be trusted to estimate the volume of consumed food? \\method investigates this question using selected paired before- and after-consumption states from the MetaFood CVPR 2026 Continuous 3D Reconstruction While Eating Challenge. The submitted workflow follows a curated reconstruction protocol: SAM~3 segments the food and plate regions; Hunyuan3D/SAM~3D generates a dimensionless food mesh; the plate diameter provides the metric scale; the plate geometry is removed in Blender; and the remaining mesh is hole-filled, made watertight, and integrated to estimate volume. MoGe-2 is used only as an auxiliary cue for initial dish-diameter estimation when direct plate measurement is uncertain; it is not the primary scale source for the reported challenge result. \\method ranks first, with an average Chamfer distance of 8.31 across 34 meshes using rigid ICP without scale correction. On 17 before- and after-pairs, it achieves 33.87\\% state-level volume MAPE and zero monotonicity violations, while consumed-volume MAPE remains 53.74\\%. The results show that surface reconstruction, metric scale, controlled mesh cleanup, watertight volume integration, and physical depletion consistency should be evaluated separately for dietary assessment. Source code and evaluation scripts will be available at \\href{https://github.com/GCVCG/PerBite-CVPR-MetaFood-2026}{github.com/GCVCG/PerBite-CVPR-MetaFood-2026}.",
+      "authors": [
+        "Ahmad AlMughrabi",
+        "Farid Al-Areqi",
+        "David Fernández Gómez",
+        "Umair Haroon",
+        "Marc Bolaños",
+        "Ricardo Marques",
+        "Petia Radeva"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-01T10:11:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.02021v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "focuses on food volume estimation from images, a key step in dietary assessment",
+      "llm_evidence_cn": "专注于基于图像的食物体积估计，这是膳食评估的关键步骤",
+      "llm_evidence": "专注于基于图像的食物体积估计，这是膳食评估的关键步骤",
+      "canonical_evidence": "专注于基于图像的食物体积估计，这是膳食评估的关键步骤",
+      "llm_tldr_en": "PerBite proposes a workflow for bite-aware food volume estimation using segmentation, 3D reconstruction, and plate-based scaling, applied to the MetaFood challenge dataset.",
+      "llm_tldr_cn": "食品体积估计是膳食评估的关键，但现有方法缺乏准确性。本文提出PerBite工作流，利用SAM分割、Hunyuan3D重建和盘子直径标定，从前后对比图像中估算食物消耗体积，在MetaFood挑战中验证了有效性。",
+      "llm_tldr": "食品体积估计是膳食评估的关键，但现有方法缺乏准确性。本文提出PerBite工作流，利用SAM分割、Hunyuan3D重建和盘子直径标定，从前后对比图像中估算食物消耗体积，在MetaFood挑战中验证了有效性。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "deep learning dietary assessment from food images",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

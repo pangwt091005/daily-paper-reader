@@ -1,0 +1,492 @@
+Title: PerBite: A Curated Diagnostic Workflow for Bite-Aware Food Volume Estimation
+
+URL Source: https://arxiv.org/pdf/2606.02021v1
+
+Published Time: Tue, 02 Jun 2026 02:28:57 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# PerBite: A Curated Diagnostic Workflow for Bite-Aware Food Volume Estimation 
+
+## Ahmad AlMughrabi ∗,1
+
+ahmad.almughrabi@ub.edu 
+
+## Farid Al-Areqi ∗,1
+
+farid.al-areqi@ub.edu 
+
+## David Fern´ andez G´ omez ∗,1
+
+dfernago24@alumnes.ub.edu 
+
+## Umair Haroon 1
+
+umairharoon@ub.edu 
+
+## Marc Bola˜ nos 4
+
+marc.bolanos@logmeal.com 
+
+## Ricardo Marques ∞,2
+
+ricardo.marques@upf.edu 
+
+## Petia Radeva ∞,1,3,4
+
+petia.ivanova@ub.edu 
+
+## Abstract 
+
+Can a visually plausible food mesh be trusted to es-timate the volume of consumed food? PerBite investi-gates this question using selected paired before- and after-consumption states from the MetaFood CVPR 2026 Con-tinuous 3D Reconstruction While Eating Challenge. The submitted workflow follows a curated reconstruction pro-tocol: SAM 3 segments the food and plate regions; Hun-yuan3D/SAM 3D generates a dimensionless food mesh; the plate diameter provides the metric scale; the plate geom-
+
+> ∗
+> These authors contributed equally to this work.
+> ∞
+> Equal supervision.
+> 1
+> Universitat de Barcelona, Spain.
+> 2
+> Grup de Tecnologies Interactives, Universitat Pompeu Fabra, Spain.
+> 3
+> Institut de Neuroci` encies, Barcelona.
+> 4
+> LogMeal, AIGecko Technologies S.L.
+
+etry is removed in Blender; and the remaining mesh is hole-filled, made watertight, and integrated to estimate vol-ume. MoGe-2 is used only as an auxiliary cue for ini-tial dish-diameter estimation when direct plate measure-ment is uncertain; it is not the primary scale source for the reported challenge result. PerBite ranks first, with an average Chamfer distance of 8.31 across 34 meshes us-ing rigid ICP without scale correction. On 17 before- and after-pairs, it achieves 33.87% state-level volume MAPE and zero monotonicity violations, while consumed-volume MAPE remains 53.74%. The results show that surface re-construction, metric scale, controlled mesh cleanup, wa-tertight volume integration, and physical depletion consis-tency should be evaluated separately for dietary assess-ment. Source code and evaluation scripts will be available at github.com/GCVCG/PerBite-CVPR-MetaFood-2026. 
+
+1
+
+> arXiv:2606.02021v1 [cs.CV] 1 Jun 2026
+
+## 1. Introduction 
+
+Image-based dietary assessment has historically focused on estimating food type and portion size from one or a small number of images [1, 3, 9]. This setting is convenient, but it often depends on users deliberately capturing suitable im-ages and provides only sparse evidence of the eating pro-cess. As a result, it cannot fully capture how food changes during consumption, how much is ultimately eaten, or the meal’s temporal progression. Continuous egocentric video provides a more natural signal because the camera observes the meal throughout consumption, enabling more passive estimation of intake dynamics. However, it also introduces severe motion blur, viewpoint changes, occlusions by hands or utensils, and partial visibility. The core challenge is therefore not simply to reconstruct a visually plausible 3D model, but to recover metrically meaningful food volumes that remain consistent across consumption states. Bite-aware intake estimation is particularly difficult be-cause the quantity of interest is not only the volume of food visible at a single moment, but the change in food volume across multiple consumption states. Small errors in scale, boundary localization, support removal, or mesh closure can propagate into large errors in consumed vol-ume when intake is computed as the difference between two state estimates. This makes continuous dietary monitoring a paired-state reasoning problem, where remaining-volume estimates must be metrically calibrated and physically con-sistent over time. We present PerBite, a curated and bite-aware diagnos-tic workflow for metric-calibrated food volume estimation while eating . Given selected before- and after-consumption food states, PerBite estimates remaining volumes {Vt}Tt=0 
+
+and consumed increments ∆Vt = Vt−1 − Vt. At a high level, the workflow combines promptable food-state local-ization, single-image 3D reconstruction, metric scale cali-bration, non-food geometry removal, mesh repair, and vol-ume integration. This paper focuses on the reconstruction, scaling, cleanup, and volume-differencing problem; it does not claim automatic bite detection or automatic before/after frame selection. PerBite was evaluated as part of the MetaFood CVPR 2026 Continuous 3D Reconstruction While Eating Chal-lenge 1, where it ranked first under the official challenge protocol. This external evaluation is important because it tests the method under a fixed benchmark rather than a self-defined split. In this paper, we go beyond the challenge score by analyzing surface reconstruction, state-level vol-ume accuracy, consumed-volume error, and monotonic de-pletion consistency. 
+
+> 1https : / / www . kaggle . com / competitions / mtf -challenge-1-continuous-3-d-reconstruction-while-eating
+
+We organize the paper around three diagnostic ques-tions: (i) whether a compact, promptable reconstruction path can be competitive when supported by controlled mesh cleanup, (ii) how metric evidence makes a generated unit-less mesh volume meaningful, and (iii) why consumed vol-ume is harder than remaining volume. These questions mo-tivate the design of the method and the metrics reported be-low. The central design principle is to treat bite-aware food-volume estimation as paired-state metric reasoning , rather than as independent per-frame reconstruction. Selected state images define the before/after inputs, metric calibra-tion determines how reconstructed meshes are converted into physical units, geometry cleanup determines which sur-face is finally integrated, and monotonic depletion provides a simple check on whether the predicted trajectory is physi-cally plausible. This framing is aligned with recent work on egocentric dietary tracking and diagnostic volume bench-marking: temporal signals are essential for bite-level intake, and volume accuracy depends on interactions among sup-port, depth, scale, mesh cleanup, and integration rather than on visual plausibility alone [3, 9 ? ]. We frame PerBite as both a reconstruction method and a diagnostic protocol. The proposed evaluation decouples surface reconstruction quality from volume correctness: a mesh can achieve an acceptable Chamfer distance while still producing poor volume if the global scale, object boundary, or bitten region is incorrect. This distinction is central to continuous dietary monitoring, where the consumed volume is the difference between two noisy state estimates and is therefore more fragile than the remaining volume in a single state. Our main contributions are: • A bite-aware diagnostic workflow. We introduce Per-Bite for paired food-state reconstruction and consumed-volume estimation, validated in the MetaFood CVPR 2026 challenge setting. • A curated promptable reconstruction protocol. Per-Bite combines promptable food-state localization, gen-erated 3D mesh reconstruction, non-food geometry re-moval, and controlled mesh repair before volume com-putation. • Metric scaling for generated food meshes. We recover physical food volume by applying a uniform metric scale before measuring the repaired food mesh volume. • Bite-level diagnostic evaluation. We evaluate be-fore/after food states with no-scale-correction Chamfer distance, state-level volume error, consumed-volume er-ror, and monotonic depletion consistency. 
+
+## 2. Related Work 
+
+This section positions PerBite relative to food-volume es-timation, egocentric intake monitoring, promptable recon-struction, and metric-scale reasoning. The key distinction is 2that PerBite evaluates pairs of consumption states and sepa-rates unitless shape generation from metric volume calibra-tion. 
+
+2.1. Image-based Food Volume Estimation 
+
+Food-volume estimation has been studied using reference objects, stereo or multi-view reconstruction, RGB-D sens-ing, geometric primitives, and learned depth or segmenta-tion models. Early and related systems demonstrate that physically meaningful portion estimation depends not only on recognizing the food category, but also on recover-ing metric geometry and scale. For example, wearable-camera-based approaches have explored 3D reconstruction for estimating food volume in dietary intake monitoring [7], while other image-based methods use controlled capture, depth cues, or geometric assumptions to make, portion es-timates metrically interpretable [1, 3, 4, 8, 9]. Recent monocular methods reduce the capture burden by leverag-ing learned depth, segmentation, video segmentation, or image-to-3D priors [2, 5], yet monocular scale ambiguity and object-boundary leakage remain major failure modes. Our work follows this metric tradition but shifts the prob-lem from static pre-meal estimation to paired pre- and post-consumption food states. 
+
+2.2. Challenge Datasets and Diagnostic Protocols 
+
+Recent challenge datasets have helped standardize evalu-ation for physically informed food reconstruction. The MetaFood CVPR 2024 challenge evaluated volume-accurate 3D food reconstruction from 2D images using a visible reference pattern for scale [10]. This line of work is important because it exposes the gap between visually plau-sible reconstruction and physically accurate estimates of food volume. The current MetaFood continuous eating set-ting extends this difficulty to before- and after-consumption states, where errors in scale, support removal, or bitten-region geometry can directly affect estimates of consumed volume. We adopt a diagnostic view: volume estimation should be evaluated not only by surface similarity, but also by metric scale, object boundary quality, mesh integration, and before/after consistency. 
+
+2.3. Egocentric Dietary Monitoring 
+
+Egocentric and wearable cameras provide a natural sensing modality for dietary monitoring because they can observe the meal from the user’s perspective with less active inter-vention than manually captured food images. Prior work us-ing chest-worn cameras has demonstrated the relevance of passive image capture for food portion size estimation and dietary assessment [11]. Wearable-camera food-volume es-timation further demonstrates the potential of egocentric sensing for quantifying intake through reconstructed food geometry [7]. However, egocentric dietary assessment re-                     
+
+> Table 1. Positioning of PerBite relative to common food-volume and reconstruction settings. PerBite targets paired consumption states and explicitly separates unitless 3D shape from metric vol-ume calibration.
+> Setting Input 3D Metric ∆V
+> Static food-volume estimation image/depth partial often no Egocentric intake monitoring video usually no indirect yes Single-image 3D foundation models image yes no no PerBite before/after states yes yes yes
+
+mains challenging because food may be partially visible, occluded by hands or utensils, and observed under chang-ing viewpoints. Our method differs from these works by explicitly reconstructing and metrically scaling paired food states, while adopting the same core motivation: intake es-timation benefits from observing the eating episode rather than relying solely on isolated single-image predictions. 
+
+2.4. Promptable Segmentation and 3D Reconstruc-tion 
+
+SAM 3 extends promptable segmentation to concept prompts, including text prompts that can detect, segment, and track all matching instances in images and videos [6]. This capability allows PerBite to use a single generic prompt, “food”, for localization. SAM 3D reconstructs 3D objects from single images [12], making it a natural unitless shape prior for paired food-state reconstruction. We empha-size, however, that generated meshes are not automatically metric; metric scale must be recovered from observed ref-erence or geometric cues. 
+
+2.5. Metric Scale Recovery 
+
+Metric scale is a central difficulty in monocular food re-construction because promptable 3D models often return plausible but unitless geometry. In the submitted PerBite workflow, visible plate diameter is the primary metric cue, and MoGe-2 [13] is used only as an auxiliary cue for initial dish-diameter estimation when direct plate measurement is uncertain. These cues support the central principle of Per-Bite: separate unitless shape generation from metric scale recovery. Table 1 summarizes how this setting differs from static food-volume estimation, egocentric intake monitor-ing, and single-image 3D foundation-model reconstruction. 
+
+## 3. The Proposed Method 
+
+Our method starts from selected before- and after-consumption state images and follows five main stages: in-put state preparation, promptable food and plate localization with SAM 3 [6], Hunyuan3D/SAM 3D [12, 14] unitless mesh reconstruction, metric scale calibration, and paired-state volume inference. Implementation-specific steps, in-cluding Blender-assisted plate/support removal, watertight 3(a) Selected before/after food-state image         
+
+> (b) SAM (c) Food and plate localization
+> (d) Hunyuan3D/SAM 3D unitless mesh reconstruction
+> (e) Plate based metric scale calibration
+> (f) Blender assisted plate removal and mesh repair
+> (g) Watertight food mesh volume integration
+> (h) Volume Outputs
+> Before
+> After
+> (Segment Anything Model)
+> SAM
+> Food mask
+> Plate mask (Unitless mesh)
+> Estimate real-world diameter of the plate (e.g., 20.0 cm)
+> Before (with plate)
+> After (plate removed)
+> Remaining Volume
+> Consumed Volume
+> Optional auxiliary diagnostic
+> MoGe-2 Metric Depth (or Point Cloud)
+> Point Descriptors (Per-point features)
+> PCA Descriptors (Global shape/geometry)
+> User-selected Automated Automated Automated Semi-automated Automated Automated Semi-automated
+
+Figure 1. Visualization of the PerBite pipeline for paired before- and after-consumption food-state volume estimation. (a) Selected before-and after-consumption food-state images used as pipeline inputs. (b) SAM 3 segmentation. (c) Food and plate localization for isolating the target food region prior to reconstruction. (d) Hunyuan3D/SAM3D-based unitless mesh reconstruction from the localized food crop. (e) Plate-based metric scale calibration for converting the reconstructed unitless mesh into physical dimensions. (f) Blender-assisted plate removal and mesh repair for refining the reconstructed geometry. (g) Watertight food-mesh volume integration for estimating the remaining food volume. (h) Final volume outputs in cm 3 for the before- and after-consumption states, which are subsequently used to estimate the volume of food consumed. Table 2. Main symbols used by PerBite. Superscript u denotes unitless mesh quantities, while metric volumes are reported in physical units. 
+
+Symbol Meaning 
+
+It selected RGB image at food state tMf,t , Mp,t food and plate masks at state t
+
+Mut unitless mesh reconstructed from the selected state image 
+
+st uniform length-scale factor applied to the unitless mesh 
+
+Ct cleaned food mesh after support removal and watertight repair 
+
+ˆVt predicted remaining food volume at state t
+
+d∆V t predicted consumed volume between two states 
+
+mesh repair, and volume integration, are reported explicitly because they were part of the submitted challenge work-flow and expose practical bottlenecks in current foundation-model reconstruction systems. Table 2 defines the main symbols used throughout the method, Figure 1 visualizes the complete PerBite pipeline, Figure 2 summarizes the workflow, and Algorithm 1 gives the inference procedure for one before/after pair. 
+
+3.1. Problem Definition 
+
+Given selected before/after food states from an eating se-quence, PerBite estimates a sequence of remaining food volumes { ˆVt}Tt=0 and consumed increments d∆V t = ˆVt−1 −
+
+ˆVt. For each evaluated food item, we form one before-consumption state image and one after-consumption state image from the egocentric sequence. This setup isolates the reconstruction, metric scaling, cleanup, and volume-integration problem; automatic temporal state selection is left as future work. The method should satisfy three require-ments: (i) metric plausibility , because generated meshes are unitless and must be converted to physical volume; (ii) 
+
+food-state consistency , because before/after states should describe the same physical item after consumption; and (iii) 
+
+monotonic depletion consistency , because remaining edible volume should not increase after a bite event except within uncertainty. 
+
+3.2. Input State Images 
+
+PerBite operates on one RGB image per food state. The Kaggle challenge data are egocentric eating sequences rather than pre-cropped before-and-after-image pairs, so the two state images used for the reported submission were selected outside the released reconstruction pipeline: one frame representing the visible food before consumption and one frame after consumption, avoiding severe hand or uten-sil occlusion when possible. We do not claim automatic bite detection or automatic temporal frame selection as con-4Promptable Reconstruction Metric Calibration  
+
+> Selected state image
+> SAM 3 segmentation
+> food/plate masks & crop
+> Hunyuan3D/ SAM 3D mesh
+> Plate removal and repair
+> Metric scale plate diameter
+> Metric volume
+> Vol( sMu)
+> Bite-level trajectory
+> “food”/“plate” prompt Optional MoGe-2 dish diameter
+> monotonic depletion check
+
+Figure 2. Curated PerBite workflow used for the challenge submission. SAM 3 provides food and plate masks; Hunyuan3D/SAM 3D generates an initial unitless food mesh; the mesh is scaled using the plate diameter, with MoGe-2 used only as an auxiliary initial cue for dish diameter when needed; plate geometry is removed in Blender; and the remaining food mesh is hole-filled, made watertight, and integrated for volume. The same procedure is applied to the before/after states and evaluated using remaining-volume, consumed-volume, Chamfer, and monotonic-depletion diagnostics. 
+
+tributions in this paper, and the public code starts from the selected state images. This design keeps the evalu-ated pipeline focused on reconstruction, metric calibration, cleanup, volume integration, and paired-state diagnostics. 
+
+3.3. Promptable Food and Plate Localization with SAM 3 
+
+To make the segmentor more general, PerBite avoids the need for a separate detector or a food-specific segmentation model. It uses SAM 3 [6] directly with text prompts for the food and plate regions. For the food region, we use 
+
+pf = “food” . (1) SAM 3 returns candidate masks for regions matching the text prompt; an analogous plate prompt is used to obtain the plate mask when the plate is visible. Our implementation adds only a lightweight convenience option, mask mode ,on top of the official SAM 3 behavior: single keeps the highest-scoring returned mask, whereas multi saves all returned masks along with an additional merged mask. In the reported challenge submission, the food mask defines the crop passed to Hunyuan3D/SAM 3D, and the plate mask provides the reference region for metric scale and later plate cleanup. This design provides two practical advantages. First, it removes a detector-specific dependency, making the first stage a single promptable concept-segmentation call. Second, it avoids hard-coding food categories, which is im-portant for unseen items such as mixed meals, pastries, and partially consumed leftovers. The selected SAM 3 food mask Mf,t defines a square crop with a small context margin around the food region, while the plate mask Mp,t is used to estimate the plate di-ameter and to guide Blender-assisted plate removal when the generator reconstructs food and support geometry to-gether. The crop policy is kept fixed across the before-and after-states to avoid introducing artificial scale changes. FoodMem and BenchSeg-style segmentors are useful com-parison points for future analysis, but they are not required components of the submitted workflow [2, 5]. 
+
+3.4. Hunyuan3D/SAM 3D Unitless Mesh Recon-struction 
+
+Given the selected food crop and mask, Hun-yuan3D/SAM 3D reconstructs a textured object mesh 
+
+Mut = ( Vut , Fut ), (2) where the superscript u emphasizes that the mesh is in arbi-trary units. We use Hunyuan3D/SAM 3D as a shape recon-struction prior rather than as a metric measurement device. Although the generated mesh may provide a plausible food surface, its scale, thickness, underside structure, and object boundaries can be biased. It may also include parts of the supporting plate or small disconnected artifacts. Therefore, the generated mesh is treated only as an intermediate re-construction: it is subsequently scaled, cleaned to remove non-food geometry, repaired, and integrated to obtain vol-ume. 
+
+3.5. Metric Scale Calibration 
+
+Because the reconstructed mesh is unitless, PerBite esti-mates a length-scale factor st, uniformly scales the gen-erated mesh, and then measures the volume of the scaled watertight mesh, as shown in Eq. 3: 
+
+ˆVt = Vol( stMut ). (3) For a uniform scale, this is equivalent to cubic scaling of the mesh volume; therefore, a small error in length scale is amplified by a cubic factor in volume. The theoretical con-sequence is simple but important: if the estimated length scale is biased by a factor (1 + ϵ), the volume is biased ap-proximately by (1 + ϵ)3. Thus, a reconstruction that looks geometrically plausible can still be unusable for intake esti-mation if its metric scale is weakly constrained. 
+
+Plate-based scale. In the submitted challenge workflow, plate diameter is the primary metric scale cue. When a plate 5or another known-size cue is visible, Eq. 4 estimates the scale from the metric plate diameter Dm ∗ plate, t and its corresponding diameter du ∗ plate, t measured in the unit-less reconstruction. MoGe-2 is used only as an auxiliary cue for initial dish-diameter estimation when direct plate mea-surement is uncertain and not as the primary scale source for the reported challenge results. The scale is 
+
+splate ∗ t = Dm ∗ plate, t duplate,t 
+
+. (4) 
+
+Auxiliary MoGe-2/PCA scale diagnostic. This compo-nent was used only as an auxiliary diagnostic and for early dish-diameter estimation, not as the primary scale source for the reported challenge result. When explicit plate or reference segmentation is unreliable, PerBite can estimate scale by comparing robust object-size descriptors between two point sets: metric 3D points within the SAM 3 food mask and dimensionless vertices from the SAM 3D mesh. The metric point set is obtained by applying MoGe-2 to the RGB image and retaining valid 3D points whose pixels lie inside the object mask. Both point sets are filtered to keep only finite coordinates and summarized in a PCA-aligned coordinate system using four robust size descriptors: two percentile-based extents and two dimensions from a PCA-aligned inlier bounding box. Let Dmk,t denote the descriptor k computed from MoGe-2 metric object points after conversion to the desired output unit, and let duk,t denote the corresponding descriptor com-puted from the unitless mesh vertices. Each valid descriptor proposes a scale candidate 
+
+sk,t = Dmk,t 
+
+duk,t 
+
+, (5) where candidates with non-finite or non-positive descrip-tors are discarded. Remaining candidates are filtered in log-space using a median absolute deviation rule, and the final scale is the median of the accepted candidates: 
+
+spca t = median k∈A t sk,t , (6) where At is the accepted candidate set. The method applies a single uniform scale factor to the mesh; it neither deforms the mesh nor performs non-uniform axis-wise scaling. The descriptor family used by this optional diagnostic is summa-rized in Table 3. Figure 3 visualizes representative SAM 3 masks, MoGe-2 depth, and valid pixels used by this estima-tor. 
+
+Scale confidence and cue selection. When a reliable plate/reference cue is available, we use it as the primary scale cue; this is the configuration corresponding to the re-ported challenge results. The MoGe-2/PCA descriptor scale                 
+
+> Table 3. Descriptor-wise scale candidates used by the optional MoGe-2/PCA scale diagnostic. Superscript mdenotes metric MoGe-2 object points and superscript udenotes unitless SAM 3D mesh vertices.
+> Descriptor Metric value Candidate scale
+> PCA major-axis extent Dm
+> maj Dm
+> maj /d u
+> maj
+> PCA mid-axis extent Dm
+> mid Dm
+> mid /d u
+> mid
+> PCA-box long dimension Bm
+> long Bm
+> long /b u
+> long
+> PCA-box mid dimension Bm
+> mid Bm
+> mid /b u
+> mid
+
+is retained as an auxiliary diagnostic. If both cues are avail-able, we compute both and use their disagreement as a diag-nostic rather than silently averaging incompatible measure-ments. Specifically, we define 
+
+us(t) = log splate t − log spca t , (7) which flags unreliable predictions when the two metric cues disagree. For the PCA descriptor cue itself, we report the number of accepted descriptor candidates and the relative interquartile range IQR( {sk,t }k∈A t )/s pca t as a rule-based confidence diagnostic. Low relative spread indicates that independent major-axis, mid-axis, and PCA-aligned OBB descriptors agree on the metric scale. We do not assume that MoGe-2 provides perfect object geometry; it is used only as a metric size cue over mask-valid pixels, and candidate-scale spread exposes when this cue is unreliable. 
+
+3.6. Temporal Consistency and Repeated Inference 
+
+SAM 3D reconstruction can be stochastic. When multiple stochastic reconstructions are available, the implementation can average the scaled volumes: 
+
+¯Vt = 1
+
+R
+
+> R
+
+X
+
+> r=1
+
+Vol( st,r Mut,r ). (8) For a before/after pair, PerBite predicts consumed volume as d∆V t = max(0 , ¯Vt−1 − ¯Vt). (9) Monotonicity is evaluated on the raw before/after volume estimates before this non-negative clipping. For longer se-quences, we optionally estimate a physically consistent tra-jectory using the monotonic-depletion objective in Eq. 10: 
+
+min 
+
+> V0,...,V T
+> T
+
+X
+
+> t=0
+
+ρ(Vt − ¯Vt) + γ
+
+> T
+
+X
+
+> t=1
+
+max(0 , V t − Vt−1)2, (10) where ρ is a robust loss, and the second term penalizes non-monotone increases in volume. In the reported paired-state results, all 17 before/after predictions already satisfy mono-tonic depletion, so no correction is needed to obtain the re-ported violation rate. 6Mask overlay Metric depth Used pixels 
+
+> Figure 3. Debug views for the auxiliary MoGe-2 to mesh scale diagnostic. Each row shows the SAM 3 mask overlay, MoGe-2 metric depth, and mask-valid pixels used for descriptor-based scale estimation.
+
+3.7. Implementation Details and Reproducibility 
+
+Unless stated otherwise, the reported configuration uses SAM 3 food and plate masks, a fixed crop policy for the be-fore/after states of each item, Hunyuan3D/SAM 3D mesh generation, metric scaling from plate diameter, Blender-assisted removal of plate/support geometry, hole filling, watertight repair, and signed mesh-volume computation. MoGe-2 is retained only as an auxiliary cue for initial dish-diameter estimation and as a scale-disagreement di-agnostic; it is not the primary scale source for the head-line challenge numbers. When repeated stochastic outputs are generated, the implementation averages the scaled vol-umes; otherwise, it reports the single scaled reconstruction. For reproducibility, the implementation records the SAM 3 and Hunyuan3D/SAM 3D checkpoints, prompts, crop mar-gin, image resolution, Blender cleanup steps, watertight post-processing settings, mesh-volume operator, and plate-diameter scale used for each state. 
+
+## 4. Experiments 
+
+This section reports the results for the completed challenge and diagnostic volume. We use the available metrics to an-alyze surface quality, metric volume accuracy, consumed-volume error, and physical consistency. 
+
+4.1. Dataset and Evaluation Setting 
+
+We evaluate PerBite on 17 before-and-after food pairs from the continuous 3D reconstruction-while-eating setting. Be-cause this is the official hidden/test evaluation size, we treat the results as challenge validation and diagnostic evidence rather than broad statistical generalization. Each pair com-prises a pre-consumption state, a post-consumption state, a predicted mesh for each state, and ground-truth before- and after-volumes. The evaluated foods include roasted chicken leg, quesadilla, pizza, muffin, hotdog, grilled salmon, garlic bread, croissant, crab cake, cinnamon roll, chicken wings, chicken sandwich, cheesecake, burrito, breaded fish, bagel, and apple. This paired design directly tests the core ques-tion of bite-aware volume estimation: can a method esti-7Algorithm 1 PerBite inference for one before/after food pair  
+
+> 1:
+
+Input: before and after images {Ibef ore , I af ter }, food prompt pf = “food”, plate prompt when visible  
+
+> 2:
+
+for each state t ∈ { before , after } do  
+
+> 3:
+
+Run SAM 3 to obtain food mask Mf,t and plate mask 
+
+Mp,t when visible  
+
+> 4:
+
+Crop the food region and reconstruct unitless mesh 
+
+Mut with Hunyuan3D/SAM 3D  
+
+> 5:
+
+Estimate length scale st from plate diameter; option-ally use MoGe-2 only to initialize or check dish di-ameter  
+
+> 6:
+
+Uniformly scale the mesh, remove plate/support ge-ometry in Blender, repair holes, and make the food mesh watertight to obtain Ct 
+
+> 7:
+
+Compute remaining volume ˆVt = Vol( stCt) 
+
+> 8:
+
+end for  
+
+> 9:
+
+Compute raw consumed volume d∆V raw = ˆVbef ore −
+
+ˆVaf ter  
+
+> 10:
+
+Optionally report non-negative intake d∆V =max(0 , d∆V raw ) 
+
+> 11:
+
+Output remaining volumes, consumed volume, Cham-fer, MAPE, and monotonicity diagnostics mate both remaining volume at each state and consumed volume between states? Figure 4 illustrates representative paired states together with ground-truth and predicted vol-ume changes. The 2026 Kaggle-hosted MetaFood challenge setting differs from earlier static MTF/MetaFood reconstruction benchmarks. It focuses on continuous 3D reconstruction during eating: methods operate on egocentric eating ob-servations and produce reconstructed meshes of food states before and after consumption. The before/after difference is intended to reflect food consumed during the eating episode. Unlike earlier controlled settings with explicit scale refer-ences, this setting stresses implicit metric reasoning from the image content, the reconstructed mesh, monocular ge-ometry, and common food/container cues. Our evaluation, therefore, reports both the official surface-reconstruction score and the downstream volume diagnostics. 
+
+Official challenge protocol. The MetaFood CVPR 2026 Continuous 3D Reconstruction While Eating Challenge evaluates reconstructed food meshes against reference ge-ometry for paired before- and after-consumption states. The official score is the average Chamfer distance after rigid ICP alignment. Importantly, ICP is restricted to rotation and translation; no scale correction is applied. This makes the metric sensitive to metric-size errors, which is appropriate for food-volume estimation because scale is part of the task                       
+
+> Table 4. Official MetaFood CVPR 2026 challenge outcome. Per-Bite ranked first under the official protocol. The score is computed after rigid ICP alignment without scale correction.
+> Method Rank Official score ↓Alignment
+> PerBite 1st 8.31 Rigid ICP, no scale Table 5. Compact view of the main evaluation signals. The chal-lenge score measures surface reconstruction under the official no-scale ICP protocol, while the volume metrics evaluate dietary rel-evance.
+> Evaluation target Metric Value
+> Challenge geometry CD, rigid ICP/no scale ↓8.31
+> Remaining volume State MAPE ↓33.87% Consumed volume ∆VMAPE ↓53.74% Physical trajectory MVR ↓0.0%
+
+rather than a nuisance variable. Unless noted otherwise, the reported headline numbers correspond to the submitted curated PerBite configuration: SAM 3 food/plate segmentation, Hunyuan3D/SAM 3D mesh generation, plate-diameter scaling, Blender plate re-moval, watertight repair, and volume computation. Figure 4 shows representative before/after states from the evaluated set. These images strengthen the experimen-tal motivation: the task is not only object reconstruction but also state-change reconstruction under egocentric viewpoint variation, including hands, utensils, and partially consumed food geometry. Table 4 reports the official challenge outcome. The full leaderboard entries were not released for redistribu-tion; therefore, we avoid reconstructing unofficial compar-isons and report only the official rank and score of our submission. Table 5 then separates the official surface-reconstruction score from the dietary-volume diagnostics used in this paper. 
+
+4.2. Metrics 
+
+We report four families of metrics. Because percentage error can be unstable when the true consumed volume is small, we report MAE and RMSE alongside MAPE and me-dian APE rather than relying on a single percentage metric. 
+
+Surface reconstruction. For each reconstructed mesh, we report the Chamfer distance (CD) to the reference geometry, with lower values indicating better agreement. For challenge scoring, predicted and reference meshes are aligned using rigid ICP only: rotation and translation are estimated, but no scale correction is applied. This makes the metric sensitive to metric-size errors, which is appropri-8Figure 4. Representative before/after food-state pairs with ground-truth and PerBite-predicted volumes. Each panel reports before → after volume and consumed-volume difference ∆ in challenge volume units. The examples illustrate why PerBite evaluates selected paired states rather than independent static food images: viewpoint and hand position can vary while the edible item remains the same physical object. 
+
+ate for volume reconstruction because scale is part of the task rather than a nuisance variable. 
+
+State-level volume. For before and after states, we re-port mean absolute percentage error (MAPE), median APE, mean absolute error (MAE), and root mean squared error (RMSE): 
+
+APE t = | ˆVt − Vt|
+
+Vt + ϵ × 100 . (11) 
+
+Consumed volume. For each before/after pair, the con-sumed volume is 
+
+∆V = Vbef ore − Vaf ter , d∆V = ˆVbef ore − ˆVaf ter . (12) We report the error on ∆V separately because it compounds errors from two reconstructed states. 
+
+Monotonic depletion. A monotonicity violation occurs if 
+
+ˆVaf ter > ˆVbef ore . We report the violation count and rate: 
+
+MVR = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+⊮[ ˆV (i) 
+
+> af ter
+
+> ˆV (i)
+
+> bef ore
+
+]. (13) 
+
+4.3. Chamfer Distance Results 
+
+Table 6 reports surface reconstruction quality over 34 recon-structed meshes, while Table 7 highlights the best and worst 
+
+Table 6. Chamfer distance of PerBite reconstructions across be-fore/after food states. CD is computed after rigid ICP alignment without scale correction. Lower is better. 
+
+Split Meshes Mean CD ↓ Median CD ↓
+
+Before states 17 8.87 8.52 After states 17 7.76 6.42 
+
+All states 34 8.31 7.27 
+
+object-state cases. PerBite obtains an average Chamfer dis-tance of 8.31 when ICP scale correction is disabled. This score is higher than a scale-normalized alignment would produce, but it is the appropriate evaluation for metric food-volume estimation because scale is part of the problem rather than a nuisance variable. After-consumption states are slightly easier on average than before states, possibly because partially consumed objects are smaller or have less complex visible geometry. However, object-specific fail-ures remain, especially for soft, elongated, or highly irregu-lar foods. 
+
+4.4. Volume Estimation Results 
+
+Table 8 reports volume accuracy. Across all before-and-after states, PerBite achieves 33.87% MAPE and 35.52% median APE. Before states have slightly lower MAPE than 9Table 7. Best and worst Chamfer cases under rigid ICP without scale correction. Worst cases typically involve soft, elongated, or boundary-ambiguous geometry. 
+
+Object-state CD ↓
+
+Chicken Wings after 3.59 
+
+Apple before 3.63 Grilled Salmon after 3.83 Muffin before 4.32 Grilled Salmon before 4.47 Burrito after 17.56 Bagel before 16.38 Burrito before 14.45 Cheesecake after 13.43 Cheesecake before 13.11 Table 8. Volume estimation on 17 before/after food pairs. Consumed-volume error is higher because ∆V compounds two state estimates.                          
+
+> Eval. MAPE ↓Med. APE ↓MAE ↓RMSE ↓
+> All states 33.87 35.52 48.25 77.00 Before only 31.97 35.00 63.49 94.52 After only 35.78 36.04 33.01 54.07
+> Consumed ∆V53.74 56.56 46.52 65.19
+
+after states, while after states have lower absolute error be-cause their volumes are smaller. The gap between state-level volume error and consumed-volume error is the most important empirical finding. Al-though PerBite produces plausible state-level volume esti-mates, the bite amount ∆V is more sensitive because er-rors in ˆVbef ore and ˆVaf ter can add rather than cancel. The absolute error remains too high for deployment as an auto-matic dietary-monitoring system; the value of this result is diagnostic. This finding reinforces the argument that sur-face quality alone is not enough for dietary volume estima-tion; scale recovery, controlled mesh cleanup, watertight-ness, and volume-difference stability must be evaluated ex-plicitly. 
+
+4.5. Monotonic Depletion Results 
+
+Table 9 reports monotonic depletion consistency. PerBite produces no violations across the 17 before/after pairs: ev-ery predicted after-volume is lower than its corresponding predicted before-volume. This is important as a necessary physical-consistency check, but it should not be interpreted as sufficient evidence of accurate intake estimation, because the magnitude of consumed volume remains imperfect. Fig-ure 5 visualizes the predicted and ground-truth before/after volumes for all 17 pairs. 
+
+Table 9. Bite-wise monotonic depletion consistency. A violation occurs when the predicted after-consumption volume exceeds the predicted before-consumption volume. 
+
+Pairs Violations ↓ Violation rate ↓
+
+17 0 0.0% 2 4 6 8 10 12 14 16 
+
+> Food pair ID
+> 0
+> 100
+> 200
+> 300
+> 400
+> 500
+> 600
+> 700
+> Volume
+> GT before
+> GT after
+> PerBite before
+> PerBite after
+
+Figure 5. Ground-truth and predicted before/after volumes for 17 food pairs. PerBite preserves the before-to-after decrease for every pair, but several items show large-scale or shape-induced volume error. 
+
+4.6. Relationship Between Surface and Volume Ac-curacy 
+
+Chamfer distance and volume error do not necessarily cor-relate. In our results, the empirical correlation between per-state Chamfer distance and volume APE is approxi-mately 0.41 ; this value should be interpreted with cau-tion because the official evaluation includes only 34 state meshes. This moderate relationship confirms that poor sur-face reconstruction often reduces volume, but it also shows that CD alone is insufficient: a mesh can be close in surface distance yet still produce poor metric volume if its scale, thickness, watertightness, or unobserved geometry is incor-rect. This observation motivates reporting both surface and volumetric evaluation. 
+
+## 5. Discussion and Limitations 
+
+This section summarizes what the challenge result validates and where PerBite remains limited, especially for met-ric scale, surface-to-volume consistency, and consumed-volume estimation. 
+
+5.1. Challenge Validation and Main Contribution 
+
+The first-place challenge result shows that a compact SAM 3 plus Hunyuan3D/SAM 3D workflow, when paired with plate-based metric calibration and careful mesh cleanup, can be competitive under a fixed surface-reconstruction protocol. The main contribution, however, is not only the rank. PerBite combines unitless reconstruction, plate-diameter scaling, Blender-assisted plate removal, wa-tertight volume integration, paired-state volume estimation, 10 and monotonic-depletion checks into a diagnostic frame-work for bite-aware intake. This framing makes the work-flow easier to audit: failures can be assigned to prompt lo-calization, shape completion, plate-scale calibration, con-trolled mesh cleanup, watertightness, mask/crop quality, or volume differencing. 
+
+5.2. Why Surface Accuracy Is Not Enough 
+
+The chamfer distance and volume error diverge because they assess different properties. A mesh may be close in surface distance but still exhibit incorrect global scale, thickness, watertightness, or a hidden underside. The ob-served CD–volume correlation of approximately 0.41 there-fore supports the central message: dietary reconstruction should report surface distance and metric volume, not one as a proxy for the other. 
+
+5.3. Why Consumed Volume Is Harder 
+
+State-level volume reaches 33.87% MAPE, while consumed-volume error is 53.74%. This gap is ex-pected because the consumed volume is the difference between the two state estimates. Even moderate be-fore/after errors can accumulate if their signs differ. Future improvements should therefore directly optimize paired-state scale consistency, rather than treating the before- and after-reconstructions as independent predictions. 
+
+5.4. Scale Evidence and Failure Modes 
+
+Plate diameter is the primary metric cue in the submitted workflow, making the final volume sensitive to plate seg-mentation, diameter estimation, and the correspondence be-tween the image-space plate and the generated mesh scale. MoGe-2/PCA descriptors are useful only as auxiliary dish-diameter checks or diagnostics when the plate cue is un-certain, but they can fail when visible metric points cover only part of the food while the generator hallucinates hid-den geometry. Burrito, Bagel, and Cheesecake are the most difficult cases: elongated, ring-like, soft, or boundary-ambiguous foods amplify small errors in thickness, closure, cleanup, and scale. 
+
+5.5. Limitations 
+
+The current system does not automatically select be-fore/after frames from raw video. The released pipeline starts from selected state images and focuses on prompt-able reconstruction, plate-based scale recovery, controlled mesh cleanup, watertight repair, and volume diagnostics. The current evaluation uses 17 paired before/after states rather than full long-horizon multi-bite videos; thus, the re-sults validate paired state differencing and diagnostic vol-ume evaluation, but not full long-horizon temporal track-ing. The current workflow should be interpreted as a cu-rated reconstruction protocol rather than a deployed fully automatic dietary-monitoring system: plate/support geome-try is removed with Blender assistance, and hole filling and watertight repair are required before volume computation. The method can also fail when SAM 3 merges food with the container, when Hunyuan3D/SAM 3D changes object thickness, when the plate diameter is uncertain, or when the food has hidden cavities or a strong nonconvex structure. Bowls, soups, reflective plates, and heavily occluded foods require separate analysis. 
+
+## 6. Conclusions 
+
+PerBite demonstrates that promptable single-image 3D re-construction can support bite-aware food-volume diagnos-tics when unitless shape generation is decoupled from plate-based metric-scale recovery and is followed by explicit mesh cleanup. The curated workflow ranks first under the official challenge surface metric, produces monotonic before-and-after volume predictions across the 17 evalu-ated pairs, and reveals the harder problem of estimating consumed volume. Rigid ICP without scale correction is stricter than scale-normalized alignment because metric scale is part of the food-volume task, not a nuisance vari-able. The main lesson is that food reconstruction bench-marks should report metric scale, cleanup assumptions, wa-tertightness, and consumed-volume diagnostics alongside surface distance, because these quantities can diverge sub-stantially in dietary assessment. 
+
+## 7. Acknowledgments 
+
+This work has been partially supported by the PID2022-141566NBI00 (AEI-MICINN), AIA2025-163919-C51 funded by Agencia Estatal de Investigaci´ on (AEI), Min-isterio de Ciencia, Innovaci´ on y Universidades, Spain, and Icrea Academia’2022 (Generalitat de Catalunya). It has also been partially funded by CNS2022-135480 (A-BMC) funded by MICIU/AEI/ 10.13039/501100 011033, by FEDER (UE), and by European Union NextGenerationEU/ PRTR. A. AlMughrabi acknowledges the support of FPI Becas, MICINN, Spain. U. Haroon acknowledges the support of FI-SDUR Becas, MICINN, Spain. F. Al-Areqi acknowledges the support of the FI 2025 doctoral fellowship (AGAUR), Spain. The authors thankfully acknowledge the RES resources provided by the Barcelona Supercomputing Center on MareNostrum5 for IM-2025-3-0008. 
+
+## References   
+
+> [1] Ahmad AlMughrabi, Umair Haroon, Ricardo Marques, and Petia Radeva. Voleta: One- and few-shot food volume esti-mation. arXiv preprint arXiv:2407.01717 , 2024. 2, 3 [2] Ahmad AlMughrabi, Adrian Galan, Ricardo Marques, and Petia Radeva. Foodmem: Near real-time and precise food
+
+11 video segmentation. Pattern Recognition Letters , 192:59– 64, 2025. 3, 5 [3] Ahmad AlMughrabi, Umair Haroon, Ricardo Marques, and Petia Radeva. Voltex: Food volume estimation using text-guided segmentation and neural surface reconstruction. In 
+
+2025 IEEE/CVF Conference on Computer Vision and Pat-tern Recognition Workshops (CVPRW) , 2025. 2, 3 [4] Ahmad AlMughrabi, Ricardo Marques, and Petia Radeva. Voleta++: Neural framework for food 3d reconstruction and volume estimation. SSRN preprint, 2025. 3 [5] Ahmad AlMughrabi, Guillermo Rivo, Carlos Jimenez-Farfan, Umair Haroon, Farid Al-Areqi, Hyunjun Jung, Ben-jamin Busam, Ricardo Marques, and Petia Radeva. Bench-seg: A large-scale dataset and benchmark for multi-view food video segmentation. arXiv preprint arXiv:2601.07581 ,2026. 3, 5 [6] Nicolas Carion, Laura Gustafson, Yuan-Ting Hu, Shoub-hik Debnath, Ronghang Hu, Didac Suris, Chaitanya Ryali, Kalyan Vasudev Alwala, Haitham Khedr, Andrew Huang, et al. Sam 3: Segment anything with concepts. arXiv preprint arXiv:2511.16719 , 2025. 3, 5 [7] Anqi Gao, Frank P.-W. Lo, and Benny P. L. Lo. Food volume estimation for quantifying dietary intake with a wearable camera. 2018 IEEE 15th International Conference on Wear-able and Implantable Body Sensor Networks (BSN) , pages 110–113, 2018. 3 [8] Umair Haroon, Ahmad AlMughrabi, Ricardo Marques, and Petia Radeva. Vole++: A text-guided point-cloud framework for food 3d reconstruction and volume estimation. In Com-puter Analysis of Images and Patterns , pages 386–397. 2025. 3[9] Umair Haroon, Ahmad AlMughrabi, Thanasis Zoumpekas, Ricardo Marques, and Petia Radeva. Vole: A point-cloud framework for food 3d reconstruction and volume estima-tion. Scientific Reports , 16:8648, 2026. 2, 3 [10] Jiangpeng He, Yuhao Chen, Gautham Vinod, Talha Ibn Mah-mud, Fengqing Zhu, Edward Delp, Alexander Wong, Pengcheng Xi, Ahmad AlMughrabi, Umair Haroon, Ricardo Marques, Petia Radeva, et al. Metafood cvpr 2024 challenge on physically informed 3d food reconstruction: Methods and results. arXiv preprint arXiv:2407.09285 , 2024. 3 [11] Wenyan Jia, Hsin-Chen Chen, Yaofeng Yue, Zhaoxin Li, John Fernstrom, Yicheng Bai, Chengliu Li, and Mingui Sun. Accuracy of food portion size estimation from digital pic-tures acquired by a chest-worn camera. Public health nutri-tion , 17(8):1671–1681, 2014. 3 [12] SAM 3D Team, Xingyu Chen, Fu-Jen Chu, Pierre Gleize, Kevin J. Liang, Alexander Sax, Hao Tang, Weiyao Wang, Michelle Guo, Thibaut Hardin, et al. Sam 3d: 3dfy anything in images. arXiv preprint arXiv:2511.16624 , 2025. 3 [13] Ruicheng Wang, Sicheng Xu, Yue Dong, Yu Deng, Jianfeng Xiang, Zelong Lv, Guangzhong Sun, Xin Tong, and Jiaolong Yang. Moge-2: Accurate monocular geometry with metric scale and sharp details. arXiv preprint arXiv:2507.02546 ,2025. 3 [14] Zibo Zhao, Zeqiang Lai, Qingxiang Lin, Yunfei Zhao, Haolin Liu, Shuhui Yang, Yifei Feng, Mingxin Yang, Sheng Zhang, Xianghui Yang, et al. Hunyuan3d 2.0: Scaling diffu-sion models for high resolution textured 3d assets generation. 
+
+arXiv preprint arXiv:2501.12202 , 2025. 3 
+
+12
