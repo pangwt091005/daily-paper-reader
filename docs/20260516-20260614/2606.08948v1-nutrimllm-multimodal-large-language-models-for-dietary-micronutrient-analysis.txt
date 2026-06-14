@@ -1,0 +1,1137 @@
+Title: NutriMLLM: Multimodal Large Language Models for Dietary Micronutrient Analysis
+
+URL Source: https://arxiv.org/pdf/2606.08948v1
+
+Published Time: Tue, 09 Jun 2026 02:04:34 GMT
+
+Number of Pages: 35
+
+Markdown Content:
+# NutriMLLM : Multimodal Large Language Models for Dietary Micronutrient Analysis 
+
+Runze Yan 1* , Minxiao Wang 1, Jiaying Lu 1, Darren Liu 1,Xiao Hu 1, Hanqi Luo 2
+
+> 1
+
+Center for Data Science, Nell Hodgson Woodruff School of Nursing, Emory University, 1520 Clifton Rd NE, Atlanta, 30322, GA, United States. 
+
+> 2
+
+Rollins School of Public Health, Emory University, 1518 Clifton Rd NE, Atlanta, 30322, GA, United States. *Corresponding author(s). E-mail(s): runze.yan@emory.edu; Contributing authors: minxiao.wang@emory.edu; jiaying.lu@emory.edu; darren.liu@emory.edu; xiao.hu@emory.edu; hanqi.luo@emory.edu; 
+
+Abstract 
+
+Comprehensive estimation of dietary micronutrients from food images could improve clinical nutrition care, but training such models requires large mul-timodal datasets linking diverse foods to complete nutrient profiles. We first show that existing multimodal large language models (MLLMs), including lead-ing proprietary models, are unreliable for this task. Across five model families and four independent evaluation benchmarks (ASA24, SNAPMe, FNDDS, and NutriBench), models frequently abstained or returned statistically implausible values. To address this gap without costly expert annotation, we repurposed a decade of population-scale 24-hour dietary recalls as structured prompts for text-to-image generation. This pipeline produced a synthetic corpus of about 1.1 million image-description-nutrient triplets, each pairing a generated food image with a complete 65-nutrient label. To our knowledge, this is the largest syn-thetic food-image corpus with comprehensive micronutrient annotation planned for public release upon publication. Fine-tuning Qwen3-VL (2B/4B/8B/30B) and GLM-4.6V-Flash on this corpus yielded NutriMLLM , the first family of vision-language models specialized for comprehensive dietary micronutrient estimation. We evaluate these models with a four-component framework that separately measures abstention, hallucination, overall usability, and per-nutrient numerical accuracy. On real food images, every NutriMLLM variant achieved near-complete coverage across all 65 nutrients, and the largest variant matched 
+
+1 
+
+> arXiv:2606.08948v1 [cs.CV] 8 Jun 2026 or exceeded proprietary baselines (GPT-5, Gemini 3, and Claude Sonnet 4.5) in accuracy on most nutrients. These results show that recall-driven synthetic supervision can make image-based comprehensive micronutrient estimation a tractable engineering problem and support dietary assessment, personalized nutrition guidance, and population-scale micronutrient surveillance.
+> Keywords: dietary micronutrient assessment, multimodal large language models, food image analysis, text-to-image generation
+
+## 1 Introduction 
+
+Dietary micronutrients, the vitamins and minerals required in milligram or microgram quantities, are essential for human physiology, and deficiencies in any of them carry well-characterized clinical consequences. Iron deficiency causes anemia and impairs cognitive development [1]; inadequate vitamin D drives rickets and contributes to osteoporosis [2]; insufficient periconceptional folate increases neural-tube-defect risk [3]; and iodine deficiency remains the most common preventable cause of cognitive impairment globally [4]. Vitamin B 12 , vitamin A, zinc, and calcium intake exhibit sim-ilarly direct links to specific clinical outcomes [5–8]. Despite this clinical importance, accurate micronutrient assessment in routine care remains intractable. Gold-standard 24-hour dietary recalls (24HRs) and food-frequency questionnaires demand trained interviewers and place a substantial cognitive burden on patients, while consumer self-tracking applications focus almost exclusively on macronutrients and calories [9]. The result is a persistent gap between the clinical relevance of micronutrient status and the practicality of measuring it. Multimodal large language models (MLLMs) are well suited to closing this gap because they do not constrain how a meal is recorded. A person can supply a photo-graph of a plate or a short written description, and the model works from whichever is available, rather than requiring the structured recall that makes conventional assess-ment burdensome. The two modalities are complementary in practice: a photograph is effortless to capture in the moment, while a description is what remains when no usable photograph was taken. A single model that handles both therefore fits the var-ied ways people document what they eat, which has placed MLLMs at the center of an expanding set of nutrition applications, from patient-facing dietary tracking and personalized guidance to population-scale surveillance (Fig. 1a) [10, 11]. The clinically central question for any of these applications, however, is whether the model itself encodes reliable, comprehensive nutrient knowledge. One way to sidestep this requirement is to leave the model unchanged and supply nutrient facts externally at inference, through retrieval-augmented generation (RAG) over a food-composition database [12]. Retrieval, however, is orthogonal to the ques-tion we study rather than an answer to it. A retrieval module can be wrapped around any backbone, a general model or a specialized one, so adding it is a separate design choice that neither establishes whether a model can itself carry comprehensive nutri-ent knowledge nor shows how to give it that knowledge. It also keeps the system 2dependent on an external database and network access at inference, working against the self-contained, on-device operation we target. We therefore treat retrieval as a complementary extension beyond the scope of this work, and ask instead whether the joint reasoning that maps a food and its portion to a complete, well-formed nutrient profile can be built into the model itself. That is what fine-tuning provides, and it is the approach we adopt. A small but growing body of work has begun to specialize language models for nutrition through prompt engineering or supervised fine-tuning on domain corpora [13, 14]. These efforts have established that MLLMs can perform food recognition, por-tion estimation, and macronutrient prediction from food images or text descriptions, and have introduced benchmarks for evaluating these capabilities [15]. The common limitation across this body of work is that supervision and evaluation cover at most four macronutrients (energy, protein, carbohydrate, and total fat), omitting the dozens of vitamins, minerals, and individual fatty acids that determine clinical micronutrient status. As a result, no published system has been trained or validated for compre-hensive micronutrient prediction, and the fundamental question of whether general MLLMs encode reliable comprehensive nutrient knowledge remains both unmeasured and unaddressed. This paper closes that gap with the first systematic evaluation of MLLMs for comprehensive image-based and text-based nutrient estimation, covering five model families across four datasets. The evaluation exposes two distinct failure modes. The first, abstention , occurs when the model is not confident enough to com-mit to a numeric estimate and returns no value for the nutrient in question. The second, hallucination , occurs when the model commits to a value with apparent confi-dence, but the value falls outside the plausible nutritional range observed in real foods. Both failure modes are clinically consequential, though in different ways. Abstention leaves the resulting nutrient profile incomplete; because it concentrates on micronu-trients, the missing entries fall precisely on the nutrients of greatest clinical interest, undermining the ability to assess deficiency status. Hallucination is the more insidi-ous failure because the spurious value is indistinguishable from a correct one at the point of use, and can therefore propagate into clinical decisions, misclassify nutrient adequacy, or trigger inappropriate dietary and supplementation advice. Both modes are markedly worse for small open-weight MLLMs; Qwen3-VL-2B [16], for example, abstains on roughly 80% of samples, exactly the setting most relevant to on-device dietary tracking. The bottleneck behind these failures is annotated multimodal data. Existing public food-image datasets are typically collected from specific locations or narrow partici-pant populations and are not nationally representative of dietary patterns, and most lack comprehensive nutrient annotation, especially for micronutrients [17–19]. Human annotation does not scale to bridge this gap: each food in a meal would require expert estimation of dozens of micronutrient values across portion sizes and prepara-tions. National nutrition surveys, by contrast, have for decades collected 24HRs from demographically representative samples of the population. In the United States, the National Health and Nutrition Examination Survey (NHANES) links every recalled food item to a high-quality 65-nutrient profile through the Food and Nutrient Database for Dietary Studies (FNDDS) [20, 21], providing both the population-scale coverage 3Fig. 1 NutriMLLM motivation and training pipeline. a , Target application areas of NutriM-LLM , integrating image, video, text, and speech inputs to support image-based dietary assessment, personalized nutrition guidance, and population-scale micronutrient surveillance. b, Two limitations of general MLLMs in nutrition. (i) Micronutrient deficiencies are linked to a wide range of clini-cal conditions, yet general MLLMs cannot reliably estimate micronutrient content from food images or descriptions. (ii) Existing food datasets are either too narrow in food, meal, portion, and con-textual diversity, or they lack comprehensive nutrient annotation. c, Training pipeline. NHANES 24HRs supply structured food fields (name, cooking method, portion size, eating occasion, time, food source) together with FNDDS-derived 65-nutrient labels. Recall fields are combined with simulated photographic variables to drive text-to-image generation, yielding around 1.1 million image– description–nutrient triplets that LoRA-fine-tune general MLLMs into NutriMLLM .
+
+and the comprehensive nutrient labeling that no public food-image dataset offers. Each recall additionally supplies the structured fields needed to describe a food (name with 4cooking method, portion size, eating occasion, time of day, and food source) alongside its complete nutrient label. What these surveys do not record, however, is a photo-graph of the food itself: the recalls supply the descriptions and the nutrient labels, but no images. We therefore use a decade of NHANES 24HRs (2013–2023) as the prompt source for text-to-image generation, augmenting each recall with simulated lighting, camera angle, and photographic style. To avoid dependence on a single generator, broaden the visual distribution of the resulting corpus, and remove the per-image cost that proprietary generators would impose at this scale, we render each prompt with two open-weight text-to-image models, Z-Image-Turbo [22] and FLUX.1-dev [23], which carry distinct stylistic biases, yielding a synthetic multimodal corpus of around 1.1 million image–description–nutrient triplets. Fine-tuning open-weight MLLMs on this corpus, with low-rank adaptation (LoRA) [24] used for parameter and memory efficiency, transforms Qwen3-VL at 2B/4B/8B/30B [16] and GLM-4.6V-Flash [25] into nutrition-specialized vision-language models, which we call NutriMLLM (Fig. 1). All 
+
+NutriMLLM variants are open-weight and compact, spanning roughly 2B to 30B parameters; although the proprietary baselines do not disclose their parameter counts, frontier systems of this kind are generally believed to be at least an order of magni-tude larger. This small footprint makes the variants suitable for privacy-preserving, on-device deployment, as well as for academic research and reproducible clinical eval-uation. Despite this gap in scale, NutriMLLM achieves near-complete coverage across all 65 nutrients on the four independent evaluation datasets and matches or exceeds proprietary baselines (GPT-5 [26], Gemini 3 [27], Claude Sonnet 4.5 [28]) on abstention-adjusted accuracy on the majority of nutrients. This work makes three contributions. First, it introduces a four-component evalu-ation framework that separately measures abstention, hallucination, overall usability, and numerical accuracy at the per-nutrient level, and uses this framework to deliver the first systematic validation of MLLMs for comprehensive image-based and text-based nutrient estimation. Second, it presents NutriMLLM , the first family of vision-language models specialized for comprehensive dietary micronutrient estimation, obtained via recall-driven synthetic supervision rather than costly expert annotation, and demonstrates that synthetic data alone are sufficient to close the nutrient-knowledge gap left by general MLLMs. Third, it releases a synthetic multimodal corpus of around 1.1 million image–description–nutrient triplets with comprehensive 65-nutrient labels, which will be released upon publication together with the train-ing and evaluation code and fine-tuned model weights, subject to applicable model and dataset licensing constraints. Together, these contributions reposition image-based comprehensive micronutrient estimation as a tractable engineering problem and supply the model, data, and evaluation tools required to make it practical. 
+
+## 2 Results 
+
+2.1 General MLLMs fail at comprehensive nutrient estimation 
+
+We first asked whether existing MLLMs, including the leading proprietary MLLMs, already possess reliable comprehensive nutrient knowledge. The answer is the pre-condition for everything that follows: if proprietary MLLMs already perform reliably, 5no domain adaptation is needed; if they do not, the size and shape of their fail-ure indicate where new methods (such as NutriMLLM ) need to focus. Five MLLM families were evaluated, as described in Methods ( §3.2): the proprietary MLLMs (GPT-5, Gemini 3, Claude Sonnet 4.5) and the general open-weight MLLMs (Qwen3-VL at 2B/4B/8B/30B and GLM-4.6V-Flash), tested on the four independent datasets described in §3.1. Every model received the same Prompt 2 input (Appendix E) and was scored along three complementary axes corresponding to the failure modes intro-duced in §1. The Non-Response Rate (NRR) quantifies abstention : the fraction of samples for which the model is not confident enough to commit to a numeric esti-mate and returns no value. The Hallucination Rate (HR) quantifies hallucination :the fraction of samples for which the model commits to a value that falls outside the plausible nutritional range observed in real foods. Their sum, the Unusable Pre-diction Rate (UPR = NRR + HR), is the overall fraction of outputs that cannot be used. The adjusted Symmetric Mean Absolute Percentage Error (SMAPE adj ) mea-sures numerical accuracy with a penalty for missing predictions, correcting for the selective answering of models that abstain on harder cases. Full definitions and the rationale for these metrics are given in Appendix A. From a clinical-utility stand-point, a model is useful only when it provides numeric estimates across the nutrients of interest and those estimates are accurate; abstention is therefore treated here as a meaningful failure rather than as safe behaviour, since a clinician cannot act on a missing value any more readily than on a wrong one. Per-nutrient NRR and HR on ASA24 and SNAPMe are reported in Figs. 2 and 3, with each panel grouping the models into proprietary MLLMs, general open-weight MLLMs, and NutriMLLM variants so that within-group and between-group differ-ences can be read off side by side; the NutriMLLM rows are introduced in §2.2, and the present subsection focuses on the general-MLLM rows. Figure 4 reports per-nutrient SMAPE adj on the same two datasets. Per-nutrient analyses for the two text-only datasets are reported in full in Appendix B (Figs. B1, B2, Table B1); the key text-side findings are summarized below. 60% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+GPT-5 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+Gemini 3 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+Claude Sonnet 4.5 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+Qwen3-VL-2B 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+GLM-4.6v-Flash 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+Qwen3-VL-30B 
+
+> Energy (kcal)
+> Protein (g)
+> Carbohydrate (g)
+> Total Sugars (g)
+> Dietary Fiber (g)
+> Total Fat (g)
+> Total Saturated Fatty Acids (g)
+> Total Monounsaturated Fatty Acids (g)
+> Total Polyunsaturated Fatty Acids (g)
+> Cholesterol (mg)
+> Retinol (mcg)
+> Vitamin A, RAE (mcg)
+> Alpha-Carotene (mcg)
+> Beta-Carotene (mcg)
+> Beta-Cryptoxanthin (mcg)
+> Lycopene (mcg)
+> Lutein + Zeaxanthin (mcg)
+> Thiamin (Vitamin B1) (mg)
+> Riboflavin (Vitamin B2) (mg)
+> Niacin (mg)
+> Vitamin B6 (mg)
+> Folic Acid (mcg)
+> Food Folate (mcg)
+> Folate, DFE (mcg)
+> Total Folate (mcg)
+> Total Choline (mg)
+> Vitamin B12 (mcg)
+> Added Vitamin B12 (mcg)
+> Vitamin C (mg)
+> Vitamin D (D2 + D3) (mcg)
+> Vitamin E as Alpha-Tocopherol (mg)
+> Added Alpha-Tocopherol (Vitamin E) (mg)
+> Vitamin K (mcg)
+> Calcium (mg)
+> Phosphorus (mg)
+> Magnesium (mg)
+> Iron (mg)
+> Zinc (mg)
+> Copper (mg)
+> Selenium (mcg)
+> Potassium (mg)
+> Sodium (mg)
+> Caffeine (mg)
+> Theobromine (mg)
+> Alcohol (g)
+> SFA 4:0 (Butanoic) (g)
+> SFA 6:0 (Hexanoic) (g)
+> SFA 8:0 (Octanoic) (g)
+> SFA 10:0 (Decanoic) (g)
+> SFA 12:0 (Dodecanoic) (g)
+> SFA 14:0 (Tetradecanoic) (g)
+> SFA 16:0 (Hexadecanoic) (g)
+> SFA 18:0 (Octadecanoic) (g)
+> MFA 16:1 (Hexadecenoic) (g)
+> MFA 18:1 (Octadecenoic) (g)
+> MFA 20:1 (Eicosenoic) (g)
+> MFA 22:1 (Docosenoic) (g)
+> PFA 18:2 (Octadecadienoic) (g)
+> PFA 18:3 (Octadecatrienoic) (g)
+> PFA 18:4 (Octadecatetraenoic) (g)
+> PFA 20:4 (Eicosatetraenoic) (g)
+> PFA 20:5 (Eicosapentaenoic) (g)
+> PFA 22:5 (Docosapentaenoic) (g)
+> PFA 22:6 (Docosahexaenoic) (g)
+> Moisture (g)
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+NutriMLLM (Qwen3-VL-30B) 
+
+Non-Response Rate (NRR) Hallucination Rate (HR) Fig. 2 Non-response and hallucination rates on ASA24. Per-nutrient Non-Response Rate (NRR; fraction of samples for which a model abstains from producing a numeric estimate) and Hal-lucination Rate (HR; fraction of samples for which the predicted value falls outside the plausible nutritional range, defined as exceeding the per-nutrient 99.5th percentile of the empirical ground-truth distribution). Models are grouped into proprietary MLLMs (GPT-5, Gemini 3, Claude Sonnet 4.5), general open-weight MLLMs (Qwen3-VL at 2B/4B/8B/30B, GLM-4.6V-Flash), and NutriMLLM 
+
+variants. General open-weight MLLMs exhibit the highest NRR, particularly on micronutrients; 
+
+NutriMLLM reduces both NRR and HR to near zero across all 65 nutrients. 70% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+GPT-5 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+Gemini 3 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+Claude Sonnet 4.5 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+Qwen3-VL-2B 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+GLM-4.6v-Flash 
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+Qwen3-VL-30B 
+
+> Energy (kcal)
+> Protein (g)
+> Carbohydrate (g)
+> Total Sugars (g)
+> Dietary Fiber (g)
+> Total Fat (g)
+> Total Saturated Fatty Acids (g)
+> Total Monounsaturated Fatty Acids (g)
+> Total Polyunsaturated Fatty Acids (g)
+> Cholesterol (mg)
+> Retinol (mcg)
+> Vitamin A, RAE (mcg)
+> Alpha-Carotene (mcg)
+> Beta-Carotene (mcg)
+> Beta-Cryptoxanthin (mcg)
+> Lycopene (mcg)
+> Lutein + Zeaxanthin (mcg)
+> Thiamin (Vitamin B1) (mg)
+> Riboflavin (Vitamin B2) (mg)
+> Niacin (mg)
+> Vitamin B6 (mg)
+> Folic Acid (mcg)
+> Food Folate (mcg)
+> Folate, DFE (mcg)
+> Total Folate (mcg)
+> Total Choline (mg)
+> Vitamin B12 (mcg)
+> Added Vitamin B12 (mcg)
+> Vitamin C (mg)
+> Vitamin D (D2 + D3) (mcg)
+> Vitamin E as Alpha-Tocopherol (mg)
+> Added Alpha-Tocopherol (Vitamin E) (mg)
+> Vitamin K (mcg)
+> Calcium (mg)
+> Phosphorus (mg)
+> Magnesium (mg)
+> Iron (mg)
+> Zinc (mg)
+> Copper (mg)
+> Selenium (mcg)
+> Potassium (mg)
+> Sodium (mg)
+> Caffeine (mg)
+> Theobromine (mg)
+> Alcohol (g)
+> SFA 4:0 (Butanoic) (g)
+> SFA 6:0 (Hexanoic) (g)
+> SFA 8:0 (Octanoic) (g)
+> SFA 10:0 (Decanoic) (g)
+> SFA 12:0 (Dodecanoic) (g)
+> SFA 14:0 (Tetradecanoic) (g)
+> SFA 16:0 (Hexadecanoic) (g)
+> SFA 18:0 (Octadecanoic) (g)
+> MFA 16:1 (Hexadecenoic) (g)
+> MFA 18:1 (Octadecenoic) (g)
+> MFA 20:1 (Eicosenoic) (g)
+> MFA 22:1 (Docosenoic) (g)
+> PFA 18:2 (Octadecadienoic) (g)
+> PFA 18:3 (Octadecatrienoic) (g)
+> PFA 18:4 (Octadecatetraenoic) (g)
+> PFA 20:4 (Eicosatetraenoic) (g)
+> PFA 20:5 (Eicosapentaenoic) (g)
+> PFA 22:5 (Docosapentaenoic) (g)
+> PFA 22:6 (Docosahexaenoic) (g)
+> Moisture (g)
+
+0% 
+
+20% 
+
+40% 
+
+60% 
+
+80% 
+
+100% 
+
+> Rate (%)
+
+NutriMLLM (Qwen3-VL-30B) 
+
+Non-Response Rate (NRR) Hallucination Rate (HR) Fig. 3 Non-response and hallucination rates on SNAPMe. Per-nutrient NRR and HR, evalu-ated and grouped as in Fig. 2. The same qualitative pattern holds on this independent set of real food photographs: general MLLMs abstain or return implausible values on a sizeable fraction of micronu-trient samples, while NutriMLLM achieves near-complete coverage across all 65 nutrients. 
+
+80% 
+
+25% 
+
+50% 
+
+75% 
+
+100% 
+
+125% 
+
+150% 
+
+175% 
+
+200% 
+
+> SMAPE adj
+
+ASA24 Dataset ViT (150.3 ± 32.2%) 
+
+GPT-5 (137.9 ± 28.8%) 
+
+Gemini 3 (125.5 ± 34.4%) 
+
+Claude Sonnet 4.5 (118.0 ± 35.6%) 
+
+Qwen3-VL-2B (180.4 ± 13.3%) 
+
+GLM-4.6v-Flash (169.7 ± 13.3%) 
+
+Qwen3-VL-30B (133.3 ± 43.6%) 
+
+NutriMLLM (Qwen3-VL-30B) (109.8 ± 39.9%) 
+
+> Energy (kcal)
+> Protein (g)
+> Carbohydrate (g)
+> Total Sugars (g)
+> Dietary Fiber (g)
+> Total Fat (g)
+> Total Saturated Fatty Acids (g)
+> Total Monounsaturated Fatty Acids (g)
+> Total Polyunsaturated Fatty Acids (g)
+> Cholesterol (mg)
+> Retinol (mcg)
+> Vitamin A, RAE (mcg)
+> Alpha-Carotene (mcg)
+> Beta-Carotene (mcg)
+> Beta-Cryptoxanthin (mcg)
+> Lycopene (mcg)
+> Lutein + Zeaxanthin (mcg)
+> Thiamin (Vitamin B1) (mg)
+> Riboflavin (Vitamin B2) (mg)
+> Niacin (mg)
+> Vitamin B6 (mg)
+> Folic Acid (mcg)
+> Food Folate (mcg)
+> Folate, DFE (mcg)
+> Total Folate (mcg)
+> Total Choline (mg)
+> Vitamin B12 (mcg)
+> Added Vitamin B12 (mcg)
+> Vitamin C (mg)
+> Vitamin D (D2 + D3) (mcg)
+> Vitamin E as Alpha-Tocopherol (mg)
+> Added Alpha-Tocopherol (Vitamin E) (mg)
+> Vitamin K (mcg)
+> Calcium (mg)
+> Phosphorus (mg)
+> Magnesium (mg)
+> Iron (mg)
+> Zinc (mg)
+> Copper (mg)
+> Selenium (mcg)
+> Potassium (mg)
+> Sodium (mg)
+> Caffeine (mg)
+> Theobromine (mg)
+> Alcohol (g)
+> SFA 4:0 (Butanoic) (g)
+> SFA 6:0 (Hexanoic) (g)
+> SFA 8:0 (Octanoic) (g)
+> SFA 10:0 (Decanoic) (g)
+> SFA 12:0 (Dodecanoic) (g)
+> SFA 14:0 (Tetradecanoic) (g)
+> SFA 16:0 (Hexadecanoic) (g)
+> SFA 18:0 (Octadecanoic) (g)
+> MFA 16:1 (Hexadecenoic) (g)
+> MFA 18:1 (Octadecenoic) (g)
+> MFA 20:1 (Eicosenoic) (g)
+> MFA 22:1 (Docosenoic) (g)
+> PFA 18:2 (Octadecadienoic) (g)
+> PFA 18:3 (Octadecatrienoic) (g)
+> PFA 18:4 (Octadecatetraenoic) (g)
+> PFA 20:4 (Eicosatetraenoic) (g)
+> PFA 20:5 (Eicosapentaenoic) (g)
+> PFA 22:5 (Docosapentaenoic) (g)
+> PFA 22:6 (Docosahexaenoic) (g)
+> Moisture (g)
+
+0% 
+
+25% 
+
+50% 
+
+75% 
+
+100% 
+
+125% 
+
+150% 
+
+175% 
+
+200% 
+
+> SMAPE adj
+
+SNAPMe Dataset ViT (145.5 ± 31.8%) 
+
+GPT-5 (102.6 ± 28.1%) 
+
+Gemini 3 (95.7 ± 28.2%) 
+
+Claude Sonnet 4.5 (94.7 ± 21.9%) 
+
+Qwen3-VL-2B (182.8 ± 20.4%) 
+
+GLM-4.6v-Flash (135.3 ± 20.9%) 
+
+Qwen3-VL-30B (108.5 ± 29.1%) 
+
+NutriMLLM (Qwen3-VL-30B) (91.2 ± 27.2%) Fig. 4 Per-nutrient SMAPE adj on ASA24 and SNAPMe. SMAPE adj measures numerical accuracy with a penalty for missing predictions, correcting for selective answering (definition and rationale in Appendix A). Lower is better. NutriMLLM -Qwen3-VL-30B matches or improves on the proprietary MLLMs on SMAPE adj for the majority of nutrients, demonstrating that synthetic supervision transfers to real food images. 
+
+On both image datasets, every general MLLM, including the leading proprietary MLLMs, produced unusable predictions for a substantial fraction of the 65 nutri-ents. On ASA24 (Fig. 2), the three proprietary MLLMs exhibited markedly different failure profiles, indicating that different commercial systems carry different nutrient-knowledge structures. Claude Sonnet 4.5 stayed below 15% NRR on nearly every nutrient but produced intermittent hallucinations on individual micronutrients and on the longest-chain polyunsaturated species. Gemini 3 and GPT-5, by contrast, con-centrated their failures on the same set of nutrients, namely the individual saturated, monounsaturated, and polyunsaturated fatty-acid species (SFA, MFA, and PFA break-downs; for example, SFA 4:0/6:0/8:0, MFA 20:1/22:1, and the long-chain PFAs 20:4, 20:5, 22:5, and 22:6), but at very different magnitudes: Gemini 3 reached 30–35% NRR on these species, whereas GPT-5 reached 60–70%. The general open-weight MLLMs were worse by a large margin: Qwen3-VL-2B abstained on more than 55% of samples on every macronutrient and on 75–100% of samples on most micronutrients; GLM-4.6V-Flash showed about 40% NRR on macronutrients and 50–80% on micronutrients; only Qwen3-VL-30B kept NRR below 20% across most nutrients. HRs were lower than 9abstention rates overall but showed the same micronutrient bias: when a general open-weight MLLM did emit a value for a micronutrient, that value disproportionately fell into the implausible range. SNAPMe (Fig. 3) replicated these patterns on a wholly independent set of real-life food photographs, ruling out an ASA24-specific artefact. Within this overall failure, the macronutrient/micronutrient asymmetry was pro-nounced. For every general MLLM, both NRR and HR were substantially lower on the four macronutrients (energy, protein, carbohydrate, total fat) than on vitamins, min-erals, and individual fatty-acid breakdowns; the proprietary MLLMs in particular kept NRR below 10% on macronutrients but rose up to 70% on selected micronutrients. This asymmetry is consistent with the relative abundance of macronutrient informa-tion on the public web compared with the structured micronutrient profiles required for fine-grained estimation, and it directly motivates the construction of a large-scale multimodal training corpus that carries comprehensive micronutrient labels by design. At every metric, the proprietary MLLMs outperformed the general open-weight MLLMs. Mean SMAPE adj across all 65 nutrients on ASA24 ranged from 118.0% (Claude Sonnet 4.5) to 137.9% (GPT-5) for the proprietary MLLMs, compared with 133.3% (Qwen3-VL-30B, the strongest general open-weight MLLM), 169.7% (GLM-4.6V-Flash), and 180.4% (Qwen3-VL-2B); on SNAPMe, the corresponding values were 94.7%–102.6% for the proprietary MLLMs and 108.5%, 135.3%, and 182.8% for the same three general open-weight MLLMs (Fig. 4). The ordering reflects the proprietary MLLMs’ larger parameter counts and broader pre-training corpora, but the absolute values show that no general MLLM produces reliably accurate estimates across the 65-nutrient panel: even the strongest general open-weight MLLM, Qwen3-VL-30B, had mean SMAPE adj above 100% on both datasets, and the smaller open-weight MLLMs combined high abstention with high error, the worst combination from a clinical-utility standpoint. The same failure pattern recurred when models were given food-text descriptions instead of images, but with substantially lower magnitudes. On FNDDS (Fig. B2), which queries each model on a single food name across the full 65-nutrient panel, mean SMAPE adj for the proprietary MLLMs ranged from 49.2% (Gemini 3) to 75.2% (GPT-5), markedly better than their 118.0%–137.9% range on ASA24 images, and the general open-weight MLLMs improved correspondingly (Qwen3-VL-30B: 102.8% on FNDDS vs 133.3% on ASA24; Qwen3-VL-2B: 121.5% vs 180.4%; GLM-4.6V-Flash: 141.8% vs 169.7%). On NutriBench (Table B1), even the easier four-macronutrient set-ting still exposed a substantial gap in the general open-weight MLLMs: the strongest general open-weight MLLM tested on this benchmark, Qwen3-VL-8B, achieved UPR of 5.9–6.7% across the four macronutrients, but GLM-4.6V-Flash sat near 25% and Qwen3-VL-2B exhibited UPR of 37.5–39.2%, whereas the proprietary MLLMs remained at 0.1–0.8%. Two conclusions follow. First, that text inputs are uniformly easier than images for every model shows that visual food recognition and portion esti-mation contribute their own errors to the image-based task. Second, that non-trivial UPR and SMAPE adj persist even on text-only inputs, where no visual perception is required, shows that the underlying deficit is fundamentally one of nutrient knowl-edge . The clinical implication is direct: deploying current MLLMs, and especially their 10 small edge-deployable variants, for image- or text-based comprehensive micronutri-ent assessment without further adaptation is not yet reliable. This is the gap that 
+
+NutriMLLM is designed to close. 
+
+2.2 NutriMLLM closes the nutrient-knowledge gap 
+
+Having established that existing general MLLMs do not yet possess reliable nutrient knowledge, the next question is whether NHANES-driven synthetic supervision can repair this deficit without any further human annotation. The aim is twofold: (i) to demonstrate that the recall-driven training recipe described in Methods ( §3.3, §3.4) actually produces specialized models capable of comprehensive nutrient estimation, and (ii) to quantify how much of the gap to the proprietary MLLMs these special-ized models can close, including for the small open-weight backbones most relevant to on-device deployment. One NutriMLLM variant was trained for each open-weight backbone (Qwen3-VL-2B/4B/8B/30B and GLM-4.6V-Flash) on the same synthetic corpus, then re-evaluated alongside the general open-weight MLLMs and the proprietary MLLMs. Because every general-MLLM evaluation in §2.1 used the same figures and table, the corresponding NutriMLLM curves and rows are visible directly within Figs. 2, 3, 4, B1, B2, and Table B1. Pre- and post-fine-tune curves can therefore be read directly off a single panel for each backbone, making the per-backbone gain immediately legible. 
+
+Coverage gain on real food images. 
+
+On both image datasets, every NutriMLLM variant collapsed both NRR and HR across the 65-nutrient panel, including the micronutrients on which general MLLMs had failed most severely. Per-backbone distributions in Fig. 5 show that on ASA24, median UPR across the 65 nutrients dropped from ∼78% to ∼15% for the 2B back-bone, from ∼80% to ∼5% for the 4B, from ∼17% to near 0% for the 8B, and from ∼60% to ∼3% for GLM-4.6V-Flash; the same monotonic shifts were observed on SNAPMe. The 2B variant retained the highest residual UPR among the NutriMLLM models (median ∼15% on ASA24, ∼37% on SNAPMe), reflecting the capacity limit of the smallest backbone; the 4B, 8B, and GLM-4.6V-Flash variants all reached near-zero median UPR after fine-tuning. For the largest variant, NutriMLLM (Qwen3-VL-30B), NRR and HR were near zero on the bulk of the 65-nutrient panel (Figs. 2, 3), with a single residual NRR spike at the saturated fatty acid SFA 12:0 ( ∼25%) on ASA24 and one HR spike at the polyunsaturated fatty acid PFA 18:4 ( ∼12%) on SNAPMe. The absolute coverage of NutriMLLM (Qwen3-VL-30B) nonetheless remained the highest of any model evaluated, surpassing all three proprietary MLLMs across the 65-nutrient panel on both datasets. 11 Generic MLLM NutriMLLM                  
+
+> 0%
+> 20%
+> 40%
+> 60%
+> 80%
+> 100%
+> UPR
+> Qwen3-VL-2B
+> ASA24 | Unusable Prediction Rate (UPR)
+> Generic MLLM NutriMLLM
+> 50%
+> 100%
+> 150%
+> 200%
+> SMAPE adj
+> ASA24 | SMAPE adj
+> Generic MLLM NutriMLLM
+> 0%
+> 20%
+> 40%
+> 60%
+> 80%
+> 100%
+> UPR
+> SNAPMe | Unusable Prediction Rate (UPR)
+> Generic MLLM NutriMLLM
+> 50%
+> 100%
+> 150%
+> 200%
+> SMAPE adj
+> SNAPMe | SMAPE adj
+> Generic MLLM NutriMLLM
+> 0%
+> 20%
+> 40%
+> 60%
+> 80%
+> UPR
+> Qwen3-VL-4B
+> Generic MLLM NutriMLLM
+> 0%
+> 50%
+> 100%
+> 150%
+> 200%
+> SMAPE adj
+> Generic MLLM NutriMLLM
+> 0%
+> 10%
+> 20%
+> UPR
+> Generic MLLM NutriMLLM
+> 0%
+> 50%
+> 100%
+> 150%
+> 200%
+> SMAPE adj
+> Generic MLLM NutriMLLM
+> 0%
+> 10%
+> 20%
+> 30%
+> UPR
+> Qwen3-VL-8B
+> Generic MLLM NutriMLLM
+> 0%
+> 50%
+> 100%
+> 150%
+> 200%
+> SMAPE adj
+> Generic MLLM NutriMLLM
+> 0%
+> 20%
+> 40%
+> 60%
+> UPR
+> Generic MLLM NutriMLLM
+> 0%
+> 50%
+> 100%
+> 150%
+> SMAPE adj
+> Generic MLLM NutriMLLM
+> 0%
+> 20%
+> 40%
+> 60%
+> 80%
+> UPR
+> GLM-4.6V-Flash
+> Generic MLLM NutriMLLM
+> 0%
+> 50%
+> 100%
+> 150%
+> 200%
+> SMAPE adj
+> Generic MLLM NutriMLLM
+> 0%
+> 20%
+> 40%
+> 60%
+> UPR
+> Generic MLLM NutriMLLM
+> 50%
+> 100%
+> 150%
+> SMAPE adj
+
+Fig. 5 Per-nutrient distributions of UPR and SMAPE adj before and after LoRA fine-tuning. For each backbone, paired violins show the distribution across the 65 nutrients of Unusable Prediction Rate (UPR; left columns) and SMAPE adj (right columns), comparing the general (pre-fine-tune) model with the corresponding NutriMLLM variant on the independent evaluation set. Each violin summarizes 65 per-nutrient values. Fine-tuning shifts both distributions toward lower values across the majority of nutrients, with the largest mass shifts on micronutrients, consistent with micronutrient knowledge being the largest pre-existing deficit in general MLLMs. 
+
+Accuracy gain on real food images. 
+
+The broad coverage gain did not come at the cost of accuracy. The mean SMAPE adj of 
+
+NutriMLLM (Qwen3-VL-30B) on ASA24 fell from 133.3% (general Qwen3-VL-30B) to 109.8%, below all three proprietary MLLMs (Claude Sonnet 4.5: 118.0%; Gemini 3: 125.5%; GPT-5: 137.9%); on SNAPMe, it fell from 108.5% to 91.2%, again below the same three proprietary MLLMs (94.7%, 95.7%, and 102.6% respectively) (Fig. 4). The per-backbone violin distributions in Fig. 5 confirm the same pattern at smaller scales: SMAPE adj distributions shifted to lower values on ASA24 for all four smaller backbones, and on SNAPMe for three of the four (the 8B’s SNAPMe SMAPE adj 
+
+remained approximately flat while its UPR dropped substantially). NutriMLLM 
+
+(Qwen3-VL-30B) also outperformed the Vision Transformer (ViT) baseline [29], a traditional vision-transformer-plus-regression-head approach fine-tuned on the same 12 NHANES-derived synthetic supervision, by a wide margin on both datasets (ViT: 150.3% on ASA24, 145.5% on SNAPMe). This comparison is informative because ViT and NutriMLLM had identical training signals, so the gap reflects the architectural advantage of the multimodal language model over a traditional regression pipeline. Per-nutrient, the SMAPE adj of NutriMLLM (Qwen3-VL-30B) fell below that of every proprietary MLLM on the majority of the 65 nutrients on both datasets, with the largest accuracy gains concentrated on the micronutrients where the original deficit was largest. 
+
+Generalization to text benchmarks. 
+
+The same qualitative pattern recurred on the food-text datasets. On NutriBench (Table B1), NutriMLLM (Qwen3-VL-30B) achieved 0.0% UPR on energy, the low-est of any model in the table, and the lowest UPR among non-proprietary models on protein (0.4%), carbohydrate (0.4%), and total fat (0.3%). Its SMAPE adj was the best among non-proprietary models on three of the four nutrients (energy: 47.4%; carbohy-drate: 46.3%; total fat: 54.8%); on protein it reached 48.9%, within a few percentage points of the best non-proprietary value of 43.8% achieved by NutriMLLM (Qwen3-VL-8B). BERT [30] in Table B1 is the text-side counterpart of the ViT baseline above: a traditional supervised model, a BERT encoder with a regression head, fine-tuned on the same NHANES-derived synthetic corpus as NutriMLLM . Because BERT is a regression model rather than a generation model, it always produces a numeric out-put, so its non-zero UPR (0.1–4.5% across the four nutrients) reflects hallucination rather than abstention. Despite both architectures having access to identical training supervision, NutriMLLM (Qwen3-VL-30B) achieved lower UPR on every nutrient and lower SMAPE adj on every nutrient than BERT (47.4 vs 56.6 for energy, 48.9 vs 77.5 for protein, 46.3 vs 65.0 for carbohydrate, 54.8 vs 76.1 for total fat). The clean-est head-to-head against BERT is on UPR, where NutriMLLM (Qwen3-VL-30B) leads on all four nutrients; the SMAPE adj gap is larger but partly reflects BERT’s residual UPR, which inflates its per-nutrient penalty. The smaller NutriMLLM vari-ants showed the same qualitative UPR gain: NutriMLLM (Qwen3-VL-2B) reduced UPR from 37.5–39.2% (general Qwen3-VL-2B) to 2.6–4.4% across the four macronu-trients, restoring practical usability to the model size targeted at edge deployment. On FNDDS (Figs. B1, B2), mean SMAPE adj across the 65 nutrients fell from 102.8% (gen-eral Qwen3-VL-30B) to 59.4% for NutriMLLM (Qwen3-VL-30B), approaching the proprietary MLLMs (Gemini 3: 49.2%; Claude Sonnet 4.5: 54.8%) and substantially below both GPT-5 (75.2%) and the BERT baseline (130.4%). 
+
+Scaling across backbones. 
+
+Within the NutriMLLM family, performance scaled monotonically with backbone size on both axes. On NutriBench (Table B1), mean UPR across the four macronu-trients dropped from 3.2% at the 2B scale to 1.5% at 4B, 0.6% at 8B, and 0.3% at 30B; mean SMAPE adj dropped from 102% at 2B to 68% at 4B, 55% at 8B, and 49% at 30B. The same monotonic ordering held on the image datasets, with Fig. 5 showing progressively lower NutriMLLM UPR and SMAPE adj distributions for the 2B/4B/8B/GLM-4.6V-Flash backbones evaluated there, and Fig. 4 placing the 30B 13 at the lowest mean SMAPE adj of any model. The two ends of the ladder therefore serve complementary deployment regimes: the small variants are most useful where on-device inference is required for privacy or connectivity reasons ( NutriMLLM 
+
+(Qwen3-VL-2B) remains the variant on which fine-tuning most dramatically changes practical viability, reducing UPR from roughly 39% to 3% on NutriBench and from a median of roughly 78% to 15% on ASA24), while the large variant is most use-ful where institutional compute is available and frontier-level accuracy is required (NutriMLLM (Qwen3-VL-30B) exceeds every proprietary MLLM on SMAPE adj on the majority of nutrients across both image and text benchmarks). In summary, recall-driven synthetic supervision is sufficient to convert general open-weight MLLMs into nutrition specialists. On real food images, NutriMLLM 
+
+(Qwen3-VL-30B) achieved the best mean SMAPE adj of any model evaluated (109.8% on ASA24, 91.2% on SNAPMe), ahead of all three proprietary MLLMs and of the ViT traditional ML baseline (150.3% on ASA24, 145.5% on SNAPMe) fine-tuned on the same synthetic supervision. On text benchmarks, NutriMLLM (Qwen3-VL-30B) approaches the proprietary MLLMs on FNDDS (59.4% vs Gemini 3’s 49.2%) and surpasses the BERT traditional ML baseline (also fine-tuned on the same synthetic supervision) on every metric on NutriBench. The pattern holds across model sizes (2B to 30B parameters), modalities (image and text), and dataset granularities (sin-gle foods and full meals). The gain is consistently largest exactly where the original deficit was largest, namely on micronutrients and on small open-weight backbones, which are the regimes that matter most for clinical and on-device applications. 
+
+2.3 Ablations and design choices 
+
+Sections 2.1 and 2.2 establish that recall-driven synthetic supervision converts general open-weight MLLMs into reliable nutrient estimators. This section examines why the recipe works and validates the design choices behind it. Three questions are addressed in turn: whether the coverage gain reflects genuine knowledge acquisition rather than uninformed guessing; whether training on images from multiple text-to-image gen-erators improves downstream performance; and how validation performance evolves over training, which determines the checkpoint used for all evaluations reported in the paper. 
+
+The coverage gain reflects genuine knowledge acquisition. 
+
+The coverage gains of §2.2 could in principle be hollow: because a model that emits a value for every nutrient regardless of accuracy would also show near-zero UPR, the improvement might reflect a shift from abstention to uninformed guessing rather than genuine knowledge. Figure 5 shows that it does not. Indiscriminate guessing would push the post-fine-tune SMAPE adj distribution toward larger errors, yet across all four backbones the distribution instead shifts toward lower values or remains stable, never developing an inflated upper tail. The shift is also nutrient-specific in exactly the way genuine knowledge transfer predicts: the largest accuracy gains fall on the micronu-trients where general MLLMs had failed most severely, while macronutrients, already handled well, change little. Guessing would degrade the hardest newly-answered nutrients rather than improve them, and would not concentrate its effect on the 14 previously-deficient nutrients. The coincidence of the largest gains with the largest pre-existing deficits is therefore the signature of real, previously-absent nutrient knowledge being supplied by the synthetic supervision. 
+
+Combining multiple generators improves performance and generalization. 
+
+A central design choice is the use of synthetic images from more than one text-to-image generator. Figure 6 compares NutriMLLM variants trained on images from Z-Image-Turbo only, FLUX.1-dev only, and the union of both. The variant trained on the union achieved the lowest UPR and the lowest SMAPE adj of the three on both evaluation datasets. The advantage was modest on ASA24 (mean SMAPE adj 
+
+of around 115% for the union versus 117–120% for the single-generator variants) but larger on SNAPMe, where mean SMAPE adj fell to around 100% for the union against 109–110% for either generator alone. Each generator imposes a distinct visual style on the synthetic food images (Fig. 7), so training on the union exposes the model to a broader range of food appearances; that the larger gain appears on the independent SNAPMe photographs indicates this diversity improves generalization to real images, not merely in-sample accuracy. Generator diversity is therefore a genuine contributor to the recipe rather than an incidental choice. ASA24 SNAPMe       
+
+> 0%
+> 5%
+> 10%
+> 15%
+> 20%
+> 25%
+> 30%
+> 35%
+> Unusable Prediction Rate (UPR)
+> ASA24 SNAPMe
+> 0%
+> 20%
+> 40%
+> 60%
+> 80%
+> 100%
+> 120%
+> 140%
+> 160%
+> SMAPE adj
+> ASA24 SNAPMe Z-Image-Turbo FLUX.1-dev Both Mean Value
+
+Fig. 6 Effect of the synthetic-image generator on downstream NutriMLLM perfor-mance. Each marker is a NutriMLLM variant trained on synthetic images from Z-Image-Turbo only, FLUX.1-dev only, or the union of both; horizontal lines mark per-group means. The variant trained on the union achieves the lowest UPR and SMAPE adj on both ASA24 and SNAPMe, with the largest gain on the independent SNAPMe photographs. Combining generators therefore improves both accuracy and generalization to real food images. 
+
+15 Validation performance improves over the first epochs of training. 
+
+Figure C3 tracks validation UPR and SMAPE adj on the two independent datasets across five training epochs over the synthetic corpus. UPR is low from the first epoch and stays low throughout, while SMAPE adj improves over the early epochs: median SMAPE adj falls from around 135% to 128% on ASA24 and from around 111% to 106% on SNAPMe between epochs 1 and 3. Checkpoint 3, which offers the best balance of UPR and SMAPE adj across the two independent datasets. The steady early-epoch improvement indicates that the NHANES-derived synthetic supervision is dense and well-aligned with the downstream nutrient-estimation task, a property that would not hold under noisy or weak supervision. From a practical standpoint, three epochs over this corpus is computationally modest: a research group with a single GPU node can reproduce NutriMLLM in around one to two days of wall-clock training. Together, these analyses show that NutriMLLM ’s gains reflect genuine nutrient-knowledge acquisition rather than a shift from abstention to guessing, that training on synthetic images from multiple generators improves both accuracy and generalization to real food photographs, and that strong validation performance is reached within a few epochs of modest single-node training. The recall-driven synthetic-supervision recipe is therefore both effective and practically reproducible. 
+
+## 3 Methods 
+
+3.1 Evaluation datasets 
+
+NutriMLLM and all baseline models were evaluated on four independent datasets, none of which contributed any example to training. The four were chosen to span the two modalities a nutrition MLLM must handle and, within each, to separate the sub-capabilities that comprehensive nutrient estimation depends on. ASA24 and SNAPMe are image datasets; NutriBench and FNDDS are text datasets. Together they cover controlled and in-the-wild capture, single foods and full meals, and macronutrient-only and comprehensive 65-nutrient supervision, so that performance can be attributed to a specific capability rather than to a quirk of one benchmark. Ground truth for ASA24, SNAPMe, and FNDDS is the full 65-nutrient FNDDS profile; NutriBench provides four macronutrient labels. 
+
+ASA24. 
+
+The Automated Self-Administered 24-Hour Dietary Assessment Tool (ASA24) Portion Size Image Database, released by the US National Cancer Institute, contains over 17,000 food images, each linked to a specific FNDDS food portion [31]. Every image therefore carries an exact 65-nutrient ground truth. The database renders each food across a graded series of portion sizes under otherwise fixed photographic conditions, holding food identity and capture constant while the portion, and thus the nutrient quantity, varies. ASA24 is in this sense a controlled test of portion-size estimation: it isolates whether a model can translate a visible change in portion into a correct change in estimated nutrient amounts. 16 SNAPMe. 
+
+The Surveying Nutrient Assessment with Photographs of Meals (SNAPMe) database, released by the US Department of Agriculture, contains 3,311 food photographs taken by 95 free-living participants on their own mobile phones [32]. Participants pho-tographed every food they consumed and completed parallel ASA24 food records over the same days; each photographed item links through its food record to FNDDS codes and the corresponding 65-nutrient profile. SNAPMe is the first publicly available benchmark of real-life camera-phone food photographs collected for dietary assess-ment, and its uncontrolled lighting, framing, and clutter make it a direct test of generalization to everyday conditions. ASA24 and SNAPMe are thus complementary: one measures portion-size competence under controlled capture, the other robustness to real-world capture. 
+
+NutriBench. 
+
+NutriBench is the only evaluation dataset that pairs natural-language meal descrip-tions with human-verified nutrient labels [15]. It comprises 11,857 meal descriptions derived from real-world dietary intake data across eleven countries, drawn from What We Eat in America (the dietary component of NHANES) and the FAO/WHO GIFT database. Each description specifies one or more food items with serving sizes and is labeled with four macronutrients: energy, protein, carbohydrate, and total fat. NutriBench therefore tests text-modality competence at the level of a full meal, including the parsing of multiple items and serving quantities, but its macronutrient-only labels do not probe micronutrient knowledge. It is the realistic meal-description counterpart to the single-food probe provided by FNDDS. 
+
+FNDDS. 
+
+The Food and Nutrient Database for Dietary Studies (FNDDS), maintained by the US Department of Agriculture, provides the nutrient values for foods reported in What We Eat in America, NHANES, and defines exactly the 65 nutrient and food components used as the label schema throughout this work [21]. As an evaluation dataset it is queried in question-answering form: given the name of a single food, the model must return all 65 nutrient values, scored against the FNDDS entry. Because the query is a single named food, FNDDS removes the perception, meal-parsing, and portion-size confounds present in the other datasets, and is the most direct probe of a model’s intrinsic nutrient knowledge. 
+
+3.2 Models 
+
+The study compares two classes of model: MLLMs, which are the focus of the paper, and traditional supervised baselines, which test whether an MLLM is neces-sary for the task at all. Five MLLM families are evaluated. Three are proprietary (GPT-5, Gemini 3, and Claude Sonnet 4.5) and two are open-weight (the Qwen3-VL family and GLM-4.6V-Flash); the open-weight families additionally serve as the back-bones for NutriMLLM . All MLLMs are queried with the same structured prompt 17 (Appendix E), so that differences in performance reflect the model rather than the query. 
+
+Proprietary MLLMs. 
+
+GPT-5, Gemini 3, and Claude Sonnet 4.5 are evaluated only in their released API-accessible forms as proprietary MLLM baselines. We do not fine-tune these models because their weights are not publicly available, and any vendor-managed tuning, when available, would produce provider-hosted model variants that cannot be released, redistributed, or self-hosted under the same conditions as open-weight models. There-fore, we restrict fine-tuning to open-weight backbones and use proprietary MLLMs to assess the nutrient knowledge already present in frontier general MLLMs. 
+
+Open-weight MLLMs. 
+
+The open-weight MLLMs are the Qwen3-VL family at 2B/4B/8B/30B parameters and GLM-4.6V-Flash (9B). They play two roles. In their released form they are evaluated as general MLLMs alongside the proprietary models; and because their weights are open, they are also the backbones from which NutriMLLM is fine-tuned. The Qwen3-VL family is included at four parameter scales so that the effect of backbone size can be measured while the architecture and pretraining family are held fixed: the 2B and 4B scales correspond to the on-device regime relevant to privacy-preserving dietary tracking, and the 30B scale to institutional deployment. GLM-4.6V-Flash is included as a second, architecturally distinct open-weight family, so that the fine-tuning recipe is demonstrated on more than one backbone lineage. 
+
+NutriMLLM. 
+
+NutriMLLM is the family of nutrition-specialized models obtained by fine-tuning each open-weight backbone on the synthetic training corpus described in §3.3. One variant is produced per backbone, written as NutriMLLM (Qwen3-VL-30B) and similarly for the other backbones. Fine-tuning uses LoRA for parameter and mem-ory efficiency; the procedure and hyperparameters are given in §3.4. Each variant is evaluated on the same independent datasets and prompt as the general MLLMs, so that it can be compared directly against both its own pre-fine-tune backbone and the proprietary MLLMs. 
+
+Supervised baselines. 
+
+To test whether comprehensive nutrient estimation requires an MLLM at all, two traditional supervised baselines are included: a text regression model built on a BERT encoder [30] and an image regression model built on a ViT encoder [29], each with a regression head that outputs nutrient values directly. Both baselines are trained on the same NHANES-derived synthetic corpus used to fine-tune NutriMLLM : the BERT model on the food-text descriptions and the ViT model on the corresponding generated food images. They therefore receive the same supervision as NutriMLLM , so the comparison isolates the contribution of the multimodal language-model backbone, and the large-scale pretraining behind it, rather than confounding it with a difference in training data. Because the regression heads always emit a numeric value and have no 18 mechanism to abstain, these baselines have a NRR of zero by construction, and any unusable predictions they produce are hallucinations rather than abstentions. 
+
+3.3 Synthetic data generation 
+
+The training corpus is built from NHANES 24HRs collected between 2013 and 2023. Each recalled food item carries a set of structured fields, including the food name with its cooking method, the reported portion size, the eating occasion, the time of day, and the food source, together with the complete 65-nutrient FNDDS profile that NHANES assigns to that item. The structured fields are the input from which a food image is generated, and the 65-nutrient profile is the label attached to the resulting image. No new nutrient annotation is produced at any stage; the labels are inherited directly from FNDDS. For each food item, the structured recall fields are augmented with simulated photographic variables (lighting, camera angle, and photographic style) and assem-bled into a descriptive text prompt for a text-to-image model; Fig. 1c illustrates the full process, from a recall to its assembled prompt to the generated image. Each prompt is rendered with two open-weight text-to-image models, Z-Image-Turbo and FLUX.1-dev. As shown in Fig. 7, the food images these two models produce are of comparable quality to those of leading proprietary text-to-image models: the depicted food and its portion follow the prompt closely, although the renderings are somewhat less photorealistic. Images from the proprietary models might yield further gains for 
+
+NutriMLLM , but generating a corpus of this size with them is costly, for exam-ple around $0.134 per image for Nano Banana Pro at 1K–2K resolution (as of April 2026), whereas Z-Image-Turbo and FLUX.1-dev incur no API cost. Rendering every prompt with both open-weight generators, each of which imposes a distinct visual style (Fig. 7), also keeps the corpus from inheriting the stylistic signature of any sin-gle generator. The pipeline yields a synthetic multimodal corpus of around 1.1 million image–description–nutrient triplets, each pairing a generated food image with a text description and its 65-nutrient label. 19 Fig. 7 Comparison of synthetic food images across six text-to-image models. Outputs are shown for two NHANES-derived prompts: a breakfast egg-based mixed dish (top row) and stuffed shells for dinner (bottom row). Columns: Grok-Image, GPT-Image-1.5, MiniMax-Image-01, Nano Banana Pro, FLUX.1-dev, and Z-Image-Turbo. FLUX.1-dev and Z-Image-Turbo are open-weight; the remaining four are proprietary. The open-weight pair was used to construct the synthetic training corpus, on the basis of comparable photorealism at no API cost. 
+
+Using two generators thus removes dependence on any single image model, broad-ens the visual distribution the model is trained on, and avoids the per-image cost that proprietary generators would impose at this scale. The ablation in §2.3 shows that nutrient-knowledge transfer is robust to the choice of generator, with the union of both performing best. 
+
+3.4 Domain adaptation via LoRA fine-tuning 
+
+Each NutriMLLM variant is obtained by fine-tuning one open-weight backbone (Qwen3-VL at 2B/4B/8B/30B, and GLM-4.6V-Flash at 9B) on the synthetic corpus of §3.3. Fine-tuning spans both input modalities, matching the two on which the model is evaluated: an image example presents the generated food image, while a text exam-ple presents the food’s name and portion size as a short textual description. In both cases the input is paired with the nutrient-estimation prompt (Prompt 2, Appendix E). The image-generation template (Prompt 1) is used only upstream in §3.3 to render the image and is never shown to the model at this stage. The supervision target is the full step-by-step response that Prompt 2 elicits: a brief reasoning that first identifies the food and then states its portion, followed by the complete 65-nutrient profile as a JSON object. For image inputs, the food identity and portion in this target are quantities the model must learn to infer from the image; for text inputs they restate the given description, and the nutrient profile is the new 20 prediction. Crucially, only the image is synthetic; the target itself is real data. Every element of it (the food name, the portion, and the 65 nutrient values) is taken directly from the NHANES recalls, so the reasoning trace is built entirely from ground truth, with no teacher model and no annotation beyond what the recall already provides. Every label is complete: all 65 values are populated for every item, so the placeholder 
+
+na never appears in a target and the model is never trained to omit a value. Fine-tuning optimizes the standard supervised objective on this target using LoRA [24] for parameter-efficient adaptation. 
+
+3.5 Evaluation protocol 
+
+All models are evaluated on the four independent datasets of §3.1 under a common protocol. Every model receives the same input for a given query: the image datasets (ASA24, SNAPMe) are evaluated with the multimodal prompt and the text datasets (NutriBench, FNDDS) with its text-only counterpart (Prompt 2, Appendix E). For each query the model is asked to return a value for every nutrient in the dataset’s label set, and is permitted to return the placeholder na for any nutrient it will not esti-mate. Proprietary MLLMs are queried through their vendor APIs, and open-weight models are run locally, but the prompt, the requested output format, and the sampled evaluation items are identical across all models. Because every training label is com-plete ( §3.4), NutriMLLM is never trained to abstain; any na it returns at inference is a response to the prompt’s option to abstain rather than a behavior taught by the training labels. Model behavior is scored with the four-component framework intro-duced in §2.1: NRR, HR, UPR, and accuracy among answered predictions, reported as abstention-adjusted SMAPE adj , with formal definitions given in Appendix A. 
+
+## 4 Discussion 
+
+Our main finding is a diagnosis. Testing general MLLMs on text descriptions as well as on images showed that their failure on micronutrients is not caused by weak vision: a model that cannot estimate a vitamin or fatty acid from a photograph also cannot estimate it from the food’s written name. The problem is missing nutrient knowledge, not poor perception, and better image encoders would not fix it. The likely cause is a lack of the right data. Comprehensive nutrient profiles are rare in these models’ training data: recipes and nutrition labels usually give energy and the macronutrients, but seldom the complete set of vitamins, minerals, and fatty acids. And no large-scale food dataset has paired images with comprehensive nutrient labels, so the knowledge has had no source to learn from. The gap is therefore structural, set by the available data rather than by model size: the failure on micronutrients persists across the full size spectrum, from the smallest open-weight models to the largest proprietary ones, even though greater scale does improve overall accuracy. Scaling general models further will not close it; the gap closes only when the missing data is supplied. 
+
+NutriMLLM closes this gap. Fine-tuning on the synthetic corpus sharply reduces both abstention and hallucination across the 65 nutrients. This is a real gain, not just the model being pushed to answer more often: the ablations in §2.3 show that the 21 nutrients it now answers also become more accurate, with a clear leftward shift in SMAPE adj . The model answers more, and it answers better. The recipe works because of two facts. First, the expensive half of the supervision already exists. The field has treated the bottleneck as the cost of labeling food images with full nutrient profiles, but national surveys have linked structured dietary recalls to complete profiles for decades. What is missing is not the label but the image, and the image is the cheap part to create: rather than label images with nutrients, we generate images for records that are already labeled. Only the image is synthetic; the labels are real survey data. Second, nutrient estimation depends mainly on what an image shows, the food and its portion, not on how photorealistic it is. Current text-to-image models get the food and portion right well enough that this signal survives, even when the images are not perfectly realistic (Fig. 7). The transfer to the real photographs of SNAPMe confirms it: even though every image NutriMLLM trained on was generated, it generalizes to real photographs it never saw, because what it learned is nutrient knowledge, not the look of any one generator. This points to the paper’s main contribution. The most visible result is NutriM-LLM itself, but the more lasting one is the recipe that produced it. The recipe does not depend on the backbone it adapts, so it is not limited to the open-weight models used here: developers of proprietary MLLMs could apply the same procedure to their own models to add the nutrient knowledge they currently lack. The paper therefore provides a reusable method for building nutrition-specialized models on any back-bone, not just a single model. The result also carries a broader lesson: for narrow, knowledge-heavy problems, reliable performance comes from building the right spe-cialized supervision, not from making general models larger. Because the models are open-weight and small, they can be run locally and inexpensively, so meal images need not be sent to an external service and use does not depend on a vendor API. Whether the same approach, turning structured records into multimodal supervision through generation, works in other clinical domains where records exist without paired images is left for future work. Several limitations remain. The evaluation is retrospective and based on bench-marks: NutriMLLM has not been tested in a real clinical workflow, and its estimates have not been compared against biomarkers of nutrient status, so the results show technical capability, not clinical readiness. The training images are synthetic; although their nutrient-relevant content transfers to real photographs, they may lack appear-ance cues that real food carries, and the ground-truth values are themselves FNDDS estimates rather than direct laboratory measurements. Portion size is inferred from a single image, which is inherently ambiguous, and one view cannot fully resolve occluded or stacked food. Finally, two design questions are left for future ablation: how much each structured recall field adds beyond food name and portion, and how performance scales with the size of the generated corpus. One clear next step follows from a limitation of our data. The recalls and labels come entirely from US sources, NHANES and FNDDS, so the food distribution reflects one country’s diet, and NutriMLLM is likely strongest on foods common in the United States. This is not a limitation of the method. The recipe needs only structured recall fields linked to a nutrient profile, and many countries maintain exactly these 22 resources: national 24-hour-recall surveys such as the UK National Diet and Nutrition Survey [33], the Japan National Health and Nutrition Survey [34], and the German National Nutrition Survey [35], each paired with a national food-composition database like FNDDS, such as McCance and Widdowson’s The Composition of Foods Integrated Dataset [36] in the UK and the tables harmonized across Europe through EuroFIR [37]. Applying the recipe to these sources would give country-specific variants, and pooling images generated from several countries’ surveys into one corpus would produce a worldwide NutriMLLM covering many cuisines rather than a single national diet. A second direction concerns the range of tasks. This paper tests NutriMLLM on one capability, estimating a full nutrient profile from a single food image. That capa-bility is a prerequisite for the applications that motivate the work, but it is not the application itself. The broader goal in Fig. 1a is a system that supports dietary assess-ment from the many ways people record meals, including video and speech as well as photographs, and that turns reliable nutrient estimates into personalized guidance and population-scale surveillance. NutriMLLM provides the nutrient knowledge these tasks need; building it into each application and evaluating it there is what would turn a reliable estimator into a deployed tool, and we see that as the path from this work to clinical and public-health impact. 
+
+## 5 Conclusion 
+
+We showed that existing MLLMs, including the leading proprietary ones, do not yet have reliable comprehensive nutrient knowledge, that this failure falls on the micronu-trients that matter most clinically, and that it persists even without an image, which places the deficit in nutrient knowledge rather than visual perception. To close the gap, we turned a decade of national-survey 24HRs into a synthetic multimodal corpus of around 1.1 million image–description–nutrient triplets, and fine-tuned open-weight backbones on this corpus to produce NutriMLLM , a family of nutrition-specialized vision-language models. On real food images, NutriMLLM reaches broad coverage across all 65 nutrients, and its largest variant matches or exceeds the proprietary MLLMs on SMAPE adj for most nutrients, while staying small enough to run on-device. Beyond the models, the main contribution is a reusable recipe: because it needs only structured survey records, it can be applied to any backbone, including propri-etary ones, and extended from the US sources used here to the national surveys of other countries. We release the evaluation framework, the generated dataset, and the 
+
+NutriMLLM weights so that others can build on them. The necessary next step is to establish whether this technical capability translates into clinical and public-health benefit, through prospective evaluation and integration into real dietary-assessment workflows. 
+
+## Appendix A Evaluation Framework 
+
+A.1 Conceptual Rationale 
+
+Large language models performing quantitative nutrition prediction exhibit two qualitatively distinct failure modes in addition to ordinary estimation error: 23 Abstention. 
+
+The model does not provide a numeric estimate. This typically reflects uncertainty, insufficient domain knowledge, or inability to extract relevant information from the input. In this case, the model effectively declines to answer. 
+
+Hallucination. 
+
+The model provides a numeric estimate, but the value is statistically implausible relative to observed nutritional distributions. This reflects overconfident reasoning breakdown, where the model outputs an extreme or unrealistic value despite insuf-ficient grounding. These behaviors are fundamentally different. Abstention reflects uncertainty or knowledge limitation; hallucination reflects confident but incorrect estimation. Traditional accuracy metrics alone cannot distinguish these failure modes. Model performance is therefore evaluated along three complementary dimensions: 1. Non-response behavior (abstention), 2. Hallucination behavior (implausible predictions), 3. Numerical accuracy among answered predictions. All metrics are computed at the nutrient level. Let N denote the total number of samples. Let tij and pij denote the ground-truth and predicted values, respectively, for sample i and nutrient j. Negative predictions are treated as missing. 
+
+A.2 Non-Response and Hallucination Metrics 
+
+A.2.1 Non-Response Rate (NRR) 
+
+A prediction is considered missing if no valid numeric value is produced. NRR j = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+1[pij is missing] × 100 .
+
+NRR quantifies the proportion of samples for which the model abstains. 
+
+A.2.2 Hallucination Rate (HR) 
+
+Hallucinations are defined relative to the empirical ground-truth distribution. For each nutrient j, let 
+
+τj = Q1−α(t·j ),
+
+where Q1−α denotes the (1 − α) quantile of the ground-truth distribution (e.g., 
+
+α = 0 .005 corresponding to the 99.5th percentile). A prediction is considered hallucinatory if: 
+
+pij > τ j .
+
+The Hallucination Rate (HR) is defined as: 24 HR j = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+1[pij predicted and pij > τ j ] × 100 .
+
+This quantile-based definition anchors hallucination detection to observed nutri-tional reality rather than to the model’s own prediction distribution. It is robust to skewed or multi-modal nutrient distributions. 
+
+A.2.3 Unusable Prediction Rate (UPR) 
+
+We define the Unusable Prediction Rate as: UPR j = NRR j + HR j .
+
+UPR represents the overall proportion of nutritionally unusable outputs, capturing both abstention and implausible predictions. 
+
+A.3 Predictive Accuracy Metrics 
+
+Accuracy is measured with the Symmetric Mean Absolute Percentage Error (SMAPE), which suits this task for two reasons: the 65 nutrients span very different ranges and units, from kilocalories to micrograms, so absolute errors cannot be averaged across them, and many ground-truth values are zero, which leaves the ordinary percentage error (MAPE) undefined. SMAPE handles both and is bounded between 0 and 200%, so a hallucinated extreme value cannot dominate the average. We report an abstention-adjusted SMAPE, which scores every ground-truth value and penalizes each missing prediction, so that a model cannot inflate its accuracy by abstaining on the difficult nutrients. For a single answered prediction, the symmetric absolute percentage error is SMAPE( pij , t ij ) = 2 |pij − tij ||pij | + |tij | + ε × 100 ,
+
+A.3.1 Covered Metrics 
+
+The covered SMAPE evaluates accuracy on answered predictions only. Let 
+
+Sj = {i : tij known and pij present }.
+
+SMAPE cov  
+
+> j
+
+= 1
+
+|Sj |
+
+X
+
+> i∈Sj
+
+SMAPE( pij , t ij ).
+
+When pij = 0 and tij = 0, the contribution is defined as 0. Hallucinated predictions are not excluded and therefore increase the error. 
+
+A.3.2 Abstention-Adjusted Metrics 
+
+The abstention-adjusted SMAPE evaluates accuracy across all ground-truth values, not only the answered ones. Let 25 Vj = {i : tij known }.
+
+For each missing prediction we assign a penalty equal to the Q0.9 quantile of the model’s observed errors for that nutrient (falling back to a dataset-level baseline if too few answered samples exist): SMAPE adj  
+
+> j
+
+= 1
+
+|Vj |
+
+X
+
+> i∈Vj
+
+(
+
+SMAPE( pij , t ij ), pij present ,
+
+PSMAPE  
+
+> j
+
+, pij missing .
+
+A.4 Complementarity of Metrics 
+
+Together, NRR, HR, UPR, and SMAPE capture complementary aspects of model behavior: knowledge limitation, overconfident implausible estimation, overall usability, and numerical accuracy (the last reported as covered SMAPE on answered cases and SMAPE adj across all cases). Reporting them together, rather than accuracy alone, prevents the misleading conclusions a single metric can produce and lets models that differ in calibration, robustness, and selective answering be compared on a common footing. 
+
+## Appendix B Results on Text Food-Description Datasets 
+
+This appendix provides the per-nutrient figures and the NutriBench comparison table summarized in the main text. Both benchmarks evaluate models on food-text inputs only and therefore isolate the nutrient-knowledge component of MLLM performance from any visual-perception component. 26 B.1 FNDDS 0% 20% 40% 60% 80% 100% Rate (%) 
+
+GPT-5 
+
+0% 20% 40% 60% 80% 100% Rate (%) 
+
+Gemini 3 
+
+0% 20% 40% 60% 80% 100% Rate (%) 
+
+Claude Sonnet 4.5 
+
+0% 20% 40% 60% 80% 100% Rate (%) 
+
+Qwen3-VL-2B 
+
+0% 20% 40% 60% 80% 100% Rate (%) 
+
+GLM-4.6v-Flash 
+
+0% 20% 40% 60% 80% 100% Rate (%) 
+
+Qwen3-VL-30B 
+
+> Energy (kcal) Protein (g) Carbohydrate (g) Total Sugars (g) Dietary Fiber (g) Total Fat (g) Total Saturated Fatty Acids (g) Total Monounsaturated Fatty Acids (g) Total Polyunsaturated Fatty Acids (g) Cholesterol (mg) Retinol (mcg) Vitamin A, RAE (mcg) Alpha-Carotene (mcg) Beta-Carotene (mcg) Beta-Cryptoxanthin (mcg) Lycopene (mcg) Lutein + Zeaxanthin (mcg) Thiamin (Vitamin B1) (mg) Riboflavin (Vitamin B2) (mg) Niacin (mg) Vitamin B6 (mg) Folic Acid (mcg) Food Folate (mcg) Folate, DFE (mcg) Total Folate (mcg) Total Choline (mg) Vitamin B12 (mcg) Added Vitamin B12 (mcg) Vitamin C (mg) Vitamin D (D2 + D3) (mcg) Vitamin E as Alpha-Tocopherol (mg) Added Alpha-Tocopherol (Vitamin E) (mg) Vitamin K (mcg) Calcium (mg) Phosphorus (mg) Magnesium (mg) Iron (mg) Zinc (mg) Copper (mg) Selenium (mcg) Potassium (mg) Sodium (mg) Caffeine (mg) Theobromine (mg) Alcohol (g) SFA 4:0 (Butanoic) (g) SFA 6:0 (Hexanoic) (g) SFA 8:0 (Octanoic) (g) SFA 10:0 (Decanoic) (g) SFA 12:0 (Dodecanoic) (g) SFA 14:0 (Tetradecanoic) (g) SFA 16:0 (Hexadecanoic) (g) SFA 18:0 (Octadecanoic) (g) MFA 16:1 (Hexadecenoic) (g) MFA 18:1 (Octadecenoic) (g) MFA 20:1 (Eicosenoic) (g) MFA 22:1 (Docosenoic) (g) PFA 18:2 (Octadecadienoic) (g) PFA 18:3 (Octadecatrienoic) (g) PFA 18:4 (Octadecatetraenoic) (g) PFA 20:4 (Eicosatetraenoic) (g) PFA 20:5 (Eicosapentaenoic) (g) PFA 22:5 (Docosapentaenoic) (g) PFA 22:6 (Docosahexaenoic) (g) Moisture (g)
+
+0% 20% 40% 60% 80% 100% Rate (%) 
+
+Non-Response Rate (NRR) Hallucination Rate (HR) 
+
+NutriMLLM (Qwen3-VL-30B) 
+
+Fig. B1 Non-response and hallucination rates on the FNDDS text-only benchmark. Per-nutrient NRR and HR, evaluated on food descriptions rather than images, with model groupings as in Fig. 2. Failure on micronutrients persists in the absence of any visual input, indicating that the deficit in general MLLMs is one of nutrient knowledge rather than visual perception. 
+
+27 Energy (kcal) 
+
+> Protein (g)
+> Carbohydrate (g)
+> Total Sugars (g)
+> Dietary Fiber (g)
+> Total Fat (g)
+> Total Saturated Fatty Acids (g)
+> Total Monounsaturated Fatty Acids (g)
+> Total Polyunsaturated Fatty Acids (g)
+> Cholesterol (mg)
+> Retinol (mcg)
+> Vitamin A, RAE (mcg)
+> Alpha-Carotene (mcg)
+> Beta-Carotene (mcg)
+> Beta-Cryptoxanthin (mcg)
+> Lycopene (mcg)
+> Lutein + Zeaxanthin (mcg)
+> Thiamin (Vitamin B1) (mg)
+> Riboflavin (Vitamin B2) (mg)
+> Niacin (mg)
+> Vitamin B6 (mg)
+> Folic Acid (mcg)
+> Food Folate (mcg)
+> Folate, DFE (mcg)
+> Total Folate (mcg)
+> Total Choline (mg)
+> Vitamin B12 (mcg)
+> Added Vitamin B12 (mcg)
+> Vitamin C (mg)
+> Vitamin D (D2 + D3) (mcg)
+> Vitamin E as Alpha-Tocopherol (mg)
+> Added Alpha-Tocopherol (Vitamin E) (mg)
+> Vitamin K (mcg)
+> Calcium (mg)
+> Phosphorus (mg)
+> Magnesium (mg)
+> Iron (mg)
+> Zinc (mg)
+> Copper (mg)
+> Selenium (mcg)
+> Potassium (mg)
+> Sodium (mg)
+> Caffeine (mg)
+> Theobromine (mg)
+> Alcohol (g)
+> SFA 4:0 (Butanoic) (g)
+> SFA 6:0 (Hexanoic) (g)
+> SFA 8:0 (Octanoic) (g)
+> SFA 10:0 (Decanoic) (g)
+> SFA 12:0 (Dodecanoic) (g)
+> SFA 14:0 (Tetradecanoic) (g)
+> SFA 16:0 (Hexadecanoic) (g)
+> SFA 18:0 (Octadecanoic) (g)
+> MFA 16:1 (Hexadecenoic) (g)
+> MFA 18:1 (Octadecenoic) (g)
+> MFA 20:1 (Eicosenoic) (g)
+> MFA 22:1 (Docosenoic) (g)
+> PFA 18:2 (Octadecadienoic) (g)
+> PFA 18:3 (Octadecatrienoic) (g)
+> PFA 18:4 (Octadecatetraenoic) (g)
+> PFA 20:4 (Eicosatetraenoic) (g)
+> PFA 20:5 (Eicosapentaenoic) (g)
+> PFA 22:5 (Docosapentaenoic) (g)
+> PFA 22:6 (Docosahexaenoic) (g)
+> Moisture (g)
+
+0% 
+
+25% 
+
+50% 
+
+75% 
+
+100% 
+
+125% 
+
+150% 
+
+175% 
+
+200% 
+
+> SMAPE adj
+
+FNDDS Dataset BERT (130.4 ± 35.5%) 
+
+GPT-5 (75.2 ± 35.6%) 
+
+Gemini 3 (49.2 ± 21.0%) 
+
+Claude Sonnet 4.5 (54.8 ± 22.1%) 
+
+Qwen3-VL-2B (121.5 ± 38.1%) 
+
+GLM-4.6v-Flash (141.8 ± 38.5%) 
+
+Qwen3-VL-30B (102.8 ± 33.2%) 
+
+NutriMLLM (Qwen3-VL-30B) (59.4 ± 23.4%) Fig. B2 Per-nutrient accuracy on FNDDS. Covered (top) and abstention-adjusted (bottom) SMAPE on the text-only FNDDS benchmark, evaluated and grouped as in Fig. 4. NutriMLLM 
+
+closes the gap to proprietary baselines across all 65 nutrients on text inputs, with the largest gains again concentrated on micronutrients. 
+
+28 Table B1  Comparison of NutriMLLM against baseline approaches on the four target nutrients of NutriBench.  UPR is the Unusable Prediction Rate (NRR + HR); SMAPE adj  is the abstention-adjusted Symmetric Mean Absolute Percentage Error. Lower is better for both metrics.  Bold  marks the best value in each column overall; underline marks the best value among non-proprietary models. Both the supervised BERT baseline and the  NutriMLLM  variants were trained on the same NHANES-derived synthetic corpus and never saw NutriBench during training, so both are evaluated zero-shot on this benchmark.  NutriMLLM  (Qwen3-VL-30B) achieves the lowest UPR among non-proprietary models on every nutrient and the lowest SMAPE adj  among non-proprietary models on three of four nutrients, despite being a generalist 65-nutrient predictor rather than a model specialized for these four macronutrients. UPR (%)  ↓ SMAPE adj  (%)  ↓
+
+> Model  Energy (kcal)  Protein (g)  Carb. (g)  Total Fat (g)  Energy (kcal)  Protein (g)  Carb. (g)  Total Fat (g)
+> Supervised Baseline
+> BERT (+ regression head)  0.1  4.5  0.5  2.0  56.6  77.5  65.0  76.1
+> Open-Weight MLLM Baselines
+> Qwen3-VL-2B  39.0  39.2  37.5  39.1  95.0  106.1  97.8  111.0 Qwen3-VL-4B  23.6  24.0  18.0  24.6  108.4  114.3  117.1  124.0 Qwen3-VL-8B  6.6  6.6  5.9  6.7  56.3  75.2  66.7  87.3 GLM-4.6V-Flash  25.5  25.2  25.4  26.8  75.0  82.5  81.2  95.2
+> Proprietary MLLM Baselines
+> Claude Sonnet 4.5  0.2  0.4  0.2  0.2  34.1  42.2  36.7  52.9 Gemini 3  0.7  0.8  0.6  0.8  25.3  34.4  29.1  41.8
+> GPT-5  0.1  0.3  0.1  0.2  32.1  32.4  37.3  50.5
+> NutriMLLM  (Ours)
+> Qwen3-VL-2B  2.8  2.8  4.4  2.6  128.4  100.7  74.5  105.9 Qwen3-VL-4B  1.4  1.7  1.3  1.5  70.4  61.1  63.0  78.0 Qwen3-VL-8B  0.5  0.6  0.5  0.8  53.8  43.8  52.9  71.0 Qwen3-VL-30B  0.0  0.4  0.4  0.3  47.4  48.9  46.3  54.8 GLM-4.6V-Flash  0.9  1.0  2.1  1.2  58.9  54.7  51.4  62.7
+
+29 B.2 NutriBench 
+
+## Appendix C Training Dynamics 1 2 3 4 5            
+
+> Epoch
+> 0%
+> 5%
+> 10%
+> 15%
+> 20%
+> 25%
+> ASA24
+> Unusable Prediction Rate (UPR)
+> 12345
+> Epoch
+> 0%
+> 20%
+> 40%
+> 60%
+> 80%
+> 100%
+> 120%
+> 140%
+> 160%
+> SMAPE adj
+> 12345
+> Epoch
+> 0%
+> 10%
+> 20%
+> 30%
+> 40%
+> SNAPMe
+> 12345
+> Epoch
+> 0%
+> 20%
+> 40%
+> 60%
+> 80%
+> 100%
+> 120%
+> 140%
+
+Fig. C3 Validation performance across NutriMLLM training checkpoints. UPR (left) and SMAPE adj (right) on the two independent datasets (ASA24 and SNAPMe) as a function of training epoch. UPR is low from the first epoch and stays low throughout, while SMAPE adj improves over the first few epochs and plateaus by around epoch 3. 
+
+## Appendix D Training Implementation Details 
+
+Fine-tuning was carried out with the LLaMA-Factory framework [38] on four H200 GPUs. Upon publication, we will make publicly available the training and evaluation code, LLaMA-Factory configuration files, fine-tuned NutriMLLM weights, and the synthetic multimodal corpus of approximately 1.1 million image–description–nutrient triplets, subject to the licenses of the underlying data sources, base models, and image-generation models. If redistribution of any generated images is restricted by third-party model terms, we will release the corresponding prompts, nutrient labels, metadata, and generation scripts needed to reproduce the corpus. 
+
+## Appendix E Prompt Templates 
+
+Figure E4 reproduces the two prompt templates used throughout this work: Prompt 1 for synthetic image generation and Prompt 2 for nutrient estimation. 30 Fig. E4 Prompt templates used in NutriMLLM. Prompt 1 assembles structured 24-hour-recall fields (food name, cooking method, portion-size descriptor, eating occasion, time of day, food source) together with simulated photographic variables (lighting condition, camera angle, photogra-phy style, table setting) into a natural-language description for text-to-image generation. Prompt 2 
+
+queries the model for 65 nutrient values from a food image or text description, requiring a strict JSON object in which the placeholder na is permitted for entries the model declines to estimate. Curly braces denote runtime-filled variables. 
+
+31 References 
+
+[1] Lozoff, B., Georgieff, M.K.: Iron deficiency and brain development. In: Seminars in Pediatric Neurology, vol. 13, pp. 158–165 (2006). Elsevier [2] Holick, M.F.: Vitamin d deficiency. New England journal of medicine 357 (3), 266–281 (2007) [3] Group, M.V.S.R., et al. : Prevention of neural tube defects: results of the medical research council vitamin study. The lancet 338 (8760), 131–137 (1991) [4] Zimmermann, M.B., Jooste, P.L., Pandav, C.S.: Iodine-deficiency disorders. The Lancet 372 (9645), 1251–1262 (2008) [5] Stabler, S.P.: Vitamin b12 deficiency. New England Journal of Medicine 368 (21), 2041–2042 (2013) [6] Sommer, A., Hussaini, G., Tarwotjo, I., Susanto, D.: Increased mortality in children with mild vitamin a deficiency. The Lancet 322 (8350), 585–588 (1983) [7] Prasad, A.S.: Zinc deficiency: Has been known of for 40 years but ignored by global health organisations. British Medical Journal Publishing Group (2003) [8] Weaver, C.M., Alexander, D.D., Boushey, C.J., Dawson-Hughes, B., Lappe, J.M., LeBoff, M.S., Liu, S., Looker, A.C., Wallace, T., Wang, D.: Calcium plus vitamin d supplementation and risk of fractures: an updated meta-analysis from the national osteoporosis foundation. Osteoporosis International 27 (1), 367–376 (2016) [9] Thompson, F.E., Subar, A.F.: Dietary assessment methodology. Nutrition in the Prevention and Treatment of Disease, 5–48 (2017) [10] Lo, F.P.-W., Qiu, J., Wang, Z., Chen, J., Xiao, B., Yuan, W., Giannarou, S., Frost, G., Lo, B.: Dietary assessment with multimodal chatgpt: A systematic analysis. IEEE Journal of Biomedical and Health Informatics 28 (12), 7577–7587 (2024) [11] Khamesian, S., Arefeen, A., Carpenter, S.M., Ghasemzadeh, H.: Nutrigen: Per-sonalized meal plan generator leveraging large language models to enhance dietary and nutritional adherence. In: 2025 47th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC), pp. 1–7 (2025). IEEE [12] Yan, R., Luo, H., Lu, J., Liu, D., Posluszny, H., Dhaliwal, M.P., MacLeod, J., Qin, Y., Yang, C., Hartman, T.J., et al. : Dietai24 as a framework for comprehensive nutrition estimation using multimodal large language models. Communications Medicine 5(1), 458 (2025) [13] Carrillo-Larco, R.M.: Llms for energy and macronutrients estimation using only text data from 24-hour dietary recalls: a parameter-efficient fine-tuning 32 experiment using a 10-shot prompt. arXiv preprint arXiv:2509.13268 (2025) [14] Gjorgjevikj, A., Martinc, M., Cenikj, G., Stojanov, R., Drole, J., Ispirova, G., Menichetti, G., Ogrinc, N., Trajanov, D., Dˇ zeroski, S., et al. : Large language models in food and nutrition science: Opportunities, challenges, and the case of foodyllm. Current research in food science 12 , 101351 (2026) [15] Dhaliwal, M.P., Hua, A., Pullela, L., Burke, R., Qin, Y.: Nutribench: A dataset for evaluating large language models in nutrition estimation from meal descriptions. In: The Thirteenth International Conference on Learning Representations (2025). 
+
+https://openreview.net/forum?id=6LtdZCyuZR 
+
+[16] Bai, S., Cai, Y., Chen, R., Chen, K., Chen, X., Cheng, Z., Deng, L., Ding, W., Gao, C., Ge, C., et al.: Qwen3-vl technical report. arXiv preprint arXiv:2511.21631 (2025) [17] Bossard, L., Guillaumin, M., Van Gool, L.: Food-101–mining discriminative com-ponents with random forests. In: European Conference on Computer Vision, pp. 446–461 (2014). Springer [18] Marın, J., Biswas, A., Ofli, F., Hynes, N., Salvador, A., Aytar, Y., Weber, I., Torralba, A.: Recipe1m+: A dataset for learning cross-modal embeddings for cooking recipes and food images. IEEE Transactions on Pattern Analysis and Machine Intelligence 43 (1), 187–203 (2021) [19] Thames, Q., Karpur, A., Norris, W., Xia, F., Panait, L., Weyand, T., Sim, J.: Nutrition5k: Towards automatic nutritional understanding of generic food. In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 8903–8911 (2021) [20] Johnson, C.L., Paulose-Ram, R., Ogden, C.L., Carroll, M.D., Kruszan-Moran, D., Dohrmann, S.M., Curtin, L.R.: National health and nutrition examination survey. analytic guidelines, 1999-2010 (2013) [21] Bodner-Montville, J., Ahuja, J.K., Ingwersen, L.A., Haggerty, E.S., Enns, C.W., Perloff, B.P.: Usda food and nutrient database for dietary studies: released on the web. Journal of food composition and analysis 19 , 100–107 (2006) [22] Cai, H., Cao, S., Du, R., Gao, P., Hoi, S., Hou, Z., Huang, S., Jiang, D., Jin, X., Li, L., et al.: Z-image: An efficient image generation foundation model with single-stream diffusion transformer. arXiv preprint arXiv:2511.22699 (2025) [23] Labs, B.F., Batifol, S., Blattmann, A., Boesel, F., Consul, S., Diagne, C., Dock-horn, T., English, J., English, Z., Esser, P., Kulal, S., Lacey, K., Levi, Y., Li, C., Lorenz, D., M¨ uller, J., Podell, D., Rombach, R., Saini, H., Sauer, A., Smith, L.: FLUX.1 Kontext: Flow Matching for In-Context Image Generation and Editing in Latent Space (2025). https://arxiv.org/abs/2506.15742 33 [24] Hu, E.J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., Chen, W., et al. : Lora: Low-rank adaptation of large language models. Iclr 1(2), 3 (2022) [25] Hong, W., Yu, W., Gu, X., Wang, G., Gan, G., Tang, H., Cheng, J., Qi, J., Ji, J., Pan, L., et al.: Glm-4.5 v and glm-4.1 v-thinking: Towards versatile multimodal reasoning with scalable reinforcement learning. arXiv preprint arXiv:2507.01006 (2025) [26] Singh, A., Fry, A., Perelman, A., Tart, A., Ganesh, A., El-Kishky, A., McLaughlin, A., Low, A., Ostrow, A., Ananthram, A., et al.: Openai gpt-5 system card. arXiv preprint arXiv:2601.03267 (2025) [27] Google DeepMind: Gemini 3. https://blog.google/products/gemini/gemini-3/. Large language model. Released November 18, 2025 (2025) [28] Anthropic: Claude Sonnet 4.5. https://www.anthropic.com/news/ claude-sonnet-4-5. Large language model. Released September 29, 2025 (2025) [29] Dosovitskiy, A., Beyer, L., Kolesnikov, A., Weissenborn, D., Zhai, X., Unterthiner, T., Dehghani, M., Minderer, M., Heigold, G., Gelly, S., et al.: An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929 (2020) [30] Devlin, J., Chang, M.-W., Lee, K., Toutanova, K.: Bert: Pre-training of deep bidirectional transformers for language understanding. In: Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (long and Short Papers), pp. 4171–4186 (2019) [31] National Cancer Institute: ASA24 Portion Size Image Database. Epidemiology and Genomics Research Program, National Cancer Institute. https://epi.grants. cancer.gov/asa24/resources/portionsize.html [32] Larke, J.A., Chin, E.L., Bouzid, Y.Y., Nguyen, T., Vainberg, Y., Lee, D.H., Pir-siavash, H., Smilowitz, J.T., Lemay, D.G.: Surveying nutrient assessment with photographs of meals (snapme): a benchmark dataset of food photos for dietary assessment. Nutrients 15 (23), 4972 (2023) [33] Venables, M.C., Roberts, C., Nicholson, S., Bates, B., Jones, K.S., Ashford, R., Hill, S., Farooq, A., Koulman, A., Wareham, N.J., et al. : Data resource profile: united kingdom national diet and nutrition survey rolling programme (2008–19). International Journal of Epidemiology 51 (4), 143–155 (2022) [34] Ikeda, N., Takimoto, H., Imai, S., Miyachi, M., Nishi, N.: Data resource profile: the japan national health and nutrition survey (nhns). International Journal of Epidemiology 44 (6), 1842–1849 (2015) 34 [35] Heuer, T., Krems, C., Moon, K., Brombach, C., Hoffmann, I.: Food consumption of adults in germany: results of the german national nutrition survey ii based on diet history interviews. British journal of nutrition 113 (10), 1603–1614 (2015) [36] McCance, R.A., Widdowson, E.M., Food Research (Great Britain), I., England, P.H., Chemistry (Great Britain), R.S.: McCance and Widdowson’s The Com-position of Foods. McCance and Widdowson’s. Royal Society of Chemistry, ??? (2014) [37] Finglas, P.M., Berry, R., Astley, S.: Assessing and improving the quality of food composition databases for nutrition and health applications in europe: the contribution of eurofir. Advances in Nutrition 5(5), 608–614 (2014) [38] Zheng, Y., Zhang, R., Zhang, J., Ye, Y., Luo, Z.: Llamafactory: Unified effi-cient fine-tuning of 100+ language models. In: Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (volume 3: System Demonstrations), pp. 400–410 (2024) 35

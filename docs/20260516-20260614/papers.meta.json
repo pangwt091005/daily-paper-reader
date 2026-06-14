@@ -1,0 +1,39 @@
+{
+  "label": "2026-05-16 ~ 2026-06-14",
+  "date": "2026-05-16 ~ 2026-06-14",
+  "generated_at": "2026-06-14T13:40:00",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "20260516-20260614/2606.08948v1-nutrimllm-multimodal-large-language-models-for-dietary-micronutrient-analysis",
+      "section": "quick",
+      "title_en": "NutriMLLM: Multimodal Large Language Models for Dietary Micronutrient Analysis",
+      "authors": "Runze Yan, Minxiao Wang, Jiaying Lu, Darren Liu, Xiao Hu, Hanqi Luo",
+      "date": "2026-06-08",
+      "pdf": "https://arxiv.org/pdf/2606.08948v1",
+      "score": "10.0",
+      "evidence": "直接使用多模态大语言模型从食品图像进行膳食微量营养素分析，与Nutrition5k主题一致",
+      "tldr": "当前多模态大语言模型难以可靠地从食物图像估计微量营养素。本文利用十年人口规模24小时膳食回顾数据，通过文本到图像生成构建约110万对图像-营养素标签的合成语料库，微调Qwen3-VL和GLM-4.6V得到NutriMLLM。该模型在真实食物图像上实现65种营养素全覆盖，最大变体在准确性上匹配甚至超越GPT-5等专有模型。研究表明，召回驱动的合成监督使图像微量营养素估计成为可行工程问题，支持膳食评估与个性化营养指导。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Comprehensive estimation of dietary micronutrients from food images could improve clinical nutrition care, but training such models requires large multimodal datasets linking diverse foods to complete nutrient profiles. We first show that existing multimodal large language models (MLLMs), including leading proprietary models, are unreliable for this task. Across five model families and four independent evaluation benchmarks (ASA24, SNAPMe, FNDDS, and NutriBench), models frequently abstained or returned statistically implausible values. To address this gap without costly expert annotation, we repurposed a decade of population-scale 24-hour dietary recalls as structured prompts for text-to-image generation. This pipeline produced a synthetic corpus of about 1.1 million image-description-nutrient triplets, each pairing a generated food image with a complete 65-nutrient label. To our knowledge, this is the largest synthetic food-image corpus with comprehensive micronutrient annotation planned for public release upon publication. Fine-tuning Qwen3-VL (2B/4B/8B/30B) and GLM-4.6V-Flash on this corpus yielded NutriMLLM, the first family of vision-language models specialized for comprehensive dietary micronutrient estimation. We evaluate these models with a four-component framework that separately measures abstention, hallucination, overall usability, and per-nutrient numerical accuracy. On real food images, every NutriMLLM variant achieved near-complete coverage across all 65 nutrients, and the largest variant matched or exceeded proprietary baselines (GPT-5, Gemini 3, and Claude Sonnet 4.5) in accuracy on most nutrients. These results show that recall-driven synthetic supervision can make image-based comprehensive micronutrient estimation a tractable engineering problem and support dietary assessment, personalized nutrition guidance, and population-scale micronutrient surveillance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "20260516-20260614/2606.04986v1-food-r1-a-unified-multi-task-food-vision-language-model-with-reinforcement-learning",
+      "section": "quick",
+      "title_en": "Food-R1: A Unified Multi-Task Food Vision-Language Model with Reinforcement Learning",
+      "authors": "Yu Zhu, Yongkang Li, Wenjie Zhu, Haoyi Jiang, Wenyu Liu, Wei Yang, Bin Li, Xinggang Wang",
+      "date": "2026-06-03",
+      "pdf": "https://arxiv.org/pdf/2606.04986v1",
+      "score": "9.0",
+      "evidence": "食品视觉语言模型用于卡路里推理和饮食建议",
+      "tldr": "现有食品视觉-语言模型因依赖监督微调而推理和泛化能力有限，且高质量营养注释稀缺。为此，构建了首个含思维链注释的卡路里基准CalorieBench-80K，并提出统一多任务食品VLM Food-R1，采用思维链冷启动指令调优和组相对策略优化强化微调。在CalorieBench-80K等基准上，Food-R1持续超越强基线，表明该模型及基准可有效推动食品分析研究。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Recent studies have explored Vision-Language Models (VLMs) for food analysis. However, most existing methods rely primarily on supervised fine-tuning (SFT), which often limits reasoning and generalization capabilities. Moreover, high-quality large-scale nutritional annotations remain scarce. To address these issues, we introduce CalorieBench-80K, a large-scale benchmark with curated calorie labels and dietary advice annotations. To the best of our knowledge, it is the first food image benchmark to incorporate Chain-of-Thought (CoT) annotations for calorie reasoning. We also propose Food-R1, a unified food VLM trained in a multi-task learning paradigm to equip the model with broad capabilities. Food-R1 undergoes CoT-based cold-start instruction tuning, followed by reinforcement fine-tuning (RFT) using Group Relative Policy Optimization (GRPO) to improve reasoning and performance. Experiments on CalorieBench-80K and representative benchmarks show that Food-R1 consistently outperforms strong baselines across food-related tasks. The code, model weights, and benchmark annotations are available at the project repository.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

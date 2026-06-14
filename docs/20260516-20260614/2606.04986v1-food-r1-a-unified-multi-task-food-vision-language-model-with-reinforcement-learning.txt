@@ -1,0 +1,895 @@
+Title: Food-R1: A Unified Multi-Task Food Vision-Language Model with Reinforcement Learning
+
+URL Source: https://arxiv.org/pdf/2606.04986v1
+
+Published Time: Thu, 04 Jun 2026 01:16:02 GMT
+
+Number of Pages: 24
+
+Markdown Content:
+# Food-R1: A Unified Multi-Task Food Vision-Language Model with Reinforcement Learning 
+
+Yu Zhu 1* , Yongkang Li 1* , Wenjie Zhu 1, Haoyi Jiang 1, Wenyu Liu 1, Wei Yang 1,Bin Li 1, and Xinggang Wang 1†
+
+Huazhong University of Science and Technology, Wuhan, China 
+
+{zyzyzy, xgwang }@hust.edu.cn 
+
+> *
+
+Equal contribution. †Corresponding author. 
+
+Abstract. Recent studies have explored Vision-Language Models (VLMs) for food analysis. However, most existing methods rely primarily on su-pervised fine-tuning (SFT), which often limits reasoning and generaliza-tion capabilities. Moreover, high-quality large-scale nutritional annota-tions remain scarce. To address these issues, we introduce CalorieBench-80K , a large-scale benchmark with curated calorie labels and dietary ad-vice annotations. To the best of our knowledge, it is the first food image benchmark to incorporate Chain-of-Thought (CoT) annotations for calo-rie reasoning. We also propose Food-R1 , a unified food VLM trained in a multi-task learning paradigm to equip the model with broad ca-pabilities. Food-R1 undergoes CoT-based cold-start instruction tuning, followed by reinforcement fine-tuning (RFT) using Group Relative Policy Optimization (GRPO) to improve reasoning and performance. Experi-ments on CalorieBench-80K and representative benchmarks show that Food-R1 consistently outperforms strong baselines across food-related tasks. The code and model weights are available at https://github.com/ hustvl/Food-R1 and https://huggingface.co/collections/zy12123/ food-r1 .
+
+Keywords: Vision-Language Models · Food Analysis · Chain-of-Thought Reasoning · Reinforcement Learning. 
+
+1 Introduction 
+
+Food analysis aims to understand and reason over food images, including tasks such as ingredient recognition, recipe generation, and nutrition estimation. Purely visual recognition methods are widely used for dish classification [3,16], detec-tion [2], and segmentation [7,1]. While effective for dish-level recognition, they often struggle in complex, real-world settings due to fine-grained ingredient am-biguity, occlusion in mixed dishes, and appearance variations induced by diverse cooking styles. Consequently, extending these methods to ingredient-level un-derstanding remains challenging. 
+
+> arXiv:2606.04986v1 [cs.CV] 3 Jun 2026
+
+2 Y. Zhu et al. <think>         
+
+> 1) Ingredient identification: The dish is chicken
+> biryani. It includes rice, chicken, and garnishes.
+> 2) Quantity estimation: Rice: 300g.Chicken: 150g.
+> Garnishes: 50g.
+> 3) Calorie estimation: Rice: 1.3 kcal/g. Chicken:
+> 1.2 kcal/g. Garnishes: 30 kcal overall. Summing
+> these values: 390 + 180 + 30 = 600 kcal.
+> </think>
+> <answer> 600 kcal. </answer>
+> Could you estimate how
+> many calories are in this
+> dish in the image?
+> <answer> 720 kcal. </answer>
+> SFT
+> Food -R1
+> <think>
+> 1) Ingredient identification: It includes pizza dough,
+> cheese, ham and green pepper.
+> 2) Quantity estimation: Pizza dough: 170g.Cheese:
+> 55g.Ham: 20g.
+> 3) Calorie estimation: Pizza dough: 2.5 kcal/g.
+> Cheese: 3.5 kcal/g. Ham: 1.6 kcal/g. Sum: 425 +
+> 193 + 32= 650 kcal.
+> </think>
+> <answer> 650 kcal. </answer>
+> Can you provide an
+> approximate calorie count
+> for the entire serving shown
+> in this image?
+> <answer> 535 kcal. </answer>
+> SFT
+> Food -R1
+
+Fig. 1: Qualitative comparison before and after RFT. Compared with the SFT-only model, Food-R1 after post-training RFT produces more stable and accurate calorie estimates through a step-by-step reasoning process. Recent advances in Vision–Language Models have enabled new progress in food analysis. With broad world knowledge and multimodal reasoning, VLMs have been applied to food classification [33], ingredient recognition [13], recipe generation [22], and nutrition estimation [29]. Recent studies also explore agen-tic strategies with retrieval and external tools, such as nutrition database re-trieval [32] and volume estimation modules [28], to provide additional struc-tured knowledge. However, most VLM-based methods still rely primarily on supervised fine-tuning (SFT), limiting reasoning consistency and generalization in real-world scenarios. Beyond model-side limitations, progress in food analysis is also constrained by data-related challenges. Existing datasets are often collected from heteroge-neous sources, introducing non-food images and noisy annotations that require additional cleaning. Moreover, high-quality large-scale nutritional annotations remain scarce. Nutrition5k [30] provides fine-grained labels but has limited cat-egory coverage, while CalData [32], built on Recipe1M+ [20], offers larger-scale supervision but relies on less reliable database-derived nutrition labels. These is-sues highlight the need for large-scale data with reliable nutritional information. Motivated by these observations, we construct CalorieBench-80K , a large-scale benchmark built upon MM-Food-100K [8]. Through systematic filtering, granularity alignment, and dietary advice annotation, CalorieBench-80K pro-vides more reliable calorie-related supervision. To our knowledge, it is the first food image benchmark to incorporate Chain-of-Thought (CoT) annotations for calorie reasoning. We also propose Food-R1 , a unified multi-task food VLM with various capabilities including calorie estimation, dietary advice generation, food classification, ingredient recognition, recipe generation, and nutrition esti-mation. Fig. 3 summarizes our framework and highlights three key innovations: Food-R1 3
+
+(1) Unified Multi-task Food VLM : to enhance overall capabilities and better support calorie estimation, we take CalorieBench-80K as the core and integrate representative datasets into a multi-task learning paradigm; (2) Reasoning-oriented Distillation from Large Models : to mitigate ambiguity in nutri-tional inference, we employ a strong teacher model to distill CoT rationales, making intermediate inference steps explicit; (3) Food-based Reinforcement Learning : to move beyond imitation learning, we apply reinforcement learning (RL) post-training using Group Relative Policy Optimization (GRPO), encour-aging more reliable reasoning trajectories and improving overall performance. We evaluate Food-R1 on CalorieBench-80K and other established bench-marks, where it achieves consistent improvements across food-related tasks and outperforms strong baselines. Our main contributions are as follows: 
+
+– We introduce CalorieBench-80K , a large-scale benchmark with curated calorie labels and dietary advice annotations. To the best of our knowledge, it is the first food image benchmark to incorporate Chain-of-Thought anno-tations for calorie reasoning. 
+
+– We propose Food-R1 , a unified multi-task food VLM. It integrates CoT-based reasoning distillation to make intermediate inference steps explicit, improving reasoning consistency and cross-task generalization. 
+
+– We further introduce a post-training reinforcement learning stage with Group Relative Policy Optimization to enhance the model’s reasoning capability and overall performance. 
+
+2 Related Work 
+
+2.1 Vision-Language Models for Food Analysis 
+
+With improved multimodal understanding and reasoning, VLMs have signifi-cantly improved performance on food-related tasks. LLaVA-Chef [22] employs fine-tuning and prompt engineering for recipe generation. Later studies [32,17] adopt LoRA-based [9] supervised fine-tuning for tasks such as nutrition estima-tion and recipe generation. FoodLMM [33] presents a versatile food assistant, and RoDE [13] introduces a multi-task learning framework for the food do-main. However, most existing approaches remain centered on SFT. In contrast, as shown in Fig. 4, we adopt a two-stage training pipeline that consistently improves reasoning capabilities and performance across food-related tasks. 
+
+2.2 Chain-of-Thought for Multimodal Reasoning 
+
+Chain-of-Thought (CoT) reasoning encourages models to produce step-by-step rationales by exposing intermediate inference steps. It has been extended to mul-timodal tasks, including mathematical reasoning [34], robotic planning [23], and autonomous driving [11,14]. Moreover, recent studies have explored structured, stage-wise reasoning traces for VLM training. For instance, LLaVA-CoT [31] adopts structured CoT, while Corvid [12] performs two-stage CoT-formatted 4 Y. Zhu et al. 2. CoT Generation 1. CalorieBench -80K  
+
+> Step 1: Data Filtering
+> Step 2: Granularity Alignment Step3: Dietary Advice Annotation
+
+MM -Food -100K     
+
+> ◆Noisy Data
+> ◆Lack of VQA Annotation
+> ◆Coarse -grained
+> Criteria for Checking
+> Image -Text Consistency
+> Ingredient Lists
+> Quantities of Ingredient
+> Total Calories
+> Mismatch in Data Granularity
+> “dish”:" fruit -flavored drink“,
+> "ingredients": [" water ", …],
+> "quantities": [" beverage ":300g,…]
+
+CalorieBench -80K 
+
+> Generation Rule
+> Nutrition Overview
+> Practical Suggestions
+> Dietary Diversity
+
+Task: 
+
+GT :                                        
+
+> Generate a nutrition -focused
+> reasoning chain.
+> <think>
+> 1) Ingredient identification: typically includes rice as the base,
+> seafood such as shrimp, octopus, mussels…..
+> 2) Quantity estimation :Rice: 300 g of rice; Shrimp: 150 g…
+> 3) Calorie estimation: -Rice: At an estimated 1.3 kcal per gram,
+> 300 g contributes approximately 390 kcal…
+> They have a total of 600 kcal.
+> </think>
+> The dish is Seafood Paella, and has 4main
+> ingredients in total .They are :300 gof rice,
+> 150 gof shrimp, 100 gof octopus, and 50
+> gof mussels .They have atotal of 600 kcal .
+
+Prompt: 
+
+> Ingredient Identification
+> Quantity Estimation
+> Calorie Estimation
+> “dish”:" fruit -flavored drink“,
+> "ingredients": [" water ", …],
+> "quantities": [“ water ":300g,…]
+
+Fig. 2: CalorieBench-80K construction and CoT generation pipeline. Left: Built upon MM-Food-100K, we apply data filtering, granularity alignment, and dietary advice annotation to obtain CalorieBench-80K. Right: We prompt ChatGPT to produce nutrition-focused CoT rationales for calorie estimation. fine-tuning; both yield notable gains. However, CoT-integrated VLM training for food analysis remains underexplored. In this work, we incorporate reasoning-oriented CoT distillation into training. Ablation results in Table 7 show that this component enhances overall performance. 
+
+2.3 GRPO-based Reinforcement Learning for Reasoning 
+
+Reinforcement learning (RL) is widely used in post-training to improve rea-soning and overall model quality. DeepSeekMath [27] introduced GRPO, which estimates advantages from within-group relative rewards and thus removes the need for an explicit value-function critic. This design improves training efficiency and stability. Recent R1-style works have extended GRPO-based training to multimodal tasks, including multimodal reasoning [10], chart comprehension [5], and autonomous driving [11,14]. Motivated by these advances, we adopt GRPO-based RL as a post-training stage for food-related tasks, achieving consistent gains in reasoning quality and task accuracy. 
+
+3 Dataset Construction 
+
+3.1 Overview 
+
+To obtain large-scale and reliable nutrition-related annotations, we construct CalorieBench-80K by systematically filtering and aligning samples from MM-Food-100K [8] and then augmenting the data with dietary advice annotations, as illustrated in Fig. 2. Step-wise human validation is conducted to assess the quality of filtering, granularity alignment, and dietary advice annotation. Food-R1 5Food -R1 
+
+Food Images 
+
+Vision 
+
+Encoder 
+
+User Prompt 
+
+> Based on the image,
+> answer the question:
+> how many calories
+> does this dish have?
+
+Text 
+
+Tokenizer   
+
+> Answer Tokens Thinking Tokens
+> 1. Ingredient identification:
+> This dish is Shrimp and Asparagus Stir -Fry , which includes shrimp, asparagus, mushrooms, garlic, and olive oil.
+> 2. Quantity estimation:
+> Shrimp: 200g. Asparagus: 150g. Mushrooms: 100g. Olive oil: 10g.
+> 3. Calorie estimation:
+> Shrimp: 1 kcal/g. Asparagus: 0.2 kcal/g. Mushrooms: 0.22 kcal/g. Olive oil: 9 kcal/g . Summing these values:
+> 200 kcal (shrimp) + 30 kcal (asparagus) + 22 kcal (mushrooms) + 90 kcal (olive oil)= 342 kcal. Considering
+> rounding and portion estimation uncertainty, this is 350 kcal .
+
+Thinking Process 
+
+Calorie Estimation    
+
+> The dish is Shrimp and Asparagus Stir -Fry ,
+> and has 5 ingredients in total. They are: 200 g
+> of shrimp, 150 g of asparagus, 100 g of
+> mush -rooms, garlic, and olive oil . They have
+> a total of 350 kcal .
+
+Other Food -Related  Tasks   
+
+> Food Classification Recipe Generation Nutrition Estimation
+> Dietary Advice Generation
+
+…
+
+> Ingredient Recognition
+
+Fig. 3: Overview of Food-R1. Given an image and text prompt, Food-R1 per-forms calorie estimation via CoT reasoning and outputs structured predictions, while also supporting food classification, ingredient recognition, recipe genera-tion, dietary advice generation, and nutrition estimation. 
+
+3.2 Step 1: Data Filtering 
+
+Although MM-Food-100K provides a solid foundation, we observe issues such as image–text mismatches and noisy calorie annotations. To improve annotation reliability, we use GPT-4.1 to validate each sample against its food image from three aspects: (1) Ingredient Consistency , checking whether the listed ingredi-ents are plausible and complete; (2) Portion Plausibility , checking whether the ingredient amounts match the visible portions; and (3) Calorie Plausibility ,checking whether the total calories are reasonable. After filtering, approximately 80K high-confidence samples are retained. To verify filtering reliability, we man-ually review 500 sampled cases, including 300 retained and 200 filtered samples, following the same criteria, and observe a 93% agreement between GPT-4.1’s filtering decisions and human judgments. 
+
+3.3 Step 2: Granularity Alignment 
+
+We observe annotation granularity mismatches in some samples. For example, fine-grained ingredients (e.g., water , sugar ) may be paired with only a coarse portion label (e.g., drink : 300 g), making it difficult to assign quantities to in-dividual ingredients. To address this issue, we use Qwen2.5-VL-72B to map coarse portion quantities to the most plausible ingredients, producing aligned ingredient–quantity supervision. To verify alignment quality, we manually review 200 aligned samples and observe a 90% agreement between model predictions and human judgments. 
+
+3.4 Step 3: Dietary Advice Annotation 
+
+To bridge calorie estimation and practical health guidance, we further augment the dataset with dietary advice annotations. We use Qwen2.5-VL-72B to gener-6 Y. Zhu et al. First Stage: SFT    
+
+> Base VLM
+> CoT -based
+> Cold Start
+> Large Scale
+> Food Data
+> Second Stage: RFT
+> Policy
+> Model Rollout Reasoning COT 1 Trajectory 1
+
+…           
+
+> Reasoning COT 2 Trajectory 2
+> Reasoning COT n Trajectory n
+> Ingredient Reward Ingredient -Quantity Reward Total Nutrit ion Reward
+> Reward Function
+> Group
+> Computation
+> Reference
+> Model
+> If ingredient match,
+> Format Reward
+> r=ቊ1,if Pout ∈ℱreq
+> 0,otherwise
+
+Fig. 4: Two-stage Training Paradigm. Stage 1 (SFT): The base model is fine-tuned on mixed food datasets, incorporating CoT data for cold-start instruction tuning. Stage 2 (RFT): The SFT checkpoint serves as the reference model, while the policy model is optimized with GRPO using task-specific rewards. ate structured advice covering three aspects: (1) an overall nutrition overview, (2) practical suggestions, and (3) encouraging dietary diversity. This provides su-pervision for actionable dietary advice generation. To ensure annotation quality, we manually reviewed 500 randomly sampled advice annotations. Most sampled annotations satisfy the required criteria, with no unsafe guidance observed. 
+
+4 Method 
+
+4.1 Overview 
+
+We aim to develop a general food VLM with reliable, nutrition-aware reasoning. We treat calorie estimation as the central task, since it requires multiple capabil-ities, including dish recognition, ingredient identification, and nutritional knowl-edge. To this end, we adopt a multi-task learning paradigm with CalorieBench-80K and auxiliary datasets, equipping the model with broad skills while strength-ening calorie estimation. As shown in Fig. 4, we propose a two-stage training pipeline: Stage 1 performs CoT-based mixed SFT for cold-start instruction tun-ing, and Stage 2 applies GRPO-based RL for further performance improvement. 
+
+4.2 Unified Multi-task Food VLM 
+
+Food-R1 is a unified multi-task food VLM that maps a food image and an instruction into task-specific outputs in a shared autoregressive text generation space. Calorie estimation is treated as the central task, and complementary tasks, including food classification, ingredient recognition, recipe generation, nutrition estimation, and dietary advice generation, are integrated into a multi-task learn-ing paradigm. By sharing visual semantics and task knowledge, this formulation enables cross-task transfer, improving the stability of calorie reasoning and over-all generalization. All tasks follow an instruction-following format, and different Food-R1 7
+
+tasks can be invoked by simply switching the instruction. The outputs range from structured numerical predictions to open-ended generation. 
+
+4.3 Distillation from Large Models for Reasoning 
+
+Supervising models only on final answers often fails to yield stable and inter-pretable reasoning. Therefore, as shown in Fig. 2, we perform reasoning-oriented distillation by prompting GPT-4o to generate CoT annotations along three di-mensions for a subset of CalorieBench-80K: (1) Ingredient Identification :recognizing the dish and main ingredients; (2) Quantity Estimation : assign-ing plausible amounts to each ingredient; (3) Calorie Estimation : inferring the energy density of each ingredient and aggregating them into the total calories. The distilled CoT data are incorporated into SFT for cold-start instruction tuning. This encourages the model to decompose calorie estimation into inter-pretable subproblems and learn a more stable step-by-step solution trajectory, providing a stronger initialization for the subsequent RL stage. 
+
+4.4 Food-based Reinforcement Learning 
+
+Although SFT enables initial task decomposition, it remains insufficient for chal-lenging food scenarios. We therefore apply GRPO-based RL post-training with task-specific rewards to stabilize long-chain reasoning and enhance performance. 
+
+Group Relative Policy Optimization. For each training sample ( x, y ) ∼ D ,we form a query q and sample G responses {oi}Gi=1 from πθold (· | q). Here πref is the frozen SFT reference policy. We update πθ by maximizing:             
+
+> JGRPO (θ) = E(x,y )∼D ,{oi}∼ πθold (·| q)
+> 1
+> G
+> GX
+> i=1
+> Li−βD KL (πθ(· | q)∥πref (· | q)) ,(1)
+
+Li = min( wiAi, clip( wi, 1 − ϵ, 1 + ϵ) Ai) , (2) where wi = πθ (oi|q)  
+
+> πθold (oi|q)
+
+is the sequence-level likelihood ratio, ϵ and β are hyper-parameters, and Ai is obtained by normalizing rewards within the group. 
+
+Reward Design. We design four reward functions for ingredient recognition, and nutrition and calorie estimation. 
+
+– Ingredient Match Reward. This reward encourages accurate ingredient recognition, which is essential for calorie estimation. It is defined as the IoU between the predicted ingredient set Spred and the reference set Sref .
+
+– Ingredient–Quantity Match Reward. This reward encourages plausi-ble portion sizes for ingredients by matching ( quantity , unit , ingredient )triplets between the prediction and the reference, thereby facilitating calorie 8 Y. Zhu et al. 
+
+estimation. For each matched triplet with quantity values ˜ vpred and ˜ vref , we define a smooth score: 
+
+rqty = 2e−d
+
+1 + e−d , d = ˜vpred − ˜vref . (3) 
+
+– Total Nutrition Match Reward. Designed for calorie and nutrition es-timation, this reward is computed as the fraction of correctly predicted re-quired fields for the current dataset (e.g., calories only, or calories plus mass and macronutrients). With calories only, it reduces to a binary 0 /1 reward. 
+
+– Format Reward. To regularize the output format, we use a binary reward 
+
+rfmt ∈ { 0, 1} that checks whether the output matches the required schema. 
+
+5 Experiments 
+
+5.1 Experimental Settings Summary of Datasets. Beyond CalorieBench-80K, we also incorporate repre-sentative datasets across food-related tasks, including food classification, recipe generation, and nutrition estimation. Food-101 [3] and VireoFood-172 [4] are established benchmarks for food clas-sification. VireoFood-172 and Recipe1M [26] provide ingredient recognition su-pervision. For recipe generation, we use the image–recipe subset of Recipe1M, with paired recipes as supervision. Nutrition5k [30] is used for nutrition estima-tion with RGB images only, and FoodDialogues [33] provides multi-turn conver-sational supervision. CalorieBench-80K follows a 75K/5K train/test split, and all auxiliary datasets use their official splits. 
+
+Implementation Details. We use Qwen3-VL-8B as the base model and con-duct SFT and GRPO-based RL post-training using the MS-SWIFT frame-work [36]. In the SFT stage, we train on all datasets in an answer-only instruction-following format and additionally include a 5K CoT subset from CalorieBench-80K to encourage interpretable intermediate reasoning. We perform full-parameter fine-tuning for 3 epochs with a learning rate of 4 × 10 −5 and a global batch size of 128 with 16 gradient accumulation steps. For RL post-training, we initialize from the SFT checkpoint and run GRPO for 1 epoch with a global batch size of 128. We use a learning rate of 1 × 10 −6,sample 8 completions per prompt, and set the KL coefficient β to 0.04. The rewards are equally weighted, with all coefficients set to 1. We exclude dietary advice, recipe generation, and multi-turn dialogue from GRPO, as their open-ended outputs make automatic reward evaluation unstable. 
+
+5.2 Evaluation Metrics 
+
+We adopt task-specific metrics for each food-related task. For calorie esti-mation , we report MAE, RMSE, and R2, following [8]. For dietary advice Food-R1 9
+
+Table 1: Calorie estimation results on CalorieBench-80K. FoodLMM-s1 
+
+denotes FoodLMM trained on CalorieBench-80K with LoRA. 
+
+Model MAE ↓ RMSE ↓ R2 ↑
+
+Gemini-2.5-flash 301.87 576.65 -5.77 InternVL3-8B 218.70 412.16 -1.68 LLaVA-7B 200.79 304.21 -0.48 Qwen2.5-VL-72B 120.95 227.98 0.18 Qwen3-VL-8B 195.18 370.04 -1.13 GPT-4o-mini 88.40 167.00 0.57 FoodLMM [33] 170.35 274.22 -0.19 FoodLMM-s1 57.99 134.46 0.71 
+
+Food-R1 42.56 112.89 0.81 
+
+Table 2: Dietary advice generation results on CalorieBench-80K. We report ROUGE scores as R (i.e., R-1/R-2/R-L/R-L sum ), BLEU, SacreBLEU, and BERTScore as BERT (i.e., BERT-P/BERT-R/BERT-F1).                                                                                                    
+
+> Model R-1 ↑R-2 ↑R-L ↑R-L sum ↑BLEU ↑SacreBLEU ↑BERT-P ↑BERT-R ↑BERT-F1 ↑
+> Gemini-2.5-flash 0.42 0.13 0.24 0.24 0.06 0.10 0.86 0.85 0.85 InternVL3-8B 0.55 0.21 0.33 0.33 0.11 0.17 0.90 0.91 0.91 LLaVA-7B 0.52 0.19 0.30 0.30 0.06 0.09 0.89 0.89 0.89 Qwen2.5-VL-72B 0.45 0.17 0.29 0.29 0.07 0.07 0.89 0.88 0.88 Qwen3-VL-8B 0.47 0.13 0.25 0.25 0.04 0.05 0.87 0.88 0.88 GPT-4o-mini 0.55 0.21 0.33 0.33 0.15 0.21 0.91 0.91 0.91 FoodLMM 0.23 0.04 0.12 0.12 0.01 0.02 0.84 0.82 0.83 FoodLMM-s1 0.63 0.34 0.44 0.44 0.22 0.27 0.92 0.91 0.91
+> Food-R1 0.65 0.39 0.49 0.49 0.32 0.40 0.93 0.93 0.93
+
+generation , we use ROUGE-1/2/L/Lsum [15], BLEU [24], SacreBLEU [25], and BERTScore [35]. For food classification , we report top-1 accuracy. For 
+
+ingredient recognition , we use Intersection over Union (IoU) and F1 [19]. For 
+
+recipe generation , we measure the quality of generated recipes using Sacre-BLEU and ROUGE-L, following [33]. For nutrition estimation , we report MAE and percentage MAE (pMAE) for calories, mass, fat, carbohydrates, and protein, where pMAE is the MAE divided by the mean ground-truth value of each field. Calories are measured in kcal, and other fields in grams. 
+
+5.3 Main Results Calorie Estimation and Dietary Advice Generation Results. Table 1 reports calorie estimation results on CalorieBench-80K. We compare Food-R1 with several zero-shot general-purpose VLMs. For domain-specific comparison, we report FoodLMM [33] under zero-shot inference and its LoRA fine-tuned vari-ant FoodLMM-s1 , trained on the CalorieBench-80K training set with LoRA (r=8, α=16, dropout 0 .05). As shown, Food-R1 achieves the best overall perfor-10 Y. Zhu et al. 
+
+Table 3: Results on food classification and ingredient recognition. Food-R1 achieves the best performance on both Food-101 classification and VireoFood-172 ingredient recognition.                         
+
+> Food-101 Classification VireoFood-172 Ingredient Recognition
+> Method Top-1 Acc. (%) ↑Method IoU ↑F1 ↑
+> PRENet [21] 91.13 CACLNet [18] –65.71 FoodLMM 93.93 FoodLMM 56.94 68.97 RoDE [13] 94.02 RoDE [13] 65.95 73.54
+> Food-R1 95.21 Food-R1 78.50 84.61
+
+Table 4: Recipe generation results on Recipe1M. Food-R1 achieves the highest SacreBLEU, while LLaVA-FT performs best on ROUGE-L.             
+
+> Method SacreBLEU ↑ROUGE-L ↑
+> FIRE [6] 6.02 21.29 FoodLMM 6.24 36.96 LLaVA-FT [17] 5.88 38.18 Food-R1 7.76 28.73
+
+mance, outperforming both the domain-specific baseline FoodLMM-s1 and the teacher VLM Qwen2.5-VL-72B used in data construction, demonstrating the effectiveness of our training pipeline. Table 2 reports dietary advice generation results on CalorieBench-80K. Food-R1 obtains the highest scores across most metrics, surpassing Qwen2.5-VL-72B and FoodLMM-s1, indicating stronger alignment with the reference advice. 
+
+Food Classification and Ingredient Recognition Results. As shown in Table 3, Food-R1 achieves 95.21% Top-1 accuracy on Food-101 and obtains an IoU of 78.50 and an F1 of 84.61 on VireoFood-172 ingredient recognition. These results show that Food-R1 outperforms existing methods on both food classification and fine-grained ingredient recognition, achieving state-of-the-art performance and validating the effectiveness of our multi-task training strategy. 
+
+Recipe Generation Results. Table 4 reports recipe generation results on Recipe1M. Food-R1 achieves the highest SacreBLEU score, indicating better matching with reference recipes in local phrases and common cooking expres-sions. However, its ROUGE-L score is lower than that of LLaVA-FT, possibly because Food-R1 produces shorter recipes, while Recipe1M references often in-clude more specific ingredient quantities and longer steps. Since ROUGE-L is more sensitive to long subsequence overlap, text length, and step order, the two metrics capture different aspects of generation quality. Food-R1 11 
+
+Table 5: Nutrition estimation results on Nutrition5k. The Average column represents the mean MAE and pMAE across all five tasks. 
+
+Method Calorie MAE ↓ Mass MAE ↓ Fat MAE ↓ Carb MAE ↓ Protein MAE ↓ Average ↓
+
+RoDE – / 52.4% – / 38.4% – / 67.1% – / 47.8% – / 53.9% – / 51.9% FoodLMM 67.3 / 26.6% 39.7 / 20.7% 5.4 / 39.7% 5.9 / 31.1% 4.1 / 25.8% 24.5 / 28.8% 
+
+Food-R1 27.6 / 14.4% 44.3 / 18.0% 3.2 / 26.4% 4.4 / 22.9% 4.0 / 23.9% 16.7 / 21.1% 
+
+Table 6: Referring nutrition estimation results on Nutrition5k. Food-R1 achieves comparable or better performance across referenced-ingredient settings.                                                           
+
+> Refer ingredient Method Calorie MAE ↓Mass MAE ↓Fat MAE ↓Carb MAE ↓Protein MAE ↓Average ↓
+> refer@1st FoodLMM 25.2 / 34.7% 47.3 / 37.1% 3.7 / 46.1% 3.7 / 34.1% 2.5 / 22.4% 16.5 / 34.9%
+> Food-R1 28.2 / 21.4% 22.0 / 21.0% 1.3 / 22.9% 2.5 / 25.6% 2.4 / 21.9% 11.3 / 22.6%
+> refer@2nd FoodLMM 21.0 / 27.4% 16.9 / 39.5% 1.1 / 29.0% 2.1 / 30.5% 1.4 / 27.4% 8.5 / 30.8% Food-R1 24.4 / 31.2% 18.3 / 29.7% 1.0 / 27.5% 2.5 / 34.3% 1.6 / 32.6% 9.6 / 31.1% refer@3rd FoodLMM 16.9 / 39.5% 14.2 / 37.5% 0.9 / 39.9% 1.5 / 38.1% 1.2 / 48.2% 6.9 / 40.6%
+> Food-R1 13.3 / 32.2% 12.4 / 33.2% 0.6 / 28.5% 1.4 / 36.5% 0.7 / 32.1% 5.7 / 32.5%
+
+Nutrition Estimation Results. Table 5 reports results on Nutrition5k for estimating total calories, mass, and macronutrients from food images. Over-all, Food-R1 achieves the best Average performance, reducing the error over FoodLMM by 7.8 MAE and 7.7 pMAE points. Here, Average denotes the mean error across the five targets. We evaluate referring nutrition estimation [33], where the model predicts nu-trition for a specified ingredient. Following FoodLMM, we use the top-3 ingredi-ents by mass as references (refer@1st/2nd/3rd). As shown in Table 6, Food-R1 outperforms FoodLMM on refer@1st and refer@3rd, and achieves comparable results on refer@2nd, showing strong ingredient-level nutrition estimation. 
+
+5.4 Ablation Study 
+
+We conduct a stepwise ablation study on CalorieBench-80K, with results shown in Table 7. Multi-task learning brings consistent improvements over the SFT baseline, indicating that auxiliary food datasets provide complementary super-vision. Adding CoT supervision further reduces MAE from 49.28 to 45.28, sug-gesting that explicit reasoning helps calorie estimation. Finally, GRPO-based re-inforcement learning further improves performance, leading Food-R1 to achieve the best results, with an MAE of 42.56, RMSE of 112.89, and R2 of 0.81. These results demonstrate the effectiveness of our training strategy. 
+
+6 Conclusion 
+
+We introduce CalorieBench-80K, a large-scale benchmark with reliable calorie labels and dietary advice annotations. We further propose Food-R1, a unified food VLM trained in a multi-task learning paradigm with RL post-training. By 12 Y. Zhu et al. Recipe Generation 
+
+> The dish is Aussie Burgers.
+> Here is the recipe: Heat a grill to medium -
+> high. Clean and lightly oil hot grill. Cut
+> onion into thin rings …
+> Can you explain the step -
+> by -step cooking process
+> to prepare the dish?
+
+Nutrition Estimation 
+
+> Calories: 600.0 kcal, Fat: 30.0 g
+> Carbohydrates: 70.0 g, Protein: 10.0 g
+> Can you provide the total
+> calories, fat, carbohydrates
+> and protein of this dish?
+
+Multi -turn Dialogue       
+
+> Absolutely! The total weight of the dish is approximately
+> 279.3 grams. It contains 410.0 kcal calories, 18.6 grams of
+> fat, 44.8 grams of carbohydrates, and 22.6 grams of protein.
+> Could you estimate the total nutrition for this
+> dish from the image, including calories, fat,
+> carbs, and protein?
+> Which food item contributes the most to the protein content
+> of this meal?
+> In this meal, pork provides the most protein, contributing
+> about 11.44 g.
+> 1. Nutrition Overview: Grilled steak is high
+> in protein, but can be higher in fat.
+> 2. Practical Suggestions: Add more
+> veggies. Use less sauce. If cutting calories,
+> reduce steak to 150 –200 g.
+> 3. Encouragement: A solid meal —keep it
+> balanced with more vegetables and rotate
+> proteins across the week.
+
+Diet ary Advice 
+
+> Can you give me some
+> advice on this meal and how
+> to make it more balanced?
+
+Fig. 5: Representative examples of Food-R1. The examples cover recipe generation, nutrition estimation, dietary advice, and multi-turn dialogue. Table 7: Ablation study of calorie estimation on CalorieBench-80K with pro-gressively added training strategies. The Multi-task Learning paradigm refers to whether training includes auxiliary food datasets apart from CalorieBench-80K. 
+
+Supervised Fine-Tuning Multi-task Learning Chain-of-Thought Reinforcement Learning MAE ↓ RMSE ↓ R2 ↑
+
+✓ ✗ ✗ ✗ 51.62 121.56 0.77 
+
+✓ ✓ ✗ ✗ 49.28 118.23 0.78 
+
+✓ ✓ ✓ ✗ 45.28 113.44 0.80 
+
+✓ ✓ ✓ ✓ 42.56 112.89 0.81 
+
+leveraging CalorieBench-80K and auxiliary datasets, Food-R1 improves gener-alization across food-related tasks and outperforms strong baselines, validating the effectiveness of our approach. 
+
+References 
+
+1. Battini S¨ onmez, E., Memi¸ s, S., Arslan, B., Batur, O.Z.: The segmented UEC food-100 dataset with benchmark experiment on food detection. Multimedia Systems 
+
+29 , 2049–2057 (2023) 2. Bola˜ nos, M., Radeva, P.: Simultaneous food localization and recognition (2017), arXiv:1604.07953 3. Bossard, L., Guillaumin, M., Van Gool, L.: Food-101: Mining discriminative com-ponents with random forests. In: Computer Vision – ECCV 2014. Lecture Notes in Computer Science, vol. 8694, pp. 446–461 (2014) Food-R1 13 4. Chen, J., Ngo, C.W.: Deep-based ingredient recognition for cooking recipe retrieval. In: Proceedings of the 24th ACM International Conference on Multimedia. pp. 32– 41 (2016) 5. Chen, L., Zhao, X., Zeng, Z., Huang, J., Zhong, Y., Ma, L.: Chart-R1: Chain-of-thought supervision and reinforcement for advanced chart reasoner (2025), arXiv:2507.15509 6. Chhikara, P., Chaurasia, D., Jiang, Y., Masur, O., Ilievski, F.: FIRE: Food image to recipe generation (2024), arXiv preprint arXiv:2308.14391 7. Ciocca, G., Napoletano, P., Schettini, R.: Food recognition: A new dataset, ex-periments, and results. IEEE Journal of Biomedical and Health Informatics 21 ,588–598 (2017) 8. Dong, Y., Muraoka, Y., Shi, S., Zhang, Y.: MM-Food-100K: A 100,000-sample multimodal food intelligence dataset with verifiable provenance (2025), arXiv:2508.10429 9. Hu, E.J., Shen, Y., Wallis, P., Allen-Zhu, Z., Li, Y., Wang, S., Wang, L., Chen, W.: LoRA: Low-rank adaptation of large language models. In: International Conference on Learning Representations (2022) 10. Huang, W., Jia, B., Zhai, Z., Cao, S., Ye, Z., Zhao, F., Xu, Z., Hu, Y., Lin, S.: Vision-R1: Incentivizing reasoning capability in multimodal large language models (2025), arXiv:2503.06749 11. Jiang, B., Chen, S., Zhang, Q., Liu, W., Wang, X.: AlphaDrive: Unleashing the power of VLMs in autonomous driving via reinforcement learning and reasoning (2025), arXiv:2503.07608 12. Jiang, J., Ma, C., Song, X., Zhang, H., Luo, J.: Corvid: Improving multimodal large language models towards chain-of-thought reasoning. In: Proceedings of the IEEE/CVF International Conference on Computer Vision (2025) 13. Jiao, P., Wu, X., Zhu, B., Chen, J., Ngo, C.W., Jiang, Y.G.: RoDE: Linear rectified mixture of diverse experts for food large multi-modal models (2024), arXiv:2407.12730 14. Li, Y., Xiong, K., Guo, X., Li, F., Yan, S., Xu, G., Zhou, L., Chen, L., Sun, H., Wang, B., Ma, K., Chen, G., Ye, H., Liu, W., Wang, X.: ReCogDrive: A rein-forced cognitive framework for end-to-end autonomous driving. In: International Conference on Learning Representations (2026) 15. Lin, C.Y.: ROUGE: A package for automatic evaluation of summaries. In: Text Summarization Branches Out. pp. 74–81. Association for Computational Linguis-tics, Barcelona, Spain (2004) 16. Liu, G., Jiao, Y., Chen, J., Zhu, B., Jiang, Y.G.: From canteen food to daily meals: Generalizing food recognition to more practical scenarios. IEEE Trans. Multimedia 
+
+27 , 2724–2733 (2025) 17. Liu, G., Yin, H., Zhu, B., Chen, J., Ngo, C.W., Jiang, Y.G.: Retrieval augmented recipe generation. In: Proceedings of the IEEE/CVF Winter Conference on Appli-cations of Computer Vision. pp. 2453–2463 (2025) 18. Luo, M., Min, W., Wang, Z., Song, J., Jiang, S.: Ingredient prediction via context learning network with class-adaptive asymmetric loss. IEEE Trans. Image Process. 
+
+32 , 5509–5523 (2023) 19. Manning, C.D., Raghavan, P., Sch¨ utze, H.: Introduction to Information Retrieval. Cambridge University Press (2008) 20. Marin, J., Biswas, A., Ofli, F., Hynes, N., Salvador, A., Aytar, Y., Weber, I., Tor-ralba, A.: Recipe1M+: A dataset for learning cross-modal embeddings for cooking recipes and food images. IEEE Trans. Pattern Anal. Mach. Intell. 43 (1), 187–203 (2021) 14 Y. Zhu et al. 21. Min, W., Wang, Z., Liu, Y., Luo, M., Kang, L., Wei, X., Wei, X., Jiang, S.: Large scale visual food recognition. IEEE Trans. Pattern Anal. Mach. Intell. 45 , 9932– 9949 (2023) 22. Mohbat, F., Zaki, M.J.: LLaVA-chef: A multi-modal generative model for food recipes. In: Proceedings of the 33rd ACM International Conference on Information and Knowledge Management. pp. 1711–1721 (2024) 23. Mu, Y., Zhang, Q., Hu, M., Wang, W., Ding, M., Jin, J., Wang, B., Dai, J., Qiao, Y., Luo, P.: EmbodiedGPT: Vision-language pre-training via embodied chain of thought. In: Advances in Neural Information Processing Systems. vol. 36 (2023) 24. Papineni, K., Roukos, S., Ward, T., Zhu, W.J.: BLEU: A method for automatic evaluation of machine translation. In: Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics. pp. 311–318. Philadelphia, Penn-sylvania, USA (2002) 25. Post, M.: A call for clarity in reporting BLEU scores. In: Proceedings of the Third Conference on Machine Translation: Research Papers. pp. 186–191. Association for Computational Linguistics, Brussels, Belgium (2018) 26. Salvador, A., Hynes, N., Aytar, Y., Marin, J., Ofli, F., Weber, I., Torralba, A.: Learning cross-modal embeddings for cooking recipes and food images. In: Pro-ceedings of the IEEE Conference on Computer Vision and Pattern Recognition. pp. 3068–3076 (2017) 27. Shao, Z., Wang, P., Zhu, Q., Xu, R., Song, J., Bi, X., Zhang, H., Zhang, M., Li, Y.K., Wu, Y., Guo, D.: DeepSeekMath: Pushing the limits of mathematical reasoning in open language models (2024), arXiv:2402.03300 28. Tanabe, H., Yanai, K.: CalorieVoL: Integrating volumetric context into multimodal large language models for image-based calorie estimation. In: MultiMedia Model-ing. Lecture Notes in Computer Science, vol. 15523, pp. 353–365 (2025) 29. Tanabe, H., Yanai, K.: Reasoning-driven food energy estimation via multimodal large language models. Nutrients 17 (7), 1128 (2025) 30. Thames, Q., Karpur, A., Norris, W., Xia, F., Panait, L., Weyand, T., Sim, J.: Nutri-tion5k: Towards automatic nutritional understanding of generic food. In: Proceed-ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 8903–8911 (2021) 31. Xu, G., Jin, P., Wu, Z., Li, H., Song, Y., Sun, L., Yuan, L.: LLaVA-CoT: Let vision language models reason step-by-step. In: Proceedings of the IEEE/CVF International Conference on Computer Vision. pp. 11464–11475 (2025) 32. Yao, D., Yao, K., Zhou, J., Zhang, Y.: CaLoRAify: Calorie estimation with visual-text pairing and LoRA-driven visual language models (2024), arXiv:2412.09936 33. Yin, Y., Qi, H., Zhu, B., Chen, J., Jiang, Y.G., Ngo, C.W.: FoodLMM: A versatile food assistant using large multi-modal model. IEEE Trans. Multimedia 27 , 6949– 6961 (2025) 34. Zhang, R., Wei, X., Jiang, D., Guo, Z., Zhang, Y., Tong, C., Liu, J., Zhou, A., Zhang, S., Gao, P., Li, H.: MAVIS: Mathematical visual instruction tuning with an automatic data engine. In: International Conference on Learning Representations (2025) 35. Zhang, T., Kishore, V., Wu, F., Weinberger, K.Q., Artzi, Y.: BERTScore: Evalu-ating text generation with BERT. In: International Conference on Learning Rep-resentations (2020) 36. Zhao, Y., Huang, J., Hu, J., Wang, X., Mao, Y., Zhang, D., Zhang, H., Jiang, Z., Wu, Z., Ai, B., Wang, A., Zhou, W., Chen, Y.: SWIFT: A scalable lightweight infrastructure for fine-tuning. In: Proceedings of the AAAI Conference on Artificial Intelligence (2025) Food-R1 15 
+
+# Appendix 
+
+Overview. The appendix is organized as follows. Appendix A presents the construction details and human validation of CalorieBench-80K. Appendix B 
+
+introduces the datasets used in training, the instruction templates for multi-task learning, and the subset constructed from CalorieBench-80K with Chain-of-Thought (CoT) annotations. Appendix C provides experimental details, in-cluding training hyperparameters, baseline configurations, and other evaluation settings. 
+
+A CalorieBench-80K Construction Details 
+
+A.1 Construction Pipeline 
+
+As illustrated in Fig. S2, we use GPT-4.1 to filter the MM-Food-100K sam-ples [8]. GPT-4.1 provides an overall plausibility assessment together with a confidence score. Under this criterion, we retain only samples labeled as “yes” or “partial” with a confidence score greater than 0.8, yielding approximately 80,000 high-confidence samples for subsequent training and evaluation. Fig. S1 shows representative noisy samples discarded by our filtering pipeline. The full prompts used in the construction pipeline are provided in Fig. S2 and Fig. S3. 
+
+A.2 Human Validation 
+
+To verify the reliability of the CalorieBench-80K construction pipeline, we con-duct human validation on three key steps: data filtering, granularity alignment, and dietary advice annotation. For Step 1, data filtering, we randomly sample 500 instances for manual inspection, including 300 retained samples and 200 filtered samples. The manual validation follows the same criteria as the GPT-4.1-based filtering stage. The results show that the decision accuracy is 95.0% for retained samples and 90.0% for filtered samples, leading to an overall correctness of 93.0%. This indicates that the filtering process can effectively remove many clearly implausible samples. For Step 2, granularity alignment, we randomly sample 200 instances after granularity alignment and check whether each coarse portion is correctly mapped to an appropriate ingredient. The alignment accuracy is 90.0%, suggesting that this step can generally establish reasonable correspondences between portion descriptions and specific ingredients. For Step 3, dietary advice annotation, we randomly sample 500 instances with dietary advice and check whether they satisfy the annotation requirements. We further evaluate safety by examining whether the generated advice contains inappropriate content, such as medical diagnoses, disease risk assessments, or ex-treme dietary suggestions. All sampled instances pass the safety check, achieving a safety pass rate of 100.0%. This suggests that the generated dietary advice an-notations satisfy the predefined safety criteria. 16 Y. Zhu et al. Non -food image  Ingredient mismatch  
+
+> Portion mismatch Calorie mismatch
+
+Fig. S1: Representative noisy samples removed by the filtering pipeline. 
+
+These examples show typical raw-data errors, including non-food images, ingre-dient mismatches, portion errors, and calorie inconsistencies. 
+
+B Datasets and Prompt Design Details 
+
+B.1 Dataset Overview 
+
+We use the following six datasets for training: 
+
+CalorieBench-80K. CalorieBench-80K contains approximately 80,000 food images, each annotated with ingredient lists, portion information, total calo-ries, and dietary advice. The dataset is split into 75,000 training samples and 5,000 test samples, covering 15,768 dishes and 3,209 unique ingredients. 
+
+Food-101. Food-101 [3] contains 101 food categories and 101,000 images. 
+
+VireoFood-172. VireoFood-172 [4] contains 110,241 food images spanning 172 categories and 353 ingredients. 
+
+Recipe1M. Recipe1M [26] contains approximately 1 million recipes and 800,000 images, covering about 16,000 unique ingredients. 
+
+Nutrition5k. Nutrition5k [30] contains 5,000 dishes with overhead RGB images and four-view videos. It provides nutrition annotations at both the dish and in-gredient levels, including mass, calories, and macronutrients (fat, carbohydrates, and protein). Food-R1 17 ⚫ Visual match: For each ingredient, judge present / uncertain / absent based ONLY on visible cues. Do not 
+
+penalize inherently invisible items. Mark them uncertain if not clearly visible. 
+
+⚫ Portion plausibility: Check that the quantities provided are plausible based on the photo. 
+
+⚫ Calorie plausibility: 
+
+A) Per -unit kcal assessment: 
+
+- If a per -unit kcal is PROVIDED in the metadata map for an ingredient, assess it as "plausible" / "implausible -high" 
+
+/ "implausible -low" / "uncertain". 
+
+- If NOT provided, ESTIMATE a typical kcal -per -unit for that ingredient category based on general nutrition 
+
+knowledge. 
+
+- For estimates, also provide a reasonable range [low, high] reflecting typical variability. 
+
+B) Total -kcal assessment: 
+
+- Compute an estimated total kcal RANGE = sum(quantity × per -unit range) and a MIDPOINT. 
+
+- Compare target vs. MIDPOINT: "ok" if within ±15%; "high"/"low" otherwise. 
+
+- Judge absolute plausibility of the target for the visible portion and dish type: "plausible" | "implausible -low" | 
+
+"implausible -high" | "uncertain". 
+
+⚫ Classification rule: 
+
+- yes if key ingredients are present, portions plausible, per -unit kcal assessments are mostly plausible, and total kcal 
+
+is plausible/near range. 
+
+- partial if some items are uncertain or a minority of kcal checks look implausible but overall remains near plausible. 
+
+- no if key ingredients are absent or multiple kcal checks / totals are clearly implausible. 
+
+Prompt for Data Filtering 
+
+Fig. S2: Prompt template for filtering MM-Food-100K samples. You will be given: 1) A food image. 2) The dish title. 
+
+3) A list of ingredient names. 4) One quantity item, 
+
+whose name may be generic. 
+
+Your task: 
+
+- Using both the image and the text, choose exactly 
+
+one ingredient from the ingredient list that best 
+
+matches this quantity item. 
+
+- If the quantity name is generic, infer from the 
+
+image which specific ingredient in the list this 
+
+generic label most likely refers to. 
+
+- If several ingredients seem possible, pick the one 
+
+that is visually most dominant or most clearly 
+
+associated with that quantity in the image. 
+
+Prompt for Granularity Alignment 
+
+Using your general knowledge of WHO healthy diet principles, write an 
+
+answer with three parts based on the dish image, its ingredient list and 
+
+calorie information. 
+
+1. Objective nutrition overview : Briefly describe the dish’s total energy 
+
+and key nutrition features (e.g., protein, fat, carbohydrates). 
+
+2. Practical suggestions : Give concrete, realistic tips to make this meal 
+
+and the rest of the day more balanced and healthy . For example, you 
+
+may suggest changing portion size, adding vegetables or whole grains, 
+
+reducing sugary items, or balancing with lighter meals later in the day. 
+
+When judging “high” or “low” (salt, sugar, fat, etc.), base it on WHO 
+
+recommendations. 
+
+3. Encouragement and variety reminder : If there are no major 
+
+concerns (not extremely high in energy, sugar, or sodium), encourage 
+
+enjoying the dish in moderation . Remind the user to keep their overall 
+
+diet diverse and balanced, instead of focusing on a single meal. 
+
+Prompt for Dietary Advice Annotation 
+
+Fig. S3: Prompt templates used for granularity alignment (left) and dietary ad-vice annotation (right). 
+
+FoodDialogues. FoodDialogues [33] is built on top of Nutrition5k and includes, for each sample, an overhead RGB image and a video frame (angle A or D). It contains multi-turn conversations covering diverse topics, including nutrition, calorie estimation, health-related questions, metabolism, dietary planning, aller-gies, food pairing, and ingredient substitution. 
+
+B.2 Instruction Templates for Multi-Task Learning 
+
+In Sec. 4.2, we convert all datasets into an instruction-following format using carefully designed prompt templates. The instruction templates for each task are summarized below. 18 Y. Zhu et al. # role definition 
+
+You are a cooking and nutrition assistant. Using the image only, produce exactly one response. 
+
+# reasoning 
+
+Requirements: infer the dish from the image; count the ingredients; list ingredients as a comma -separated list (include amounts 
+
+if visible; omit amounts if not readable); provide the total energy in kcal .
+
+Produce one block wrapped in <answer>...</answer>. <answer> The dish is < DishName >, and has <N> ingredients in total. 
+
+They are: <item1>, <item2>, ... < itemN >. They have a total of < TotalKcal > kcal. </answer> 
+
+Calorie Estimation 
+
+# role definition 
+
+You are a cooking and nutrition assistant who always responds with a reasoning process and a final answer. 
+
+# reasoning 
+
+Answer strictly in the following format: <think> your detailed reasoning process here </think><answer> The dish is < DishName >, 
+
+and has <N> ingredients in total. They are: <item1>, <item2>, ... < itemN >. They have a total of < TotalKcal > kcal .</answer> 
+
+Rules for <think>: 
+
+1) Ingredient identification : name the dish and its visible inferable components. 
+
+2) Quantity estimation : assign realistic amounts with units; use label text if visible, otherwise provide plausible estimates. 
+
+3) Calorie estimation : state assumptions, show simple arithmetic for each item, and report the summed total. 
+
+Calorie Estimation 
+
+Fig. S4: Prompt templates for calorie estimation in the answer-only format and the format with CoT. # role definition 
+
+You are a cooking and nutrition assistant. Use the image and the dish information to produce exactly one response. 
+
+# reasoning 
+
+Provide balanced, non -medical dietary advice based on the dish. Include: 
+
+1. Objective nutrition overview on total energy level and key nutrition features, such as fat, sugar, sodium, protein, whole 
+
+grains, vegetables. 
+
+2. Practical suggestions to make this meal and the rest of today’s diet more balanced, for example adjusting portion size, 
+
+adding vegetables or whole grains, or balancing with lighter meals later in the day. 
+
+3. Encouragement and variety reminder to encourage enjoying the dish in moderation and keeping the diet diverse and 
+
+balanced instead of focusing on a single meal. 
+
+Constraints: Do NOT give medical diagnoses, disease risk, or treatment advice. 
+
+Dietary Advice 
+
+Fig. S5: Prompt template for dietary advice generation. 
+
+Calorie Estimation. We construct instruction-following data for calorie es-timation from CalorieBench-80K. Fig. S4 shows the prompt template in the answer-only format and the corresponding template with CoT. 
+
+Dietary Advice Generation. We construct instruction-following data for di-etary advice generation from CalorieBench-80K. The corresponding prompt tem-plate is shown in Fig. S5. 
+
+Food Classification. For food classification, we use Food-101 and VireoFood-172 to construct instruction-following data. Fig. S6 shows the prompt templates in the answer-only format and the format with CoT. 
+
+Ingredient Recognition. For ingredient recognition, we use VireoFood-172 and Recipe1M to construct instruction-following data. Fig. S7 shows the prompt templates in the answer-only format and the format with CoT. Food-R1 19 # role definition 
+
+> You are a food classification assistant.
+> # reasoning
+> You will see one food image and a question asking about the dish name. Produce one block wrapped in <answer>...</answer>.
+> <answer> The dish is < DishName >. </answer>
+> Replace < DishName > with a concise food category name that best describes the dish in the image.
+
+Food Classification    
+
+> # role definition
+> You are a food classification assistant who always responds with a reasoning process and a final answer.
+> # reasoning
+> Answer strictly in the following format: <think> your detailed reasoning process here </think><answer> The dish is < DishName >.
+> </answer>
+> Rules for <think>:
+> 1) Visual reasoning : describe the key visual cues (shape, color, toppings, context) that help identify the dish.
+> 2) Disambiguation : briefly explain how you distinguish this dish from similar categories.
+> 3) Conclusion : state the final matching Food -101 category name.
+
+Food Classification 
+
+Fig. S6: Prompt templates for food classification in the answer-only format and the format with CoT. 
+
+Recipe Generation. We construct instruction-following data for recipe gen-eration using the subset of Recipe1M paired with images. The corresponding prompt template is shown in Fig. S8. 
+
+Nutrition Estimation. We use Nutrition5k to construct instruction-following data for nutrition estimation. For each dish, we sample video frames from views A and D with a stride of five. During training, we use the overhead RGB image with a probability of 0.7; otherwise, we randomly sample a side-view frame with a probability of 0.3. As shown in Fig. S9 and Fig. S10, we design three prompt templates: (1) Ingredient Calories, which predicts the mass and calories of a single ingredient; (2) Ingredient Nutrition, which predicts the mass, calories, and macronutrients (fat, carbohydrates, and protein) of a single ingredient; and (3) Total Nutrition, which predicts the overall mass, calories, and macronutrients of the whole dish. 
+
+B.3 CoT-Annotated Subset for CalorieBench-80K 
+
+As described in Sec. 4.3, we further construct a 5K CoT-annotated subset from CalorieBench-80K, with the samples randomly selected from its training split. The prompt template used for this construction is shown in Fig. S11. 
+
+C Experiments 
+
+C.1 Training Details 
+
+The hyperparameter settings for the mixed supervised fine-tuning (SFT) stage (Stage I) and the Group Relative Policy Optimization (GRPO)-based reinforce-ment learning (RL) post-training stage (Stage II) are summarized in Table S1. 20 Y. Zhu et al. # role definition 
+
+You are a cooking and nutrition assistant. 
+
+# reasoning 
+
+Produce one block wrapped in <answer>...</answer>. <answer> The dish is < DishName >. It has <N> ingredients in total. 
+
+They are: <item1>, <item2>, ... < itemN >. </answer> 
+
+Using the image only, identify the dish and enumerate all its ingredients in the required <answer> template. Infer common 
+
+ingredients when they are typical for the dish, but avoid hallucinating unusual items. 
+
+Ingredient Recognition 
+
+# role definition 
+
+You are a cooking and nutrition assistant who always responds with a reasoning process and a final answer. 
+
+# reasoning 
+
+Answer strictly in the following format: <think> your detailed reasoning process here </think><answer> The dish is 
+
+<DishName >. It has <N> ingredients in total. They are: <item1>, <item2>, ... < itemN >. </answer> 
+
+Rules for <think>: 
+
+1) Dish identification — infer the dish name from the image. 
+
+2) Ingredient identification — list visible ingredients and only add common, clearly implied ingredients. 
+
+3) Output alignment — ensure the list in <answer> matches what you reasoned and avoid unusual items. 
+
+Ingredient Recognition 
+
+Fig. S7: Prompt templates for ingredient recognition in the answer-only format and the format with CoT. # role definition 
+
+You are a food and cooking assistant. 
+
+> # reasoning
+
+Produce one block wrapped in <answer>...</answer>. <answer> The dish is < DishName >. Here is the recipe: < FullRecipe >. 
+
+> </answer>
+> Rules:
+
+1) < FullRecipe > should describe the main cooking steps in order as natural text. 
+
+> 2) Base the recipe on the dish in the image and typical preparation methods.
+
+3) Follow a logical order from preparation to cooking to serving, and focus on the key steps instead of excessive detail. 
+
+Recipe Generation 
+
+Fig. S8: Prompt template for image-based recipe generation, where the model outputs an ordered sequence of cooking steps. 
+
+C.2 Evaluation Details 
+
+For the results reported in Sec. 5.3 (Table 1 and Table 2), we evaluate all com-pared open-source and closed-source vision-language models on the CalorieBench-80K test set using a unified two-turn dialogue protocol. The first turn is used for calorie estimation, and the second turn generates dietary advice based on the output of the first turn. The compared models include Gemini-2.5-flash, InternVL3-8B, LLaVA-7B, Qwen2.5-VL-72B, Qwen3-VL-8B, and GPT-4o-mini. Among them, GPT-4o-mini and Gemini-2.5-flash are evaluated via API calls, while the remaining models are deployed and evaluated locally. For locally de-ployed models, we use bfloat16 precision and a per-GPU batch size of 1. The input image resolution is set to 1,024. For generation, the first turn uses a max-imum of 512 new tokens with temperature set to 0.0, while the second turn uses a maximum of 512 new tokens with temperature set to 0.3, top-p set to 0.9, and top-k set to 50. Our Food-R1 is evaluated under the same inference con-figuration. As a domain-specific baseline, we further fine-tune FoodLMM [33] with LoRA [9] to obtain FoodLMM-s1 , whose training hyperparameters are summarized in Table S2. Food-R1 21 1. Ingredient Calories 
+
+# role definition 
+
+You are a cooking and nutrition assistant. 
+
+# reasoning 
+
+Produce one block wrapped in <answer>...</answer>. <answer> The ingredient is < IngredientName >. It weighs <Mass> g and 
+
+has about <Kcal> kcal in total. </answer> Replace < IngredientName >, <Mass>, and <Kcal> with the predicted ingredient name, 
+
+its mass in grams, and its calories in kilocalories. 
+
+2. Ingredient Nutrition 
+
+# role definition 
+
+You are a cooking and nutrition assistant. 
+
+# reasoning 
+
+Produce one block wrapped in <answer>...</answer>. <answer> The ingredient is < IngredientName >. It weighs <Mass> g and 
+
+provides about <Kcal> kcal in total, including <Fat> g of fat, <Carb> g of carbohydrate, and <Protein> g of protein. </answer> 
+
+Replace < IngredientName >, <Mass>, <Kcal>, <Fat>, <Carb>, and <Protein> with the ingredient name, its mass in grams, its 
+
+calories in kilocalories, and its three macronutrients in grams. 
+
+3. Total Nutrition 
+
+# role definition 
+
+You are a cooking and nutrition assistant. 
+
+# reasoning 
+
+Produce one block wrapped in <answer>...</answer>. <answer> The dish weighs <Mass> g in total and provides about <Kcal> 
+
+kcal, including <Fat> g of fat, <Carb> g of carbohydrate, and <Protein> g of protein overall. </answer> 
+
+Replace <Mass>, <Kcal>, <Fat>, <Carb>, and <Protein> with the total mass of the dish, its total calories in kilocalories, and th e
+
+total grams of fat, carbohydrate, and protein. 
+
+Nutrition Estimation 
+
+Fig. S9: Answer-only prompt templates for nutrition estimation on Nutrition5k, including (1) ingredient calories, (2) ingredient nutrition, and (3) total nutrition. For the results reported in Sec. 5.3 (Table 6), we conduct referring nutri-tion estimation [33] on the Nutrition5k test set. For each dish, we issue up to three queries, corresponding to its top three ingredients, using the prompt template shown in Fig. S12. 22 Y. Zhu et al. 1. Ingredient Calories 
+
+# role definition 
+
+You are a cooking and nutrition assistant who always responds with a reasoning process and a final answer. 
+
+# reasoning 
+
+Answer strictly in the following format: <think> …</think><answer> The ingredient is < IngredientName >. It weighs <Mass> 
+
+g and has about <Kcal> kcal in total. </answer> Identify the referred ingredient in the dish. Estimate its mass in grams (g). 
+
+Estimate its total calories in kilocalories (kcal) using simple arithmetic. 
+
+2. Ingredient Nutrition 
+
+# role definition 
+
+You are a cooking and nutrition assistant who always responds with a reasoning process and a final answer. 
+
+# reasoning 
+
+Answer strictly in the following format: <think> …</think><answer> The ingredient is < IngredientName >. It weighs <Mass> 
+
+g and provides about <Kcal> kcal in total, including <Fat> g of fat, <Carb> g of carbohydrate, and <Protein> g of 
+
+protein. </answer> Identify the referred ingredient in the dish. Estimate its mass (g), calories (kcal), and macronutrients 
+
+(fat/carb/protein in g). Keep reasoning concise; show simple arithmetic if needed. 
+
+3. Total Nutrition 
+
+# role definition 
+
+You are a cooking and nutrition assistant who always responds with a reasoning process and a final answer. 
+
+# reasoning 
+
+Answer strictly in the following format: <think> …</think ><answer >The dish weighs <Mass> g in total and provides about 
+
+<Kcal> kcal, including <Fat> g of fat, <Carb> g of carbohydrate, and <Protein> g of protein overall. </answer> Treat the plate 
+
+as a single dish. Estimate total mass (g), total calories (kcal), and total macronutrients (fat/carb/protein in g). Keep reasoning 
+
+concise; show simple arithmetic if needed. 
+
+Nutrition Estimation 
+
+Fig. S10: CoT-enabled prompt templates for nutrition estimation on Nutrition5k. # role definition 
+
+You are a food nutrition expert. You should provide a reasoning process for the following question as instructed. 
+
+# ground truth 
+
+You are presented with a dish titled “{TITLE}” and its annotations: {INGREDIENT_LIST}, {PORTIONS}, and {CALORIES}. 
+
+# reasoning 
+
+1) Ingredient identification : state what’s in the dish and why it makes sense for this recipe. 
+
+2) Quantity estimation : state a concrete amount and unit for each ingredient and justify briefly. 
+
+3) Calorie estimation : For each item, firstly state a reasonable per -unit calorie density and then compute its total calories. 
+
+End with the summed total. 
+
+CoT Generation 
+
+Fig. S11: Prompt template for the CoT-annotated subset of CalorieBench-80K. # role definition 
+
+You are a cooking and nutrition assistant. 
+
+# reasoning 
+
+Using the image only and the specified ingredient to estimate, produce exactly one response wrapped in <answer>...</answer> 
+
+with this template: <answer> The ingredient is < IngredientName >. It weighs <Mass> g and provides about <Kcal> kcal in total, 
+
+including <Fat> g of fat, <Carb> g of carbohydrate, and <Protein> g of protein. </answer> 
+
+Rules: 
+
+1) Replace < IngredientName >, <Mass>, <Kcal>, <Fat>, <Carb>, and <Protein> with the ingredient name, its mass in grams, its 
+
+calories in kilocalories, and its three macronutrients in grams. 
+
+2) Mention only this single ingredient. Do not discuss the whole dish or other ingredients. 
+
+Referring Nutrition Estimation 
+
+Fig. S12: Prompt template for referring nutrition estimation on Nutrition5k, where the model estimates the mass, calories, and macronutrients (fat, carbohy-drates, and protein) of a specified ingredient from the input image. Food-R1 23 
+
+Table S1: Hyperparameters for the mixed SFT stage (Stage I) and the GRPO-based RL post-training stage (Stage II). 
+
+Stage Parameter Value I (SFT) Model Qwen3-VL-8B-Instruct Training type Full-parameter Precision bfloat16 Image resolution 1,024 Max length 8,192 Epochs 3Per-device train batch size 1Gradient accumulation steps 16 Effective global batch size 128 Learning rate 4 × 10 −5
+
+Weight decay 0.05 Warmup ratio 0.05 II (GRPO) Base checkpoint Checkpoint from SFT Precision bfloat16 Image resolution 1,024 Max length 2,048 Epochs 1Per-device train batch size 1Gradient accumulation steps 16 Effective global batch size 128 Num generations (per prompt) 8Learning rate 1 × 10 −6
+
+Weight decay 0.05 Warmup ratio 0.05 KL coefficient β 0.04 Policy clip ϵ / ϵhigh 0.2 / 0.28 Sampling temperature / top-p 0.9 / 0.9 Max grad norm 0.5 vLLM (mode / TP / max length) colocate / 4 / 8,192 24 Y. Zhu et al. 
+
+Table S2: Hyperparameters used for LoRA fine-tuning of FoodLMM-s1. 
+
+Setting Parameter Value FoodLMM-s1 Base model FoodLMM-Chat [33] Training type LoRA SFT Precision bfloat16 Image resolution 1,024 Max length 2,048 Epochs 3Per-device train batch size 1Gradient accumulation steps 4Effective global batch size 16 Learning rate 2 × 10 −4
+
+Weight decay 0.0 Warmup ratio 0.03 LR scheduler cosine LoRA ( r / α / dropout) 8 / 16 / 0.05 LoRA target modules q proj, k proj, v proj, o proj, gate proj, up proj, down proj

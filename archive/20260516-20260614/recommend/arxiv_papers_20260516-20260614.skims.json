@@ -1,0 +1,99 @@
+{
+  "mode": "skims",
+  "generated_at": "2026-06-14T13:37:49.635362+00:00",
+  "stats": {
+    "mode": "skims",
+    "forced_all_quick": true,
+    "min_score": 8.0,
+    "deep_divecandidates": 2,
+    "deep_cap": null,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": null,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.08948v1",
+      "source": "arxiv",
+      "title": "NutriMLLM: Multimodal Large Language Models for Dietary Micronutrient Analysis",
+      "abstract": "Comprehensive estimation of dietary micronutrients from food images could improve clinical nutrition care, but training such models requires large multimodal datasets linking diverse foods to complete nutrient profiles. We first show that existing multimodal large language models (MLLMs), including leading proprietary models, are unreliable for this task. Across five model families and four independent evaluation benchmarks (ASA24, SNAPMe, FNDDS, and NutriBench), models frequently abstained or returned statistically implausible values. To address this gap without costly expert annotation, we repurposed a decade of population-scale 24-hour dietary recalls as structured prompts for text-to-image generation. This pipeline produced a synthetic corpus of about 1.1 million image-description-nutrient triplets, each pairing a generated food image with a complete 65-nutrient label. To our knowledge, this is the largest synthetic food-image corpus with comprehensive micronutrient annotation planned for public release upon publication. Fine-tuning Qwen3-VL (2B/4B/8B/30B) and GLM-4.6V-Flash on this corpus yielded NutriMLLM, the first family of vision-language models specialized for comprehensive dietary micronutrient estimation. We evaluate these models with a four-component framework that separately measures abstention, hallucination, overall usability, and per-nutrient numerical accuracy. On real food images, every NutriMLLM variant achieved near-complete coverage across all 65 nutrients, and the largest variant matched or exceeded proprietary baselines (GPT-5, Gemini 3, and Claude Sonnet 4.5) in accuracy on most nutrients. These results show that recall-driven synthetic supervision can make image-based comprehensive micronutrient estimation a tractable engineering problem and support dietary assessment, personalized nutrition guidance, and population-scale micronutrient surveillance.",
+      "authors": [
+        "Runze Yan",
+        "Minxiao Wang",
+        "Jiaying Lu",
+        "Darren Liu",
+        "Xiao Hu",
+        "Hanqi Luo"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-08T02:50:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.08948v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "directly addresses dietary micronutrient analysis from food images using MLLM similar to Nutrition5k theme",
+      "llm_evidence_cn": "直接使用多模态大语言模型从食品图像进行膳食微量营养素分析，与Nutrition5k主题一致",
+      "llm_evidence": "直接使用多模态大语言模型从食品图像进行膳食微量营养素分析，与Nutrition5k主题一致",
+      "canonical_evidence": "直接使用多模态大语言模型从食品图像进行膳食微量营养素分析，与Nutrition5k主题一致",
+      "llm_tldr_en": "NutriMLLM leverages multimodal large language models for dietary micronutrient estimation from food images, using synthetic data from 24-hour recalls to overcome training data scarcity.",
+      "llm_tldr_cn": "该论文针对现有大模型无法可靠估计膳食微量营养素的问题，提出了NutriMLLM框架。通过将十年人口规模24小时饮食回忆数据转化为文本提示，驱动文生图模型生成合成多模态数据集，训练出能综合图像和文本信息进行微量营养素预测的模型。在多个基准上验证了有效性，为食品图像营养预测提供了实用的多模态解决方案，直接契合Nutrition5k数据集相关的研究需求。",
+      "llm_tldr": "该论文针对现有大模型无法可靠估计膳食微量营养素的问题，提出了NutriMLLM框架。通过将十年人口规模24小时饮食回忆数据转化为文本提示，驱动文生图模型生成合成多模态数据集，训练出能综合图像和文本信息进行微量营养素预测的模型。在多个基准上验证了有效性，为食品图像营养预测提供了实用的多模态解决方案，直接契合Nutrition5k数据集相关的研究需求。",
+      "llm_tags": [
+        "query:nutritionk:composite"
+      ],
+      "matched_query_tag": "query:nutritionk:composite",
+      "matched_query_text": "Papers central to 请帮我查找关于nutrition5k数据集，食品图像营养成分预测，使用图文多模态模型的论文, especially work that connects or combines: Nutrition5k dataset food nutrition prediction; food image based nutritional composition prediction; multimodal vision language model food recognition nutrition; deep learning dietary assessment from food images; food nutrient estimation from images deep learning; visual nutrition analysis multimodal deep learning; find papers on Nutrition5k dataset for food nutrition prediction using multimodal models; research on image based food nutritional composition estimation with vision language models; multimodal deep learning approaches for food nutrient analysis from images.",
+      "matched_requirement_id": "req-composite-nutritionk",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2606.04986v1",
+      "source": "arxiv",
+      "title": "Food-R1: A Unified Multi-Task Food Vision-Language Model with Reinforcement Learning",
+      "abstract": "Recent studies have explored Vision-Language Models (VLMs) for food analysis. However, most existing methods rely primarily on supervised fine-tuning (SFT), which often limits reasoning and generalization capabilities. Moreover, high-quality large-scale nutritional annotations remain scarce. To address these issues, we introduce CalorieBench-80K, a large-scale benchmark with curated calorie labels and dietary advice annotations. To the best of our knowledge, it is the first food image benchmark to incorporate Chain-of-Thought (CoT) annotations for calorie reasoning. We also propose Food-R1, a unified food VLM trained in a multi-task learning paradigm to equip the model with broad capabilities. Food-R1 undergoes CoT-based cold-start instruction tuning, followed by reinforcement fine-tuning (RFT) using Group Relative Policy Optimization (GRPO) to improve reasoning and performance. Experiments on CalorieBench-80K and representative benchmarks show that Food-R1 consistently outperforms strong baselines across food-related tasks. The code, model weights, and benchmark annotations are available at the project repository.",
+      "authors": [
+        "Yu Zhu",
+        "Yongkang Li",
+        "Wenjie Zhu",
+        "Haoyi Jiang",
+        "Wenyu Liu",
+        "Wei Yang",
+        "Bin Li",
+        "Xinggang Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-03T15:07:12+00:00",
+      "link": "https://arxiv.org/pdf/2606.04986v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "food vision-language model for calorie reasoning and dietary advice",
+      "llm_evidence_cn": "食品视觉语言模型用于卡路里推理和饮食建议",
+      "llm_evidence": "食品视觉语言模型用于卡路里推理和饮食建议",
+      "canonical_evidence": "食品视觉语言模型用于卡路里推理和饮食建议",
+      "llm_tldr_en": "Food-R1 is a unified multi-task food VLM trained with reinforcement learning, achieving state-of-the-art calorie reasoning on the new CalorieBench-80K benchmark.",
+      "llm_tldr_cn": "现有食品视觉语言模型大多依赖监督微调，推理能力有限。本文提出Food-R1，一个统一的图文多任务模型，结合强化学习训练。引入CalorieBench-80K基准，包含首个带有思维链标注的食品图像数据集用于卡路里推理。实验表明Food-R1在卡路里估计和饮食建议任务上显著优于现有方法，为食品营养分析提供了强大的多模态框架。",
+      "llm_tldr": "现有食品视觉语言模型大多依赖监督微调，推理能力有限。本文提出Food-R1，一个统一的图文多任务模型，结合强化学习训练。引入CalorieBench-80K基准，包含首个带有思维链标注的食品图像数据集用于卡路里推理。实验表明Food-R1在卡路里估计和饮食建议任务上显著优于现有方法，为食品营养分析提供了强大的多模态框架。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ]
+}
