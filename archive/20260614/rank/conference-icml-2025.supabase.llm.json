@@ -1,0 +1,450 @@
+{
+  "top_k": 200,
+  "generated_at": "2026-06-14T13:37:22.423620+00:00",
+  "papers": [
+    {
+      "id": "openreview-icml-2025-z7lapws4nv",
+      "source": "ICML-2025-Accepted",
+      "title": "CtrlSynth: Controllable Image Text Synthesis for Data-Efficient Multimodal Learning",
+      "abstract": "Pretraining robust vision or multimodal foundation models (e.g., CLIP) relies on large-scale datasets that may be noisy, potentially misaligned, and have long-tail distributions. Previous works have shown promising results in augmenting datasets by generating synthetic samples. However, they only support domain-specific ad hoc use cases (e.g., either image or text only, but not both), and are limited in data diversity due to a lack of fine-grained control over the synthesis process. In this paper, we design a controllable image-text synthesis pipeline, CtrlSynth, for data-efficient and robust multimodal learning. The key idea is to decompose the visual semantics of an image into basic elements, apply user-specified control policies (e.g., remove, add, or replace operations), and recompose them to synthesize images or texts. The decompose and recompose feature in CtrlSynth allows users to control data synthesis in a fine-grained manner by defining customized control policies to manipulate the basic elements. CtrlSynth leverages the capabilities of pretrained foundation models such as large language models or diffusion models to reason and recompose basic elements such that synthetic samples are natural and composed in diverse ways. CtrlSynth is a closed-loop, training-free, and modular framework, making it easy to support different pretrained models. With extensive experiments on 31 datasets spanning different vision and vision-language tasks, we show that CtrlSynth substantially improves zero-shot classification, image-text retrieval, and compositional reasoning performance of CLIP models.",
+      "authors": [
+        "Qingqing Cao",
+        "Mahyar Najibi",
+        "Sachin Mehta"
+      ],
+      "primary_category": "clip",
+      "categories": [
+        "clip",
+        "synthetic data",
+        "multimodal learning",
+        "longtail"
+      ],
+      "published": "2025-05-01T13:16:38.07+00:00",
+      "link": "https://openreview.net/forum?id=z7lApwS4nV",
+      "pdf_url": null,
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ]
+    },
+    {
+      "id": "openreview-icml-2025-eih5gy3pjt",
+      "source": "ICML-2025-Accepted",
+      "title": "FG-CLIP: Fine-Grained Visual and Textual Alignment",
+      "abstract": "Contrastive Language-Image Pre-training (CLIP) excels in multimodal tasks such as image-text retrieval and zero-shot classification but struggles with fine-grained understanding due to its focus on coarse-grained short captions. To address this, we propose Fine-Grained CLIP (FG-CLIP), which enhances fine-grained understanding through three key innovations. First, we leverage large multimodal models to generate 1.6 billion long caption-image pairs for capturing global-level semantic details. Second, a high-quality dataset is constructed with 12 million images and 40 million region-specific bounding boxes aligned with detailed captions to ensure precise, context-rich representations. Third, 10 million hard fine-grained negative samples are incorporated to improve the model's ability to distinguish subtle semantic differences. We construct a comprehensive dataset, termed FineHARD, by integrating high-quality region-specific annotations with challenging fine-grained negative samples. Corresponding training methods are meticulously designed for these data. Extensive experiments demonstrate that FG-CLIP outperforms the original CLIP and other state-of-the-art methods across various downstream tasks, including fine-grained understanding, open-vocabulary object detection, image-text retrieval, and general multimodal benchmarks. These results highlight FG-CLIP's effectiveness in capturing fine-grained image details and improving overall model performance. The data, code, and models are available at https://github.com/360CVGroup/FG-CLIP.",
+      "authors": [
+        "Chunyu Xie",
+        "Bin Wang",
+        "Fanjing Kong",
+        "Jincheng Li",
+        "Dawei Liang",
+        "Gengshen Zhang",
+        "Dawei Leng",
+        "Yuhui Yin"
+      ],
+      "primary_category": "Vision-Language Model",
+      "categories": [
+        "Vision-Language Model",
+        "Contrastive Learning",
+        "Image-Text Dataset"
+      ],
+      "published": "2025-05-01T13:12:04.074+00:00",
+      "link": "https://openreview.net/forum?id=eih5Gy3Pjt",
+      "pdf_url": null,
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ]
+    },
+    {
+      "id": "openreview-icml-2025-5tua2uxspp",
+      "source": "ICML-2025-Accepted",
+      "title": "Learning Optimal Multimodal Information Bottleneck Representations",
+      "abstract": "Leveraging high-quality joint representations from multimodal data can greatly enhance model performance in various machine-learning based applications. Recent multimodal learning methods, based on the multimodal information bottleneck (MIB) principle, aim to generate optimal MIB with maximal task-relevant information and minimal superfluous information via regularization. However, these methods often set regularization weights in an *ad hoc* manner and overlook imbalanced task-relevant information across modalities, limiting their ability to achieve optimal MIB. To address this gap, we propose a novel multimodal learning framework, Optimal Multimodal Information Bottleneck (OMIB), whose optimization objective guarantees the achievability of optimal MIB by setting the regularization weight within a theoretically derived bound. OMIB further addresses imbalanced task-relevant information by dynamically adjusting regularization weights per modality, ensuring the inclusion of all task-relevant information. Moreover, we establish a solid information-theoretical foundation for OMIB's optimization and implement it under the variational approximation framework for computational efficiency. Finally, we empirically validate the OMIB’s theoretical properties on synthetic data and demonstrate its superiority over the state-of-the-art benchmark methods in various downstream tasks.",
+      "authors": [
+        "Qilong Wu",
+        "Yiyang Shao",
+        "Jun Wang",
+        "Xiaobo Sun"
+      ],
+      "primary_category": "Multimodal Learning; Information Bottleneck",
+      "categories": [
+        "Multimodal Learning; Information Bottleneck"
+      ],
+      "published": "2025-05-01T13:17:20.562+00:00",
+      "link": "https://openreview.net/forum?id=5TUa2UXSpp",
+      "pdf_url": null,
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "type": "intent_query",
+      "tag": "nutritionk",
+      "paper_tag": "query:nutritionk",
+      "query_text": "find papers on Nutrition5k dataset for food nutrition prediction using multimodal models",
+      "sim_scores": {
+        "openreview-icml-2025-5tua2uxspp": {
+          "score": 0.014084507042253521,
+          "rank": 11
+        }
+      },
+      "ranked": [
+        {
+          "paper_id": "openreview-icml-2025-5tua2uxspp",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-icml-2025-eih5gy3pjt",
+          "score": 0.6388587937883712,
+          "star_rating": 4
+        },
+        {
+          "paper_id": "openreview-icml-2025-z7lapws4nv",
+          "score": 0.608262108262108,
+          "star_rating": 4
+        }
+      ]
+    },
+    {
+      "type": "intent_query",
+      "tag": "nutritionk",
+      "paper_tag": "query:nutritionk",
+      "query_text": "multimodal deep learning approaches for food nutrient analysis from images",
+      "sim_scores": {
+        "openreview-icml-2025-z7lapws4nv": {
+          "score": 0.014492753623188406,
+          "rank": 9
+        }
+      },
+      "ranked": [
+        {
+          "paper_id": "openreview-icml-2025-5tua2uxspp",
+          "score": 1.0,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-icml-2025-z7lapws4nv",
+          "score": 0.9185999185999183,
+          "star_rating": 5
+        },
+        {
+          "paper_id": "openreview-icml-2025-eih5gy3pjt",
+          "score": 0.73604826546003,
+          "star_rating": 4
+        }
+      ]
+    },
+    {
+      "type": "intent_query",
+      "tag": "nutritionk",
+      "paper_tag": "query:nutritionk",
+      "query_text": "research on image based food nutritional composition estimation with vision language models",
+      "sim_scores": {
+        "openreview-icml-2025-eih5gy3pjt": {
+          "score": 0.013888888888888888,
+          "rank": 12
+        },
+        "openreview-icml-2025-z7lapws4nv": {
+          "score": 0.012345679012345678,
+          "rank": 21
+        }
+      },
+      "ranked": [
+        {
+          "paper_id": "openreview-icml-2025-z7lapws4nv",
+          "score": 0.49392712550607265,
+          "star_rating": 3
+        },
+        {
+          "paper_id": "openreview-icml-2025-eih5gy3pjt",
+          "score": 0.21328671328671328,
+          "star_rating": 3
+        },
+        {
+          "paper_id": "openreview-icml-2025-5tua2uxspp",
+          "score": 0.0823211875843454,
+          "star_rating": 2
+        }
+      ]
+    },
+    {
+      "type": "keyword",
+      "tag": "nutritionk",
+      "paper_tag": "keyword:nutritionk",
+      "query_text": "Nutrition5k dataset food nutrition prediction",
+      "sim_scores": {}
+    },
+    {
+      "type": "keyword",
+      "tag": "nutritionk",
+      "paper_tag": "keyword:nutritionk",
+      "query_text": "deep learning dietary assessment from food images",
+      "sim_scores": {
+        "openreview-icml-2025-z7lapws4nv": {
+          "score": 0.00980392156862745,
+          "rank": 42
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "nutritionk",
+      "paper_tag": "keyword:nutritionk",
+      "query_text": "food image based nutritional composition prediction",
+      "sim_scores": {
+        "openreview-icml-2025-eih5gy3pjt": {
+          "score": 0.014285714285714285,
+          "rank": 10
+        },
+        "openreview-icml-2025-z7lapws4nv": {
+          "score": 0.0125,
+          "rank": 20
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "nutritionk",
+      "paper_tag": "keyword:nutritionk",
+      "query_text": "food nutrient estimation from images deep learning",
+      "sim_scores": {
+        "openreview-icml-2025-z7lapws4nv": {
+          "score": 0.009900990099009901,
+          "rank": 41
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "nutritionk",
+      "paper_tag": "keyword:nutritionk",
+      "query_text": "multimodal vision language model",
+      "sim_scores": {
+        "openreview-icml-2025-z7lapws4nv": {
+          "score": 0.011627906976744186,
+          "rank": 26
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "nutritionk",
+      "paper_tag": "keyword:nutritionk",
+      "query_text": "multimodal vision language model food recognition nutrition",
+      "sim_scores": {
+        "openreview-icml-2025-z7lapws4nv": {
+          "score": 0.013333333333333334,
+          "rank": 15
+        },
+        "openreview-icml-2025-eih5gy3pjt": {
+          "score": 0.011111111111111112,
+          "rank": 30
+        }
+      }
+    },
+    {
+      "type": "keyword",
+      "tag": "nutritionk",
+      "paper_tag": "keyword:nutritionk",
+      "query_text": "visual nutrition analysis multimodal deep learning",
+      "sim_scores": {
+        "openreview-icml-2025-z7lapws4nv": {
+          "score": 0.014492753623188406,
+          "rank": 9
+        },
+        "openreview-icml-2025-5tua2uxspp": {
+          "score": 0.00909090909090909,
+          "rank": 50
+        }
+      }
+    }
+  ],
+  "global_candidate_ids": [
+    "openreview-icml-2025-f6sfhnfumu",
+    "openreview-icml-2025-sw2puzbtf1",
+    "openreview-icml-2025-w7lm8ajzh6",
+    "openreview-icml-2025-bgdsssjwot",
+    "openreview-icml-2025-oji8jibhgo",
+    "openreview-icml-2025-0flogptlo1",
+    "openreview-icml-2025-u2jh71u9t6",
+    "openreview-icml-2025-vexhifrbjg",
+    "openreview-icml-2025-rn3thnkvzw",
+    "openreview-icml-2025-muzesbqzla",
+    "openreview-icml-2025-llgqtdcpag",
+    "openreview-icml-2025-038rewbchh",
+    "openreview-icml-2025-b5h60xqnzm",
+    "openreview-icml-2025-2v91xhndsz",
+    "openreview-icml-2025-neba0bs5lr",
+    "openreview-icml-2025-me6pfbatwm",
+    "openreview-icml-2025-rbsfeuynta",
+    "openreview-icml-2025-u6xekvhs6k",
+    "openreview-icml-2025-frorsmphum",
+    "openreview-icml-2025-z7lapws4nv",
+    "openreview-icml-2025-dpya4zys7n",
+    "openreview-icml-2025-wbp2owmulq",
+    "openreview-icml-2025-9adqzafcuc",
+    "openreview-icml-2025-jijagtw98t",
+    "openreview-icml-2025-zdqtepsv1k",
+    "openreview-icml-2025-rgd7pomtdp",
+    "openreview-icml-2025-imkfokwfwd",
+    "openreview-icml-2025-fa0afz9lzi",
+    "openreview-icml-2025-rsegdeipt9",
+    "openreview-icml-2025-80faipz67s",
+    "openreview-icml-2025-nxvuihw2v1",
+    "openreview-icml-2025-ku2fvcepwx",
+    "openreview-icml-2025-buondewsba",
+    "openreview-icml-2025-4yhwv3b6g4",
+    "openreview-icml-2025-uoaxrn88or",
+    "openreview-icml-2025-8pcxolwbin",
+    "openreview-icml-2025-rc7y9hfc34",
+    "openreview-icml-2025-osnubj4vlx",
+    "openreview-icml-2025-omfdotvfwi",
+    "openreview-icml-2025-y9jv6vanyp",
+    "openreview-icml-2025-djceoc9jpq",
+    "openreview-icml-2025-zjg9grg462",
+    "openreview-icml-2025-uhvk08xfkx",
+    "openreview-icml-2025-voterb9au1",
+    "openreview-icml-2025-if9vxy4yrl",
+    "openreview-icml-2025-sgqeoxlezg",
+    "openreview-icml-2025-fb2e8pv6qg",
+    "openreview-icml-2025-9v1ew8hgmu",
+    "openreview-icml-2025-eih5gy3pjt",
+    "openreview-icml-2025-oxiirxwjwx",
+    "openreview-icml-2025-jymgi1175r",
+    "openreview-icml-2025-rs3ufabhqr",
+    "openreview-icml-2025-fbmj0eoefk",
+    "openreview-icml-2025-oyzdcczdr9",
+    "openreview-icml-2025-evwmw2lvlw",
+    "openreview-icml-2025-gde3hbhkil",
+    "openreview-icml-2025-lwcm04exod",
+    "openreview-icml-2025-f8upzumndq",
+    "openreview-icml-2025-dvw16dw1cn",
+    "openreview-icml-2025-xsta4ax4dk",
+    "openreview-icml-2025-oqpcomafof",
+    "openreview-icml-2025-uvfe58msnr",
+    "openreview-icml-2025-reuptszcu9",
+    "openreview-icml-2025-li4rieeclo",
+    "openreview-icml-2025-dmyl47aqwb",
+    "openreview-icml-2025-lb5f02kwav",
+    "openreview-icml-2025-wpaxyggp2n",
+    "openreview-icml-2025-huhrtatfvz",
+    "openreview-icml-2025-fbn6om49ur",
+    "openreview-icml-2025-lidcr7vu76",
+    "openreview-icml-2025-19kqonoc2n",
+    "openreview-icml-2025-axn83wi3nh",
+    "openreview-icml-2025-g2tr7na4ps",
+    "openreview-icml-2025-ncoajynccg",
+    "openreview-icml-2025-0vvd1pmnzm",
+    "openreview-icml-2025-va5jzardcx",
+    "openreview-icml-2025-m2wmuuwoh5",
+    "openreview-icml-2025-t8vly1kuoz",
+    "openreview-icml-2025-iudsgi8z1t",
+    "openreview-icml-2025-hgaaxdv8q8",
+    "openreview-icml-2025-wbfbt2bh6f",
+    "openreview-icml-2025-zuxcqrhbl4",
+    "openreview-icml-2025-qil44dsupo",
+    "openreview-icml-2025-ab8yoxtkwj",
+    "openreview-icml-2025-mzqed6qems",
+    "openreview-icml-2025-5tua2uxspp",
+    "openreview-icml-2025-ryiseoee0p",
+    "openreview-icml-2025-tstrkjkzei",
+    "openreview-icml-2025-kmg7hweysi",
+    "openreview-icml-2025-tozoqonu9x",
+    "openreview-icml-2025-5mqqsenqbm",
+    "openreview-icml-2025-tfb7ahm2bj",
+    "openreview-icml-2025-kj5i29fejw",
+    "openreview-icml-2025-urbvnjsgbe",
+    "openreview-icml-2025-gntmqrtpzr",
+    "openreview-icml-2025-bhtbirs0qi",
+    "openreview-icml-2025-9aeygpsv6v",
+    "openreview-icml-2025-fjxcrsfyiv",
+    "openreview-icml-2025-tjhhxztcqe",
+    "openreview-icml-2025-0p86mhg014",
+    "openreview-icml-2025-bvrsrvo0mt",
+    "openreview-icml-2025-utlfqrdjkl",
+    "openreview-icml-2025-afhpcairrh",
+    "openreview-icml-2025-souzxkresn",
+    "openreview-icml-2025-rudrwp9wvz",
+    "openreview-icml-2025-z7ms8fjfcm",
+    "openreview-icml-2025-8m2zwi6ojv",
+    "openreview-icml-2025-tawnfwtxsr",
+    "openreview-icml-2025-e6vlzdllik",
+    "openreview-icml-2025-f1bcivek57",
+    "openreview-icml-2025-bcjpamlfxv",
+    "openreview-icml-2025-j4ielrbhog",
+    "openreview-icml-2025-lioemocq3h",
+    "openreview-icml-2025-nno4tpeunh",
+    "openreview-icml-2025-hvapl2dmpq",
+    "openreview-icml-2025-zuk00sasl6",
+    "openreview-icml-2025-sp43jvv7fj",
+    "openreview-icml-2025-vdb2ox3wl3",
+    "openreview-icml-2025-zk5k2nqcea",
+    "openreview-icml-2025-3h7qat9qow"
+  ],
+  "global_pool_lane_top_k": 30,
+  "global_pool_limit": 120,
+  "global_pool_guaranteed_per_lane": 2,
+  "global_pool_effective_size": 120,
+  "reranked_at": "2026-06-14T13:38:12.933629+00:00",
+  "llm_ranked": [
+    {
+      "paper_id": "openreview-icml-2025-eih5gy3pjt",
+      "score": 7.0,
+      "evidence_en": "fine-grained visual-textual alignment for multimodal recognition",
+      "evidence_cn": "细粒度视觉-文本对齐用于多模态识别",
+      "canonical_evidence": "细粒度视觉-文本对齐用于多模态识别",
+      "tldr_en": "FG-CLIP enhances CLIP's fine-grained understanding using 1.6B long captions and region-level alignments, improving multimodal recognition tasks.",
+      "tldr_cn": "FG-CLIP针对CLIP在细粒度理解上的不足，提出利用大型多模态模型生成16亿长描述-图像对，并构建包含1200万图像和4000万区域框的高质量数据集，结合1000万困难负样本进行训练，显著提升了多模态任务的细粒度识别能力。该工作为食品图像等需要精细特征的任务提供了通用方法。",
+      "title_zh": "FG-CLIP: 细粒度视觉与文本对齐",
+      "motivation_cn": "CLIP在处理细粒度理解任务时表现不足，因为其训练数据仅包含粗粒度的短描述。",
+      "method_cn": "提出FG-CLIP，利用大模型生成长描述-图像对，构建区域级数据集，并加入困难负样本进行训练。",
+      "result_cn": "在多个细粒度任务上取得了显著的性能提升。",
+      "conclusion_cn": "FG-CLIP通过细粒度对齐有效增强了多模态模型的理解能力。",
+      "matched_requirement_id": "req-3",
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition"
+    },
+    {
+      "paper_id": "openreview-icml-2025-z7lapws4nv",
+      "score": 7.0,
+      "evidence_en": "controllable image-text synthesis for data augmentation in multimodal learning",
+      "evidence_cn": "可控图像-文本合成用于多模态学习的数据增强",
+      "canonical_evidence": "可控图像-文本合成用于多模态学习的数据增强",
+      "tldr_en": "CtrlSynth introduces a controllable pipeline synthesizing image-text pairs by decomposing visual semantics, enabling robust multimodal learning with fewer real data.",
+      "tldr_cn": "CtrlSynth设计了一种可控图像-文本合成流水线，通过将图像视觉语义分解为基本元素并应用用户指定的控制策略，生成多样化的合成数据。该方法解决了多模态学习中数据集噪声大、长尾分布和多样性不足的问题，在多个基准上提升了CLIP等模型的鲁棒性，尤其适用于数据稀缺的食品营养分析领域。",
+      "title_zh": "CtrlSynth: 可控图像文本合成实现数据高效的多模态学习",
+      "motivation_cn": "现有的多模态数据集存在噪声、未对齐和长尾分布问题，而现有数据增强方法缺乏细粒度控制。",
+      "method_cn": "提出可控图像-文本合成流水线，分解视觉语义并应用控制策略生成多样化的合成样本。",
+      "result_cn": "在多个基准测试上提升了多模态模型的鲁棒性和数据效率。",
+      "conclusion_cn": "CtrlSynth为数据高效的多模态学习提供了一种灵活且可控的合成方法。",
+      "matched_requirement_id": "req-2",
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "food image based nutritional composition prediction"
+    },
+    {
+      "paper_id": "openreview-icml-2025-5tua2uxspp",
+      "score": 6.0,
+      "evidence_en": "optimal multimodal information bottleneck for general multimodal learning, applicable to food nutrient analysis",
+      "evidence_cn": "最优多模态信息瓶颈通用方法，可应用于食品营养成分分析",
+      "canonical_evidence": "最优多模态信息瓶颈通用方法，可应用于食品营养成分分析",
+      "tldr_en": "This paper proposes a novel multimodal learning framework OMIB that guarantees optimal multimodal information bottleneck, directly applicable to food image-based nutrition prediction.",
+      "tldr_cn": "该论文提出最优多模态信息瓶颈（OMIB）框架，通过优化目标保证实现最优多模态信息瓶颈，解决现有方法权重设置随意和忽视跨模态信息不平衡的问题。该通用多模态学习方法可直接应用于食品图像与文本的营养成分预测，提升多模态融合效率和预测准确性。",
+      "title_zh": "学习最优多模态信息瓶颈表征",
+      "motivation_cn": "现有基于多模态信息瓶颈的方法因权重设置随意和忽视跨模态信息不平衡而无法达到最优。",
+      "method_cn": "提出OMIB框架，通过优化目标保证实现最优多模态信息瓶颈。",
+      "result_cn": "在多个多模态任务上评估，OMIB优于现有MIB方法。",
+      "conclusion_cn": "OMIB为多模态食品营养预测提供了强有力的通用融合技术。",
+      "matched_requirement_id": "req-9",
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal deep learning approaches for food nutrient analysis from images"
+    }
+  ],
+  "llm_ranked_at": "2026-06-14T13:39:50.661730+00:00",
+  "display_min_score": 4.0,
+  "pruned_at": "2026-06-14T13:39:50.700963+00:00"
+}
