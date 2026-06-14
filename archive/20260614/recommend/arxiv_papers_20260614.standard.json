@@ -1,0 +1,107 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-14T21:08:42.049334+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.09303v1",
+      "source": "arxiv",
+      "title": "Reason Twice: Segmentation via Candidate Discovery and Comparative Reasoning",
+      "abstract": "The rapid development of pretrained foundation models has enabled more general image segmentation. Multimodal large language models (MLLMs) have been widely explored for image segmentation with complex queries that require high-level reasoning. Despite promising progress, existing methods are often constrained by limited training data and the gap between MLLMs and mask generation modules. To better transfer MLLMs' perception and reasoning ability to complex reasoning-based segmentation tasks, we propose a two-stage framework Rea2Seg for mask generation and selection. Specifically, the framework first identifies potential regions as candidate masks based on the attention maps of a segmentation MLLM. It then employs an MLLM to reason over the question and candidate masks and assign scores to each mask. The final segmentation result is obtained by reranking the candidates and selecting the highest-scoring mask, reformulating image segmentation as candidate discovery followed by discriminative mask selection.   We also notice that a large portion of questions in existing benchmarks focus on commonsense reasoning, and these questions usually do not fully require joint visual observation and reasoning. To address this issue, we introduce a new benchmark called ReasonSeg-SGDR that comprehensively evaluates a model's perception, grounding, and reasoning abilities across multiple dimensions, including discriminative recognition, spatial reasoning, geometric reasoning, and multi-step reasoning, with fine-grained mask generation.   In addition, we collect training data to enhance MLLMs' ability to jointly understand multimodal queries and candidate masks, and to assign scores through reasoning. Experimental results on the proposed benchmark and ReasonSeg demonstrate the effectiveness of the unified mask generation and selection framework.",
+      "authors": [
+        "Xinyan Gao",
+        "Haoran Hao",
+        "Xiangyu Yue"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-08T10:10:55+00:00",
+      "link": "https://arxiv.org/pdf/2606.09303v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "segmentation with multimodal LLMs for image understanding",
+      "llm_evidence_cn": "使用多模态大语言模型进行图像分割",
+      "llm_evidence": "使用多模态大语言模型进行图像分割",
+      "canonical_evidence": "使用多模态大语言模型进行图像分割",
+      "llm_tldr_en": "Proposes a two-stage framework using MLLMs for candidate mask discovery and comparative reasoning for complex segmentation tasks.",
+      "llm_tldr_cn": "该文针对复杂推理分割任务，提出Rea2Seg两阶段框架：先利用分割MLLM的注意力图生成候选掩码，再通过MLLM进行对比推理选择最佳掩码。该方法可迁移至食品图像分割与识别，支撑营养分析。",
+      "llm_tldr": "该文针对复杂推理分割任务，提出Rea2Seg两阶段框架：先利用分割MLLM的注意力图生成候选掩码，再通过MLLM进行对比推理选择最佳掩码。该方法可迁移至食品图像分割与识别，支撑营养分析。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.11188v1",
+      "source": "arxiv",
+      "title": "ARM: An AutoRegressive Large Multimodal Model with Unified Discrete Representations",
+      "abstract": "This paper introduces ARM, a discrete representation-based AutoRegressive Model that unifies image understanding, generation, and editing within a next-token prediction framework. ARM is built on three efforts: first, we train a discrete semantic visual tokenizer that maps images into compact token sequences. Our tokenizer is supervised with multiple objectives that jointly promote semantic discriminability, language alignment and faithful reconstruction, thereby supporting diverse tasks in a shared latent space. With this, we train a 7B autoregressive model over large-scale text and image token sequences, seamlessly developing vision-language perception and generation capabilities. Finally, to further improve preference-aligned behavior for text-to-image generation and instruction-guided editing, ARM applies reinforcement learning (RL) to optimize task-level objectives such as visual quality, instruction adherence, and edit consistency. Surprisingly, the results show that RL not only substantially improves performance on the target tasks (e.g., raising WISE overall from 0.50 to 0.56, GEdit-Bench-EN G_O from 5.75 to 6.68), but also induces cross-task synergy between text-to-image generation and editing. Collectively, these findings highlight autoregressive modeling, when paired with strong representations and preference optimization, as a scalable foundation for multimodal intelligence. Code: https://github.com/wdrink/ARM.",
+      "authors": [
+        "Junke Wang",
+        "Xiao Wang",
+        "Jiacheng Pan",
+        "Xuefeng Hu",
+        "Feng Li",
+        "Jingxiang Sun",
+        "Chaorui Deng",
+        "Zilong Chen",
+        "Yunpeng Chen",
+        "Kaibin Tian",
+        "Matthew Gwilliam",
+        "Hao Chen",
+        "Danhui Guan",
+        "Kun Xu",
+        "Weilin Huang",
+        "Zuxuan Wu",
+        "Haoqi Fan",
+        "Yu-Gang Jiang",
+        "Zhenheng Yang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-09T17:59:28+00:00",
+      "link": "https://arxiv.org/pdf/2606.11188v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "autoregressive multimodal model unifying image understanding and generation",
+      "llm_evidence_cn": "统一图像理解与生成的自回归多模态模型",
+      "llm_evidence": "统一图像理解与生成的自回归多模态模型",
+      "canonical_evidence": "统一图像理解与生成的自回归多模态模型",
+      "llm_tldr_en": "ARM introduces a discrete representation-based autoregressive model that unifies image understanding, generation, and editing using a shared semantic visual tokenizer and next-token prediction.",
+      "llm_tldr_cn": "针对现有视觉语言模型在理解和生成任务上分离的问题，ARM提出了一种基于离散语义视觉分词器的自回归模型。该方法通过多目标学习训练分词器，使图像被映射为紧凑的语义token序列，并训练7B参数的自回归模型统一处理文本和图像token。实验表明ARM在多项视觉语言任务上取得优异性能，为多模态食品营养分析提供了潜在的基础模型框架。",
+      "llm_tldr": "针对现有视觉语言模型在理解和生成任务上分离的问题，ARM提出了一种基于离散语义视觉分词器的自回归模型。该方法通过多目标学习训练分词器，使图像被映射为紧凑的语义token序列，并训练7B参数的自回归模型统一处理文本和图像token。实验表明ARM在多项视觉语言任务上取得优异性能，为多模态食品营养分析提供了潜在的基础模型框架。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

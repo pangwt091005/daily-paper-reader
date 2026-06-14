@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-14T14:05:18.460047+00:00",
-  "updated_date": "20260605-20260614",
+  "generated_at": "2026-06-14T21:08:42.049809+00:00",
+  "updated_date": "20260614",
   "carryover_days": 9,
   "tag_states": {
     "nutritionk": {
-      "updated_date": "20260605-20260614",
+      "updated_date": "20260614",
       "carryover_days": 9,
       "items": []
     }

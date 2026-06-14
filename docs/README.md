@@ -6,24 +6,27 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-05 ~ 2026-06-14
-- 运行时间：2026-06-14 14:06:17 UTC
+- 最新运行日期：2026-06-14
+- 运行时间：2026-06-14 21:09:52 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：2
 - 精读区：0
-- 速读区：1
+- 速读区：2
 
 ### 今日简报（AI）
-今日关注1篇表格与图像多模态学习的论文，速读评分7.0。最值得关注的方向是参数高效适配器调优在表格-图像融合任务中的应用。建议读者可进一步了解这种方法如何降低多模态预训练的计算成本。
-- 详情：[/20260605-20260614/README](/20260605-20260614/README)
+今日阅读两篇6分论文，分别聚焦分割任务中候选发现与比较推理方法，以及自回归多模态模型的统一离散表示技术。两篇均提出新思路但未达精品水平，建议优先关注分割论文的推理框架设计。后续可对比同类工作，评估其在实际场景中的应用潜力。
+- 详情：[/202606/14/README](/202606/14/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Parameter-Efficient Adapter Tuning for Tabular-Image Multimodal Learning](/20260605-20260614/2606.11682v1-parameter-efficient-adapter-tuning-for-tabular-image-multimodal-learning)  
-   标签：评分：7.0/10、query:nutritionk
-   evidence：表格-图像多模态学习方法，可应用于食品营养
+1. [Reason Twice: Segmentation via Candidate Discovery and Comparative Reasoning](/202606/14/2606.09303v1-reason-twice-segmentation-via-candidate-discovery-and-comparative-reasoning)  
+   标签：评分：6.0/10、query:nutritionk
+   evidence：使用多模态大语言模型进行图像分割
+2. [ARM: An AutoRegressive Large Multimodal Model with Unified Discrete Representations](/202606/14/2606.11188v1-arm-an-autoregressive-large-multimodal-model-with-unified-discrete-representations)  
+   标签：评分：6.0/10、query:nutritionk
+   evidence：统一图像理解与生成的自回归多模态模型
 
 
 <div class="dpr-home-promo-card">
