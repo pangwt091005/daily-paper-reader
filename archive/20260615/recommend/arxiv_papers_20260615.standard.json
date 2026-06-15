@@ -1,0 +1,231 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-15T22:13:11.422296+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.10120v2",
+      "source": "arxiv",
+      "title": "MetaPlate: Counterfactual-Guided RAG-LLM Tool for Personalized Food Recommendation and Hyperglycemia Prevention",
+      "abstract": "Postprandial hyperglycemia is a key risk factor for metabolic disorders; however, existing dietary guidance is often static, impractical, and insufficiently personalized, providing recommendations that are difficult to follow or not impactful. While recent advances leverage continuous glucose monitoring (CGM) and machine learning to predict glycemic responses, these approaches are largely predictive and lack actionable guidance. Moreover, recommendation systems are often misaligned with user goals and require extensive input. We present MetaPlate, a counterfactual explanation (CF) guided, context-aware decision-support framework that generates personalized meal recommendations to mitigate postprandial glucose excursions in healthy adults. MetaPlate integrates multimodal data, including CGM readings, wearable-derived physiological signals, and user-provided meal inputs from $25$ individuals to model pre-meal context. A machine learning model predicts glucose response, while a CF optimization module adjusts meal composition modifying macronutrient amounts to maintain glucose levels within a target range ($\\leq 140$ mg/dL). An LLM-based retrieval-augmented generation (RAG) layer enhances interpretability by producing human-readable recommendations using constrained search of the USDA food database. We evaluate MetaPlate via a structured expert-in-the-loop assessment with registered dietitians (RDs), comparing performance before and after prompt refinement. Results show improvements in meal realism, portion suitability, and recommendation likelihood, with expert feedback indicating a shift from clinically implausible outputs to actionable, contextually appropriate recommendations. Our findings emphasize the importance of domain knowledge and structured constraints in LLM-driven systems and highlight the potential of MetaPlate as a real-time personalized dietary decision-support tool.",
+      "authors": [
+        "Asiful Arefeen",
+        "Carol Johnston",
+        "Hassan Ghasemzadeh"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI",
+        "cs.HC"
+      ],
+      "published": "2026-06-08T19:52:08+00:00",
+      "link": "https://arxiv.org/pdf/2606.10120v2",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "dietary assessment with food recommendation for hyperglycemia prevention",
+      "llm_evidence_cn": "通过食物推荐进行膳食评估以预防高血糖",
+      "llm_evidence": "通过食物推荐进行膳食评估以预防高血糖",
+      "canonical_evidence": "通过食物推荐进行膳食评估以预防高血糖",
+      "llm_tldr_en": "MetaPlate uses counterfactual explanations and RAG-LLM to generate personalized meal recommendations for postprandial hyperglycemia prevention, relating to dietary assessment.",
+      "llm_tldr_cn": "针对现有膳食指导静态不个性化的问题，本文提出MetaPlate框架，结合反事实解释与RAG-LLM，基于连续血糖监测数据生成个性化食物推荐以降低餐后血糖峰值。实验表明该方法能提供有效且可操作的饮食建议，对预防高血糖具有实际意义。该工作与基于深度学习从食物图像进行膳食评估的需求间接相关，但未使用图像数据。",
+      "llm_tldr": "针对现有膳食指导静态不个性化的问题，本文提出MetaPlate框架，结合反事实解释与RAG-LLM，基于连续血糖监测数据生成个性化食物推荐以降低餐后血糖峰值。实验表明该方法能提供有效且可操作的饮食建议，对预防高血糖具有实际意义。该工作与基于深度学习从食物图像进行膳食评估的需求间接相关，但未使用图像数据。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "deep learning dietary assessment from food images",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2606.12362v1",
+      "source": "arxiv",
+      "title": "Latent World Recovery for Multimodal Learning with Missing Modalities",
+      "abstract": "We study multimodal learning under missing modalities, with particular motivation from bioscience applications in which heterogeneous modalities are often only partially available when decisions need to be made. We propose Latent World Recovery (LWR), a framework built on two key ideas: (i) modality-specific embeddings from different modalities are aligned in a shared latent space, and (ii) a unified representation is constructed by fusing only the embeddings of the modalities that are actually available at both training and inference time. Rather than imputing missing modalities or requiring a fixed modality set, LWR treats each modality as a partial perception of an underlying latent state and performs availability-aware representation learning directly from the observed modalities. This combination of neighbor-based latent alignment and availability-aware modality fusion enables robust multimodal prediction under partial observation, while avoiding error propagation from explicit reconstruction of missing modalities. We evaluate the proposed framework on real-world incomplete multi-omics benchmarks and demonstrate that it provides an effective approach to downstream tasks such as cancer phenotype classification and survival prediction.",
+      "authors": [
+        "Hui Wang",
+        "Tianyu Ren",
+        "Joseph Butler",
+        "Christopher Baker",
+        "Karen Rafferty",
+        "Simon McDade"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-06-10T17:31:34+00:00",
+      "link": "https://arxiv.org/pdf/2606.12362v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal learning framework handling missing modalities, applicable to food image and text",
+      "llm_evidence_cn": "处理缺失模态的多模态学习框架，可应用于食品图像与文本",
+      "llm_evidence": "处理缺失模态的多模态学习框架，可应用于食品图像与文本",
+      "canonical_evidence": "处理缺失模态的多模态学习框架，可应用于食品图像与文本",
+      "llm_tldr_en": "LWR aligns modality-specific embeddings in a shared space and fuses only available modalities, enabling robust multimodal learning with missing inputs.",
+      "llm_tldr_cn": "针对多模态学习中模态缺失的问题，本文提出潜在世界恢复（LWR）框架，将不同模态的嵌入对齐到共享潜在空间，在训练和推理时仅融合可用的模态嵌入，无需补全缺失模态。该方法在多种生物医学数据集上验证了有效性，可直接迁移至食品图像与营养文本的多模态分析场景。",
+      "llm_tldr": "针对多模态学习中模态缺失的问题，本文提出潜在世界恢复（LWR）框架，将不同模态的嵌入对齐到共享潜在空间，在训练和推理时仅融合可用的模态嵌入，无需补全缺失模态。该方法在多种生物医学数据集上验证了有效性，可直接迁移至食品图像与营养文本的多模态分析场景。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal deep learning approaches for food nutrient analysis from images",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.13289v1",
+      "source": "arxiv",
+      "title": "HYDRA-X: Native Unified Multimodal Models with Holistic Visual Tokenizers",
+      "abstract": "Holistic visual tokenizers are fundamental to unified multimodal models (UMMs) as they map diverse visual inputs into a unified representation space. In this paper, we present HYDRA-X, the first UMM that unifies image and video tokenization within a single Vision Transformer (ViT). Our design is driven by two core challenges: efficiently injecting spatiotemporal reconstruction capability into a native ViT, and embedding image- and video-level semantic awareness into the latent space. To address the first, comprehensive ablations reveal two key findings: (1) frame-level causal temporal attention suffices for visual reconstruction, whereas full spatiotemporal attention degrades it; and (2) hierarchical temporal compression substantially outperforms single-step alternatives. To tackle the second, we propose a lightweight decompressor that upsamples temporally compressed features under joint image-video teacher supervision, thereby enforcing complementary semantic structures within the compact latent space. Building on this holistic tokenizer, we further propose a principled improvement of the editing pipeline: source-target interaction should occur at the latent level inside the tokenizer rather than at the semantic level inside the LLM, substantially improving editing consistency and accelerating convergence. Instantiated at the 7B dense model, HYDRA-X achieves strong performance across image and video understanding and generation tasks, paving the way for future unified-tokenizer UMMs.",
+      "authors": [
+        "Guozhen Zhang",
+        "Xuerui Qiu",
+        "Yutao Cui",
+        "Tianhui Song",
+        "Changlin Li",
+        "Junzhe Li",
+        "Tao Huang",
+        "Xiao Zhang",
+        "Yang Li",
+        "Jianbing Wu",
+        "Miles Yang",
+        "Zhao Zhong",
+        "Liefeng Bo",
+        "Limin Wang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI"
+      ],
+      "published": "2026-06-11T12:46:07+00:00",
+      "link": "https://arxiv.org/pdf/2606.13289v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal model for unified visual tokenization applicable to food images",
+      "llm_evidence_cn": "统一多模态视觉分词方法可用于食品图像分析",
+      "llm_evidence": "统一多模态视觉分词方法可用于食品图像分析",
+      "canonical_evidence": "统一多模态视觉分词方法可用于食品图像分析",
+      "llm_tldr_en": "HYDRA-X is the first unified multimodal model that tokenizes both images and videos with a single ViT, enabling efficient visual representation for diverse tasks. Its holistic tokenizer can be directly used for food image processing in nutrition prediction.",
+      "llm_tldr_cn": "现有统一多模态模型通常需要为图像和视频分别设计分词器，限制了跨模态泛化。本文提出HYDRA-X，首个使用单一视觉Transformer统一图像和视频分词的原生多模态模型，通过因果时序注意力与层次压缩实现高效重建与语义编码。在多个基准上验证了其通用性，可为食品图像营养预测等下游任务提供可直接迁移的视觉表示基础。",
+      "llm_tldr": "现有统一多模态模型通常需要为图像和视频分别设计分词器，限制了跨模态泛化。本文提出HYDRA-X，首个使用单一视觉Transformer统一图像和视频分词的原生多模态模型，通过因果时序注意力与层次压缩实现高效重建与语义编码。在多个基准上验证了其通用性，可为食品图像营养预测等下游任务提供可直接迁移的视觉表示基础。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.14277v1",
+      "source": "arxiv",
+      "title": "One Layer's Trash is Another Layer's Treasure: Adaptive Layer-wise Visual Token Selection in LVLMs",
+      "abstract": "Large Vision-Language Models (LVLMs) have achieved remarkable success across diverse multimodal tasks, yet their practical deployment remains constrained by the computational burden arising from lengthy visual tokens. While visual token pruning has emerged as a promising solution, existing methods suffer from a fundamental limitation: once tokens are pruned at a specific layer, they become inaccessible to all subsequent layers, leading to premature information loss that can compromise model performance. Through empirical studies, we observe that different layers exhibit distinct visual region focus, indicating a varying optimal token subset across layers. Motivated by this insight, we propose Adaptive Layer-wise Visual Token Selection (ALVTS), a novel framework that breaks away from the conventional static token pruning paradigm. ALVTS incorporates a lightweight token selector to identify and route important tokens for further processing, while allowing less important tokens to skip the layer, thus minimizing computational redundancy. These two streams of tokens are seamlessly reintegrated before being fed into subsequent layers, facilitating adaptive compression across the entire model. Grounded in our importance consistency constrained low-rank approximation, the proposed token selection module closely emulates the full attention mechanism, effectively capturing its essential patterns without requiring model retraining. Extensive experiments on LLaVA-1.5, LLaVA-NeXT, and Qwen2.5-VL validate the effectiveness of our method. With an 89% token compression ratio, ALVTS retains 96.7% of the original model's accuracy, achieving a superior efficiency-accuracy trade-off for LVLM inference.",
+      "authors": [
+        "Yongru Chen",
+        "Kai Zhang",
+        "Zeliang Zong",
+        "Yuchen Lu",
+        "Wenming Tan",
+        "Ye Ren",
+        "Jilin Hu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-12T08:58:58+00:00",
+      "link": "https://arxiv.org/pdf/2606.14277v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adaptive visual token selection for large vision-language models, improving efficiency for multimodal recognition tasks",
+      "llm_evidence_cn": "为大型视觉语言模型提供自适应视觉token选择，提升多模态识别任务效率",
+      "llm_evidence": "为大型视觉语言模型提供自适应视觉token选择，提升多模态识别任务效率",
+      "canonical_evidence": "为大型视觉语言模型提供自适应视觉token选择，提升多模态识别任务效率",
+      "llm_tldr_en": "Adaptive layer-wise visual token selection preserves tokens across layers, reducing computational cost while maintaining performance in LVLMs.",
+      "llm_tldr_cn": "为缓解大型视觉语言模型中视觉token冗余导致的计算负担，本文提出自适应逐层视觉token选择方法，允许不同层选择不同的token子集，避免过早信息损失。实验表明该方法在多种多模态任务上保持性能的同时显著降低计算量。该技术可优化食品图像识别中的视觉token处理。",
+      "llm_tldr": "为缓解大型视觉语言模型中视觉token冗余导致的计算负担，本文提出自适应逐层视觉token选择方法，允许不同层选择不同的token子集，避免过早信息损失。实验表明该方法在多种多模态任务上保持性能的同时显著降低计算量。该技术可优化食品图像识别中的视觉token处理。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "research on image based food nutritional composition estimation with vision language models",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "biorxiv-10-64898-2026-06-05-730487-v1",
+      "source": "biorxiv",
+      "title": "A Web-based software toolkit for accessible and best-practice machine learning analyses in biomedical research",
+      "abstract": "Machine learning is increasingly central to biomedical research, but using machine learning well often requires substantial computational expertise and methodological care to produce high-quality results. To make machine learning tools more accessible to biomedical researchers while supporting best-practice approaches, we developed the Galaxy Learning and Modeling (GLEAM) software toolkit. GLEAM enables researchers to perform supervised machine learning analyses through a set of web-based, code-free software tools for tabular, image, and multimodal biomedical datasets. GLEAM standardizes data partitioning, model selection, training, evaluation, and reporting, helping researchers apply machine learning with greater rigor and consistency. GLEAM runs on the Galaxy computational workbench and uses Galaxys core features to make all analyses accessible, reproducible, and scalable. We validated GLEAM on three biomedical tasks: predicting patient response to immunotherapy, skin lesion classification, and cancer recurrence prediction. Across these tasks, GLEAM produced highly accurate predictive models and improved transparency, reproducibility, and rigor.",
+      "authors": [
+        "Morais Lyra Junior, P. C.",
+        "Qiu, J.",
+        "Van Dang, K.",
+        "Pybus, A.",
+        "Narvaez-Bandera, I.",
+        "Singh, M. A.",
+        "Gu, Q.",
+        "Sargent, L.",
+        "Creason, A. L.",
+        "Goecks, J."
+      ],
+      "primary_category": "bioinformatics",
+      "categories": [
+        "bioinformatics"
+      ],
+      "published": "2026-06-07T00:00:00+00:00",
+      "link": "https://www.biorxiv.org/content/10.64898/2026.06.05.730487v1.full.pdf",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "web-based ML toolkit for image and multimodal biomedical data",
+      "llm_evidence_cn": "面向图像和多模态生物医学数据的网络ML工具包",
+      "llm_evidence": "面向图像和多模态生物医学数据的网络ML工具包",
+      "canonical_evidence": "面向图像和多模态生物医学数据的网络ML工具包",
+      "llm_tldr_en": "GLEAM provides a code-free web toolkit for supervised ML on tabular, image, and multimodal data, enabling best-practice analyses.",
+      "llm_tldr_cn": "针对生物医学研究中机器学习应用门槛高的问题，本文开发了GLEAM软件工具包，通过网页界面提供无需编码的监督学习功能，支持表格、图像和多模态数据。工具包标准化了数据划分、模型选择和评估等流程，使研究人员能便捷地进行高质量机器学习分析。该工具可直接应用于食品图像营养预测等任务。",
+      "llm_tldr": "针对生物医学研究中机器学习应用门槛高的问题，本文开发了GLEAM软件工具包，通过网页界面提供无需编码的监督学习功能，支持表格、图像和多模态数据。工具包标准化了数据划分、模型选择和评估等流程，使研究人员能便捷地进行高质量机器学习分析。该工具可直接应用于食品图像营养预测等任务。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal deep learning approaches for food nutrient analysis from images",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
