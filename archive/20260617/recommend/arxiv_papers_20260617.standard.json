@@ -1,0 +1,56 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-17T22:10:34.876601+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.15134v1",
+      "source": "arxiv",
+      "title": "Beyond Scalar Distances: Semantic Attribute Gradients from Frozen MLLMs for Visual Embeddings",
+      "abstract": "Vision encoders for retrieval are typically trained with class-label supervision: each training pair reduces to a scalar that uniformly pushes the embedding apart or pulls it together, as if every visual attribute either differed or matched. A multimodal large language model (MLLM), shown the same pair, can articulate those attributes and use them to predict whether the images share a class. We propose \\textbf{SAGA}, a framework that turns this language-grounded, attribute-aware perception into a training signal for the encoder itself. Specifically, we use Group Relative Policy Optimization (GRPO) to reward the MLLM for correct predictions on the vision encoder's tokens. Since correct predictions require those tokens to expose the specific attributes that differ or match between the pair, the gradient pushes the encoder to encode them, replacing the uniform pair-level scalar with attribute-resolved supervision. An auxiliary attention-distillation loss anchors the encoder's embedding to tokens the MLLM attended to, and a standard metric-learning loss shapes the embedding geometry for nearest-neighbour retrieval. The MLLM is frozen throughout and discarded at inference, matching the deployment cost of a metric-learning baseline. SAGA improves Recall@1 by 3 to 6 points over state-of-the-art baselines on CUB-200-2011, Cars-196, FGVC-Aircraft, and iNaturalist Aves on zero-shot image retrieval.",
+      "authors": [
+        "Shubhang Bhatnagar",
+        "Dheeraj Baiju",
+        "Narendra Ahuja"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-06-13T05:50:40+00:00",
+      "link": "https://arxiv.org/pdf/2606.15134v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses frozen MLLM with GRPO to guide visual embedding training; applicable to food image feature extraction",
+      "llm_evidence_cn": "利用冻结多模态大语言模型和GRPO优化视觉嵌入，可应用于食品图像特征提取",
+      "llm_evidence": "利用冻结多模态大语言模型和GRPO优化视觉嵌入，可应用于食品图像特征提取",
+      "canonical_evidence": "利用冻结多模态大语言模型和GRPO优化视觉嵌入，可应用于食品图像特征提取",
+      "llm_tldr_en": "Proposes SAGA, using GRPO to reward MLLM for correct predictions on vision encoder tokens, producing semantically aware visual embeddings. Improves retrieval performance. Transferable to food image analysis for nutrition prediction.",
+      "llm_tldr_cn": "现有视觉编码器训练仅使用标量距离，忽略属性语义。本文提出SAGA框架，通过组相对策略优化（GRPO）让冻结的多模态大语言模型指导视觉编码器，生成蕴含语义属性的嵌入。实验表明该方法提升了检索任务性能。这一技术可迁移至食品图像分析，为营养预测提供更优特征表示。",
+      "llm_tldr": "现有视觉编码器训练仅使用标量距离，忽略属性语义。本文提出SAGA框架，通过组相对策略优化（GRPO）让冻结的多模态大语言模型指导视觉编码器，生成蕴含语义属性的嵌入。实验表明该方法提升了检索任务性能。这一技术可迁移至食品图像分析，为营养预测提供更优特征表示。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
