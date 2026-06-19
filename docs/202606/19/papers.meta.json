@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-19",
+  "date": "2026-06-19",
+  "generated_at": "2026-06-19T20:46:25",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/19/2606.19882v1-multimodal-concept-bottleneck-models",
+      "section": "quick",
+      "title_en": "Multimodal Concept Bottleneck Models",
+      "authors": "Tongqing Shi, Ge Yan, Tuomas Oikarinen, Tsui-Wei Weng",
+      "date": "2026-06-18",
+      "pdf": "https://arxiv.org/pdf/2606.19882v1",
+      "score": "7.0",
+      "evidence": "多模态视觉语言模型方法可迁移至食品营养预测",
+      "tldr": "概念瓶颈模型（CBMs）虽可增强可解释性，但受限于固定类别集且存在非概念信息泄露风险。本文提出多模态概念瓶颈模型（MM-CBM），将其扩展至CLIP，利用双概念瓶颈层对齐图像和文本嵌入，实现可解释的零样本分类与图像检索。在四个标准基准上，MM-CBM平均准确率提升高达51.26%，且性能与黑盒模型差距在5%以内。该方法在保持高准确率的同时显著提升了可解释性。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Concept Bottleneck Models (CBMs) enhance the interpretability of deep learning networks by aligning the features extracted from images with natural concepts. However, existing CBMs are constrained in their ability to generalize beyond a fixed set of predefined classes and the risk of non-concept information leakage, where predictive signals outside the intended concepts are inadvertently exploited. In this paper, we propose Multimodal Concept Bottleneck Model (MM-CBM) to address these issues and extend CBMs into CLIP. MM-CBM utilizes dual Concept Bottleneck Layers (CBLs) to align both the image and text embeddings into interpretable features. This allows us to perform new vision tasks like zero-shot classification or image retrieval in an interpretable way. Compared to existing methods, MM-CBM achieves up to 51.26% accuracy improvement on average across four standard benchmarks. Our method maintains high accuracy, staying within ~5% of black-box performance while offering greater interpretability.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
