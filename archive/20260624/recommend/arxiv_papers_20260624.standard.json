@@ -1,0 +1,52 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-24T21:49:35.767975+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.24059v1",
+      "source": "arxiv",
+      "title": "Ingredient-Level Food Image Segmentation for Nutrition Awareness",
+      "abstract": "Food images often contain several visible ingredients, so assigning one dish label to an entire image hides important visual structure. This work studies ingredient-level semantic segmentation on FoodSeg103, where the model predicts an ingredient class for each pixel. Two SegFormer variants were fine-tuned and evaluated under a controlled setup: SegFormer-B0 as the smaller baseline model and SegFormer-B1 as the larger final model. Both models use ImageNet-pretrained MiT backbones with newly initialized 104-class output layers. On the held-out FoodSeg103 test split of 2,135 images, B0 achieved 0.7709 pixel accuracy and 0.2521 mean IoU, while B1 achieved 0.7929 pixel accuracy and 0.3204 mean IoU. B1 improved every saved test metric, including a +0.0683 absolute gain in mean IoU. The system also converts predicted masks into visible ingredient-area percentages, giving a simple visual composition summary of the predicted meal. This summary can serve as a first-pass nutrition-awareness cue by providing a visual alternative to detailed food tracking similar to plate-based meal guidance, but it is not a direct estimate of calories, macronutrients, food mass, volume, density, or true portion size.",
+      "authors": [
+        "Jonesh Shrestha"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-23T02:07:15+00:00",
+      "link": "https://arxiv.org/pdf/2606.24059v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "ingredient-level food segmentation for nutrition awareness",
+      "llm_evidence_cn": "面向营养感知的食材级食物图像分割",
+      "llm_evidence": "面向营养感知的食材级食物图像分割",
+      "canonical_evidence": "面向营养感知的食材级食物图像分割",
+      "llm_tldr_en": "This paper tackles ingredient-level semantic segmentation on FoodSeg103 to identify visible food ingredients per pixel, enabling detailed nutritional awareness. Two SegFormer variants are fine-tuned, with B1 achieving 0.7929 pixel accuracy and 0.3204 mIoU, improving over baseline. This segmentation approach can serve as a foundation for image-based nutrition estimation.",
+      "llm_tldr_cn": "该论文针对食品图像中多种可见食材的像素级分割问题，提出使用SegFormer模型在FoodSeg103数据集上进行食材级语义分割。通过微调SegFormer-B0和B1两个变体，B1模型在测试集上达到了79.29%的像素精度和32.04%的平均交并比，显著优于B0。该方法为基于图像的食物营养估计提供了关键的前处理步骤，有助于进一步计算食物营养成分。",
+      "llm_tldr": "该论文针对食品图像中多种可见食材的像素级分割问题，提出使用SegFormer模型在FoodSeg103数据集上进行食材级语义分割。通过微调SegFormer-B0和B1两个变体，B1模型在测试集上达到了79.29%的像素精度和32.04%的平均交并比，显著优于B0。该方法为基于图像的食物营养估计提供了关键的前处理步骤，有助于进一步计算食物营养成分。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "food image based nutritional composition prediction",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
