@@ -6,26 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-24
-- 运行时间：2026-06-24 21:50:05 UTC
+- 最新运行日期：2026-06-25
+- 运行时间：2026-06-25 22:09:37 UTC
 - 运行状态：成功
 - 本次总论文数：1
-- 精读区：0
-- 速读区：1
+- 精读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日速读一篇食品图像成分级分割论文（评分7.0），探索如何通过细粒度分割提升营养认知。  
-论文突破传统整菜识别，瞄准单个食材级分割以精准估算营养，技术方向值得关注。  
-关注饮食管理的读者可留意该技术未来在智能饮食记录应用中的实用价值。
-- 详情：[/202606/24/README](/202606/24/README)
+今日精读《Ingredient-Level Food Image Segmentation for Nutrition Awareness》（8.0/10），聚焦食材级图像分割助力营养感知。
+
+该方向表明，细粒度分割能够为自动饮食记录和营养评估提供更精准的视觉输入。
+
+普通读者可关注该技术在健康管理、饮食追踪应用中的潜力，未来或能通过拍照直接分析食材构成。
+- 详情：[/202606/25/README](/202606/25/README)
 
 ### 精读区论文标签
-- 本次无精读推荐。
+1. [Ingredient-Level Food Image Segmentation for Nutrition Awareness](/202606/25/2606.24059v2-ingredient-level-food-image-segmentation-for-nutrition-awareness)  
+   标签：评分：8.0/10、query:nutritionk
+   evidence：面向营养意识的食品图像成分级分割
 
 ### 速读区论文标签
-1. [Ingredient-Level Food Image Segmentation for Nutrition Awareness](/202606/24/2606.24059v1-ingredient-level-food-image-segmentation-for-nutrition-awareness)  
-   标签：评分：7.0/10、query:nutritionk
-   evidence：面向营养感知的食材级食物图像分割
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">

@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-25",
+  "date": "2026-06-25",
+  "generated_at": "2026-06-25T22:09:44",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/25/2606.24059v2-ingredient-level-food-image-segmentation-for-nutrition-awareness",
+      "section": "deep",
+      "title_en": "Ingredient-Level Food Image Segmentation for Nutrition Awareness",
+      "authors": "Jonesh Shrestha",
+      "date": "2026-06-23",
+      "pdf": "https://arxiv.org/pdf/2606.24059v2",
+      "score": "8.0",
+      "evidence": "面向营养意识的食品图像成分级分割",
+      "tldr": "食品图像常含多种食材，单标签分类丢失视觉细节。本文研究食材级语义分割，在FoodSeg103数据集上微调SegFormer-B0和B1。B1模型在2135张测试图像上达到0.7929像素精度和0.3204平均交并比，比B0提升0.0683。系统将预测掩码转化为可见食材面积百分比，提供视觉组成摘要，作为营养意识提示，但非直接营养估计。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Food images often contain several visible ingredients, so assigning one dish label to an entire image hides important visual structure. This work studies ingredient-level semantic segmentation on FoodSeg103, where the model predicts an ingredient class for each pixel. Two SegFormer variants were fine-tuned and evaluated under a controlled setup: SegFormer-B0 as the smaller baseline model and SegFormer-B1 as the larger final model. Both models use ImageNet-pretrained MiT backbones with newly initialized 104-class output layers. On the held-out FoodSeg103 test split of 2,135 images, B0 achieved 0.7709 pixel accuracy and 0.2521 mean IoU, while B1 achieved 0.7929 pixel accuracy and 0.3204 mean IoU. B1 improved every saved test metric, including a +0.0683 absolute gain in mean IoU. The system also converts predicted masks into visible ingredient-area percentages, giving a simple visual composition summary of the predicted meal. This summary can serve as a first-pass nutrition-awareness cue by providing a visual alternative to detailed food tracking similar to plate-based meal guidance, but it is not a direct estimate of calories, macronutrients, food mass, volume, density, or true portion size.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
