@@ -1,0 +1,54 @@
+{
+  "label": "2026-06-26",
+  "date": "2026-06-26",
+  "generated_at": "2026-06-26T21:17:17",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202606/26/2606.22702v1-modular-diffusion-models-for-structured-visual-recognition",
+      "section": "quick",
+      "title_en": "Modular Diffusion Models for Structured Visual Recognition",
+      "authors": "Siddhesh Khandelwal, Björn Ommer, Leonid Sigal",
+      "date": "2026-06-21",
+      "pdf": "https://arxiv.org/pdf/2606.22702v1",
+      "score": "6.0",
+      "evidence": "通用的结构化视觉识别方法可应用于食品图像分析",
+      "tldr": "传统结构化视觉识别方法产生确定性输出，无法应对固有歧义和不确定性。本文提出模块化扩散模型（MDMs），将扩散过程分解为多个任务特定模块，分别学习对象类别、空间位置和关系等不同方面，模块可独立训练并在推理时无缝集成，从而在异构输出空间上高效建模分布。在目标检测、实例分割和场景图生成三项任务上的实验验证了其有效性。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Traditional supervised methods for structured visual recognition tasks -- such as object detection, segmentation, and scene graph generation -- often produce deterministic, fixed outputs, limiting their ability to capture the inherent uncertainty in complex visual scenes. As a consequence, such point estimates are unable to capture the prediction uncertainty (or multi modality) intrinsic to these problems, often arising from natural ambiguities (e.g., ambiguity in size of partially occluded objects, local ambiguity of exact segmentation boundary, etc.) as well as noise and sparsity of training data. To address this limitation, we present Modular Diffusion Models (MDMs), a simple and novel framework that learns a distribution over structured outputs for a given input image. MDMs decompose the diffusion process into distinct, task-specific modules, each focused on capturing a different aspect of the structured information space, such as object categories, spatial locations, and inter-object relationships. This modular design allows each component to be learned independently, with seamless integration at inference without additional training. Furthermore, the modularity of MDMs enables the diffusion process to easily operate over the heterogeneous output space common in many structured learning tasks (e.g., a continuous bounding boxes and discrete class labels). Experimental results over three distinct structured tasks -- object detection, instance segmentation, and scene graph generation -- highlight the benefits of our proposed framework.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/26/2606.24297v1-training-free-cross-domain-few-shot-segmentation-via-robust-semantic-representation-and-matching",
+      "section": "quick",
+      "title_en": "Training-free Cross-domain Few-shot Segmentation via Robust Semantic Representation and Matching",
+      "authors": "Sujun Sun, Mingwu Ren, Haofeng Zhang",
+      "date": "2026-06-23",
+      "pdf": "https://arxiv.org/pdf/2606.24297v1",
+      "score": "6.0",
+      "evidence": "少样本分割方法可应用于食品图像分割以支持膳食评估",
+      "tldr": "跨域少样本分割面临过拟合和高计算成本问题。本文提出无需训练框架，基于DINOv3编码器，通过语义感知特征重融合、自适应支持增强和混合原型匹配三个模块提升跨域语义匹配能力。在四个目标域数据集上达到最优性能，无需任何训练或微调。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Cross-domain Few-shot Segmentation (CD-FSS) aims to transfer knowledge learned from source domain to distinct target domains, segmenting unseen target classes with only a few annotated samples. Although existing methods have made significant progress, they still rely on training or fine-tuning processes, which incur high computational costs and risk overfitting. We observe that when powerful and general-purpose vision foundation models are incorporated into these methods, their performance shows only marginal improvement or even degrades due to overfitting. To address this, we eliminate trainable parameters and propose a training-free framework to avoid both training overhead and overfitting. Built upon the self-supervised vision encoder DINOv3, our framework addresses cross-domain challenges through three core modules. First, the Semantic-aware Feature Re-fusion (SAFR) module identifies and re-fuses features that emphasize semantic patterns, generating representations with enhanced semantic discriminability. Additionally, the Adaptive Support Enhancement (ASE) module narrows semantic gaps between support and query through robust query information aggregation. Finally, the Hybrid Prototype Matching (HPM) module integrates matching results from diverse prototypes to adapt to varying semantic complexity across domains. Extensive experiments on four target domain datasets demonstrate that our method achieves state-of-the-art performance in CD-FSS without any training.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202606/26/2606.27313v1-viq-text-aligned-visual-quantized-representations-at-any-resolution",
+      "section": "quick",
+      "title_en": "ViQ: Text-Aligned Visual Quantized Representations at Any Resolution",
+      "authors": "Xumin Yu, Zuyan Liu, Zhenyu Yang, Yuhao Dong, Shengsheng Qian, Jiwen Lu, Han Hu, Yongming Rao",
+      "date": "2026-06-25",
+      "pdf": "https://arxiv.org/pdf/2606.27313v1",
+      "score": "6.0",
+      "evidence": "提供文本对齐的视觉量化表示，支持多模态建模，可应用于食品视觉语言任务。",
+      "tldr": "现有离散视觉表示难以平衡语义与细节，导致信息损失。ViQ提出两阶段量化框架：文本对齐预训练使视觉编码器获得语义监督，并支持任意分辨率输入；特征离散化采用近端表示学习和位置感知头量化，渐进压缩特征空间。在多模态任务上，ViQ性能与连续高维特征相当，且低层重建精度高，训练速度提升20%-70%。该方法为任意视觉输入提供了统一、高效的离散表示，兼顾了语义丰富性与细节保真度。",
+      "tags": "query:nutritionk",
+      "abstract_en": "A unified representation for text and vision is a natural pursuit, as it enables simpler multimodal modeling and more efficient training. However, representing images as discrete signals in the same way as text inevitably introduces severe information loss. Existing work struggles to balance low-level details and high-level semantics in discrete representations: reconstruction-oriented representations often lack semantic information, whereas semantically stronger features typically suffer from severe loss of detail. We present ViQ, a Visual Quantized Representations framework, which is designed to balance semantics and details in discrete representations while supporting inputs at native resolutions, thereby enabling it to serve as a unified and general discrete representation for arbitrary visual inputs. Our approach structures quantization learning into two stages: text-aligned pre-training and feature discretization. With text-aligned pre-training, we enhance the visual encoder semantic-rich supervision from the pretrained language model and enable it to process native-resolution visual inputs. During discretization, we propose a proximal representation learning strategy to progressively compact the feature space, along with a position-aware head-wise quantization mechanism that enables flexible processing of arbitrary resolutions. Extensive experiments on multimodal tasks demonstrate that ViQ achieves competitive performance compared to state-of-the-art multimodal vision encoders with continuous and high-dimensional visual features, while maintaining high precision in low-level reconstruction. We also show that multimodal training with visual quantized representations largely improves efficiency, yielding up to 20\\%-70\\% acceleration with different base LLMs and training recipes.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

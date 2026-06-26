@@ -1,0 +1,133 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-06-26T21:15:00.319097+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.22702v1",
+      "source": "arxiv",
+      "title": "Modular Diffusion Models for Structured Visual Recognition",
+      "abstract": "Traditional supervised methods for structured visual recognition tasks -- such as object detection, segmentation, and scene graph generation -- often produce deterministic, fixed outputs, limiting their ability to capture the inherent uncertainty in complex visual scenes. As a consequence, such point estimates are unable to capture the prediction uncertainty (or multi modality) intrinsic to these problems, often arising from natural ambiguities (e.g., ambiguity in size of partially occluded objects, local ambiguity of exact segmentation boundary, etc.) as well as noise and sparsity of training data. To address this limitation, we present Modular Diffusion Models (MDMs), a simple and novel framework that learns a distribution over structured outputs for a given input image. MDMs decompose the diffusion process into distinct, task-specific modules, each focused on capturing a different aspect of the structured information space, such as object categories, spatial locations, and inter-object relationships. This modular design allows each component to be learned independently, with seamless integration at inference without additional training. Furthermore, the modularity of MDMs enables the diffusion process to easily operate over the heterogeneous output space common in many structured learning tasks (e.g., a continuous bounding boxes and discrete class labels). Experimental results over three distinct structured tasks -- object detection, instance segmentation, and scene graph generation -- highlight the benefits of our proposed framework.",
+      "authors": [
+        "Siddhesh Khandelwal",
+        "Björn Ommer",
+        "Leonid Sigal"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-21T22:38:35+00:00",
+      "link": "https://arxiv.org/pdf/2606.22702v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "general structured visual recognition method applicable to food image analysis",
+      "llm_evidence_cn": "通用的结构化视觉识别方法可应用于食品图像分析",
+      "llm_evidence": "通用的结构化视觉识别方法可应用于食品图像分析",
+      "canonical_evidence": "通用的结构化视觉识别方法可应用于食品图像分析",
+      "llm_tldr_en": "Modular Diffusion Models learn distributions over structured outputs for visual recognition tasks, potentially applicable to food image segmentation for dietary assessment.",
+      "llm_tldr_cn": "该论文提出了模块化扩散模型（MDMs），用于结构化视觉识别任务，能够捕捉预测的不确定性。该方法在物体检测、分割等任务上表现出色，对于食品图像分析中的目标检测与分割具有潜在的适用性，可支持基于图像的膳食评估系统。",
+      "llm_tldr": "该论文提出了模块化扩散模型（MDMs），用于结构化视觉识别任务，能够捕捉预测的不确定性。该方法在物体检测、分割等任务上表现出色，对于食品图像分析中的目标检测与分割具有潜在的适用性，可支持基于图像的膳食评估系统。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "deep learning dietary assessment from food images",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.24297v1",
+      "source": "arxiv",
+      "title": "Training-free Cross-domain Few-shot Segmentation via Robust Semantic Representation and Matching",
+      "abstract": "Cross-domain Few-shot Segmentation (CD-FSS) aims to transfer knowledge learned from source domain to distinct target domains, segmenting unseen target classes with only a few annotated samples. Although existing methods have made significant progress, they still rely on training or fine-tuning processes, which incur high computational costs and risk overfitting. We observe that when powerful and general-purpose vision foundation models are incorporated into these methods, their performance shows only marginal improvement or even degrades due to overfitting. To address this, we eliminate trainable parameters and propose a training-free framework to avoid both training overhead and overfitting. Built upon the self-supervised vision encoder DINOv3, our framework addresses cross-domain challenges through three core modules. First, the Semantic-aware Feature Re-fusion (SAFR) module identifies and re-fuses features that emphasize semantic patterns, generating representations with enhanced semantic discriminability. Additionally, the Adaptive Support Enhancement (ASE) module narrows semantic gaps between support and query through robust query information aggregation. Finally, the Hybrid Prototype Matching (HPM) module integrates matching results from diverse prototypes to adapt to varying semantic complexity across domains. Extensive experiments on four target domain datasets demonstrate that our method achieves state-of-the-art performance in CD-FSS without any training.",
+      "authors": [
+        "Sujun Sun",
+        "Mingwu Ren",
+        "Haofeng Zhang"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-23T08:19:30+00:00",
+      "link": "https://arxiv.org/pdf/2606.24297v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "few-shot segmentation method applicable to food image segmentation for dietary assessment",
+      "llm_evidence_cn": "少样本分割方法可应用于食品图像分割以支持膳食评估",
+      "llm_evidence": "少样本分割方法可应用于食品图像分割以支持膳食评估",
+      "canonical_evidence": "少样本分割方法可应用于食品图像分割以支持膳食评估",
+      "llm_tldr_en": "Training-free few-shot segmentation framework using robust semantic representation; directly applicable to segmenting food items in dietary images with minimal annotation.",
+      "llm_tldr_cn": "该论文提出了一种免训练的小样本分割框架，基于自监督视觉基础模型和鲁棒语义匹配，在跨域场景下避免了过拟合。该方法可直接应用于食品图像分割，在标注样本有限的情况下实现准确的食物区域提取，为基于图像的膳食评估提供支撑。",
+      "llm_tldr": "该论文提出了一种免训练的小样本分割框架，基于自监督视觉基础模型和鲁棒语义匹配，在跨域场景下避免了过拟合。该方法可直接应用于食品图像分割，在标注样本有限的情况下实现准确的食物区域提取，为基于图像的膳食评估提供支撑。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "deep learning dietary assessment from food images",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2606.27313v1",
+      "source": "arxiv",
+      "title": "ViQ: Text-Aligned Visual Quantized Representations at Any Resolution",
+      "abstract": "A unified representation for text and vision is a natural pursuit, as it enables simpler multimodal modeling and more efficient training. However, representing images as discrete signals in the same way as text inevitably introduces severe information loss. Existing work struggles to balance low-level details and high-level semantics in discrete representations: reconstruction-oriented representations often lack semantic information, whereas semantically stronger features typically suffer from severe loss of detail. We present ViQ, a Visual Quantized Representations framework, which is designed to balance semantics and details in discrete representations while supporting inputs at native resolutions, thereby enabling it to serve as a unified and general discrete representation for arbitrary visual inputs. Our approach structures quantization learning into two stages: text-aligned pre-training and feature discretization. With text-aligned pre-training, we enhance the visual encoder semantic-rich supervision from the pretrained language model and enable it to process native-resolution visual inputs. During discretization, we propose a proximal representation learning strategy to progressively compact the feature space, along with a position-aware head-wise quantization mechanism that enables flexible processing of arbitrary resolutions. Extensive experiments on multimodal tasks demonstrate that ViQ achieves competitive performance compared to state-of-the-art multimodal vision encoders with continuous and high-dimensional visual features, while maintaining high precision in low-level reconstruction. We also show that multimodal training with visual quantized representations largely improves efficiency, yielding up to 20\\%-70\\% acceleration with different base LLMs and training recipes.",
+      "authors": [
+        "Xumin Yu",
+        "Zuyan Liu",
+        "Zhenyu Yang",
+        "Yuhao Dong",
+        "Shengsheng Qian",
+        "Jiwen Lu",
+        "Han Hu",
+        "Yongming Rao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-25T17:29:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.27313v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Provides text-aligned visual quantized representations enabling multimodal modeling; applicable to food vision-language tasks.",
+      "llm_evidence_cn": "提供文本对齐的视觉量化表示，支持多模态建模，可应用于食品视觉语言任务。",
+      "llm_evidence": "提供文本对齐的视觉量化表示，支持多模态建模，可应用于食品视觉语言任务。",
+      "canonical_evidence": "提供文本对齐的视觉量化表示，支持多模态建模，可应用于食品视觉语言任务。",
+      "llm_tldr_en": "ViQ proposes a framework to balance semantics and details in discrete visual representations, supporting native resolution inputs, enabling unified multimodal modeling that could benefit food image nutrition prediction.",
+      "llm_tldr_cn": "现有离散视觉表示往往在语义和细节之间难以平衡，导致信息损失。ViQ框架通过设计同时兼顾高层语义和低层细节的量化表示，支持任意分辨率输入，使得文本与视觉的对齐更加高效。实验表明该方法在多个多模态任务上表现优异。该工作为食品图像营养预测等应用提供了通用的多模态基础，有助于提升图文联合表示的质量。",
+      "llm_tldr": "现有离散视觉表示往往在语义和细节之间难以平衡，导致信息损失。ViQ框架通过设计同时兼顾高层语义和低层细节的量化表示，支持任意分辨率输入，使得文本与视觉的对齐更加高效。实验表明该方法在多个多模态任务上表现优异。该工作为食品图像营养预测等应用提供了通用的多模态基础，有助于提升图文联合表示的质量。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

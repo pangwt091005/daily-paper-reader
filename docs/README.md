@@ -6,28 +6,30 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-25
-- 运行时间：2026-06-25 22:09:37 UTC
+- 最新运行日期：2026-06-26
+- 运行时间：2026-06-26 21:17:10 UTC
 - 运行状态：成功
-- 本次总论文数：1
-- 精读区：1
-- 速读区：0
+- 本次总论文数：3
+- 精读区：0
+- 速读区：3
 
 ### 今日简报（AI）
-今日精读《Ingredient-Level Food Image Segmentation for Nutrition Awareness》（8.0/10），聚焦食材级图像分割助力营养感知。
-
-该方向表明，细粒度分割能够为自动饮食记录和营养评估提供更精准的视觉输入。
-
-普通读者可关注该技术在健康管理、饮食追踪应用中的潜力，未来或能通过拍照直接分析食材构成。
-- 详情：[/202606/25/README](/202606/25/README)
+今日速读3篇视觉识别相关论文，聚焦模块化扩散模型、跨域小样本分割与文本对齐视觉量化。值得关注结构化视觉识别中的模块化扩散机制，以及无需训练即可实现跨域分割的鲁棒语义方法。建议进一步探索这些方法在实际场景中的适配性与效率。
+- 详情：[/202606/26/README](/202606/26/README)
 
 ### 精读区论文标签
-1. [Ingredient-Level Food Image Segmentation for Nutrition Awareness](/202606/25/2606.24059v2-ingredient-level-food-image-segmentation-for-nutrition-awareness)  
-   标签：评分：8.0/10、query:nutritionk
-   evidence：面向营养意识的食品图像成分级分割
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Modular Diffusion Models for Structured Visual Recognition](/202606/26/2606.22702v1-modular-diffusion-models-for-structured-visual-recognition)  
+   标签：评分：6.0/10、query:nutritionk
+   evidence：通用的结构化视觉识别方法可应用于食品图像分析
+2. [Training-free Cross-domain Few-shot Segmentation via Robust Semantic Representation and Matching](/202606/26/2606.24297v1-training-free-cross-domain-few-shot-segmentation-via-robust-semantic-representation-and-matching)  
+   标签：评分：6.0/10、query:nutritionk
+   evidence：少样本分割方法可应用于食品图像分割以支持膳食评估
+3. [ViQ: Text-Aligned Visual Quantized Representations at Any Resolution](/202606/26/2606.27313v1-viq-text-aligned-visual-quantized-representations-at-any-resolution)  
+   标签：评分：6.0/10、query:nutritionk
+   evidence：提供文本对齐的视觉量化表示，支持多模态建模，可应用于食品视觉语言任务。
 
 
 <div class="dpr-home-promo-card">
