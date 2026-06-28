@@ -1,0 +1,24 @@
+{
+  "label": "2026-06-28",
+  "date": "2026-06-28",
+  "generated_at": "2026-06-28T21:18:58",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202606/28/2606.23611v1-data-selection-through-iterative-self-filtering-for-vision-language-settings",
+      "section": "quick",
+      "title_en": "Data Selection Through Iterative Self-Filtering for Vision-Language Settings",
+      "authors": "Andrei Liviu Nicolicioiu, Sarvjeet Singh Ghotra, Morgane M. Moss, Aaron Courville",
+      "date": "2026-06-22",
+      "pdf": "https://arxiv.org/pdf/2606.23611v1",
+      "score": "7.0",
+      "evidence": "视觉语言预训练中的自过滤数据选择",
+      "tldr": "大规模视觉-语言数据集中存在噪声，传统过滤依赖启发式或预训练模型。本文提出一种自举方法，迭代训练CLIP模型并动态选择高质量与多样化的数据混合，形成自过滤数据集。该方法无需额外数据或预训练模型，在多个下游任务上提升了性能。主要贡献是提出了一种自主提升数据质量的有效训练范式。",
+      "tags": "query:nutritionk",
+      "abstract_en": "The availability of large amounts of clean data is paramount to training neural networks. However, at large scales, manual oversight is impractical, resulting in sizeable datasets that can be very noisy. Attempts to mitigate this obstacle to producing performant vision-language models have so far involved heuristics, curated reference datasets, and using pre-trained models. Here we propose a novel, bootstrapped method in which a CLIP model is trained on an evolving, self-selected dataset. This evolving dataset constitutes a balance of filtered, highly probable clean samples as well as diverse samples from the entire distribution. Our proposed Self-Filtering method iterates between training the model and selecting a subsequently improved data mixture. Training on vision-language datasets filtered by the proposed approach improves downstream performance without the need for additional data or pre-trained models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

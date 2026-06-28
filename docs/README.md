@@ -6,22 +6,28 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-06-27
-- 运行时间：2026-06-27 21:10:07 UTC
+- 最新运行日期：2026-06-28
+- 运行时间：2026-06-28 21:18:51 UTC
 - 运行状态：成功
-- 本次总论文数：0
+- 本次总论文数：1
 - 精读区：0
-- 速读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202606/27/README](/202606/27/README)
+今日推荐一篇关于视觉-语言场景下迭代自过滤数据选择方法的论文。
+
+核心方向是利用自动筛选策略提升训练数据质量，避免人工标注成本，值得关注其对多模态模型效率的潜在提升。
+
+建议普通读者留意该方法在减少数据冗余、降低训练成本方面的应用前景。
+- 详情：[/202606/28/README](/202606/28/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Data Selection Through Iterative Self-Filtering for Vision-Language Settings](/202606/28/2606.23611v1-data-selection-through-iterative-self-filtering-for-vision-language-settings)  
+   标签：评分：7.0/10、query:nutritionk
+   evidence：视觉语言预训练中的自过滤数据选择
 
 
 <div class="dpr-home-promo-card">
