@@ -1,0 +1,59 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-01T20:27:41.801412+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.27313v2",
+      "source": "arxiv",
+      "title": "ViQ: Text-Aligned Visual Quantized Representations at Any Resolution",
+      "abstract": "A unified representation for text and vision is a natural pursuit, as it enables simpler multimodal modeling and more efficient training. However, representing images as discrete signals in the same way as text inevitably introduces severe information loss. Existing work struggles to balance low-level details and high-level semantics in discrete representations: reconstruction-oriented representations often lack semantic information, whereas semantically stronger features typically suffer from severe loss of detail. We present ViQ, a Visual Quantized Representations framework, which is designed to balance semantics and details in discrete representations while supporting inputs at native resolutions, thereby enabling it to serve as a unified and general discrete representation for arbitrary visual inputs. Our approach structures quantization learning into two stages: text-aligned pre-training and feature discretization. With text-aligned pre-training, we enhance the visual encoder semantic-rich supervision from the pretrained language model and enable it to process native-resolution visual inputs. During discretization, we propose a proximal representation learning strategy to progressively compact the feature space, along with a position-aware head-wise quantization mechanism that enables flexible processing of arbitrary resolutions. Extensive experiments on multimodal tasks demonstrate that ViQ achieves competitive performance compared to state-of-the-art multimodal vision encoders with continuous and high-dimensional visual features, while maintaining high precision in low-level reconstruction. We also show that multimodal training with visual quantized representations largely improves efficiency, yielding up to 20\\%-70\\% acceleration with different base LLMs and training recipes.",
+      "authors": [
+        "Xumin Yu",
+        "Zuyan Liu",
+        "Zhenyu Yang",
+        "Yuhao Dong",
+        "Shengsheng Qian",
+        "Jiwen Lu",
+        "Han Hu",
+        "Yongming Rao"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-25T17:29:27+00:00",
+      "link": "https://arxiv.org/pdf/2606.27313v2",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "text-aligned visual quantized representations for multimodal VLM",
+      "llm_evidence_cn": "文本对齐的视觉量化表示支持多模态VLM",
+      "llm_evidence": "文本对齐的视觉量化表示支持多模态VLM",
+      "canonical_evidence": "文本对齐的视觉量化表示支持多模态VLM",
+      "llm_tldr_en": "ViQ proposes text-aligned visual quantized representations that balance semantics and detail at any resolution, enabling a unified backbone for multimodal models including food recognition.",
+      "llm_tldr_cn": "ViQ提出一种文本对齐的视觉量化表示框架，在离散表示中平衡语义和细节，支持任意分辨率输入。该框架可作为多模态模型的统一骨干，可应用于食品图像识别与营养分析中的视觉编码环节，提升表示效率。",
+      "llm_tldr": "ViQ提出一种文本对齐的视觉量化表示框架，在离散表示中平衡语义和细节，支持任意分辨率输入。该框架可作为多模态模型的统一骨干，可应用于食品图像识别与营养分析中的视觉编码环节，提升表示效率。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
