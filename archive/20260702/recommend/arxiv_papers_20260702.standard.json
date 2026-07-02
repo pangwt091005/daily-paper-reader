@@ -1,0 +1,54 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-02T21:26:10.609457+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2606.29462v1",
+      "source": "arxiv",
+      "title": "MIRROR: Aligning Semantic Relations from Language to Image via Gromov--Wasserstein",
+      "abstract": "Multimodal Large Language Models (MLLMs) inherit rich relational priors from their language backbones, yet often fail when asked to apply these relationships in visual contexts. We trace this failure to a structural blind spot: projection-based alignment trains each visual token to carry the right semantics, but never asks whether the relationships between concepts survive the crossing from language to vision. To address this, we propose MIRROR (Mapping Inter-concept Relations from language to visual Representation via Optimal-transport-based Regularization), a geometric regularization framework that transfers relational priors from language to vision by exploiting the rich relational structure encoded in language representations. Specifically, we derive a surrogate loss from the proposed Semi-Inverse Gromov-Wasserstein (SI-GW) problem, an inverse geometric problem that aligns visual representations with language-derived relational priors. We show that this formulation admits a unique closed-form solution that prescribes the ideal visual relational structure implied by language geometry and cross-modal coupling. The structure of the formulation also enables efficient computation, making it applicable to long token sequences. Applying SI-GW inside decoder-only Transformers requires careful design. We introduce targeted strategies at the layer, head, and token levels to ensure stable extraction without additional parameters or inference cost. MIRROR improves relational consistency while preserving performance on general vision-language tasks.",
+      "authors": [
+        "Hong-Han Wang",
+        "Yuntao Wang",
+        "Hu Ding"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-06-28T15:39:05+00:00",
+      "link": "https://arxiv.org/pdf/2606.29462v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "aligns semantic relations between language and image for multimodal models",
+      "llm_evidence_cn": "对齐语言与图像的语义关系，适用于多模态食品模型",
+      "llm_evidence": "对齐语言与图像的语义关系，适用于多模态食品模型",
+      "canonical_evidence": "对齐语言与图像的语义关系，适用于多模态食品模型",
+      "llm_tldr_en": "Proposes MIRROR, a geometric regularization framework to transfer relational priors from language to vision, enabling better multimodal alignment for tasks like food recognition and nutrition prediction.",
+      "llm_tldr_cn": "多模态大语言模型在将语言关系迁移到视觉时存在结构盲区。本文提出MIRROR框架，利用最优传输正则化将语言中的关系先验迁移至视觉表示，从而改善跨模态语义对齐。实验证明该方法有效保持了概念间关系，为食品图像与营养文本的多模态学习提供了关键技术支持。",
+      "llm_tldr": "多模态大语言模型在将语言关系迁移到视觉时存在结构盲区。本文提出MIRROR框架，利用最优传输正则化将语言中的关系先验迁移至视觉表示，从而改善跨模态语义对齐。实验证明该方法有效保持了概念间关系，为食品图像与营养文本的多模态学习提供了关键技术支持。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
