@@ -1,0 +1,55 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-10T21:14:45.173465+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 0,
+    "quick_skim_target": 11,
+    "quick_selected": 0
+  },
+  "deep_dive": [
+    {
+      "id": "2607.08423v1",
+      "source": "arxiv",
+      "title": "OmniFood-Bench: Evaluating VLMs for Nutrient Reasoning and Personalized Health Advice",
+      "abstract": "The rapid integration of Large Vision-Language Models (VLMs) into critical infrastructure promises to revolutionize   personalized healthcare and dietary management. However, in the domain of food systems, autonomous agents face a   unique and persistent challenge: the \"Systemic Information Asymmetry\" between visual appearance and intrinsic   nutritional composition. Existing benchmarks primarily focus on coarse-grained classification tasks, such as food   category recognition, which fail to evaluate the intricate reasoning chain required for real-world dietary management   -- specifically, the ability to traverse from identifying hidden ingredients to estimating physical mass, and finally   synthesizing safety-critical medical advice. In this paper, we introduce OmniFood-Bench, a comprehensive benchmark   constructed from the MM-Food-100K dataset. Unlike previous works, OmniFood-Bench evaluates VLMs across three   progressive capabilities: Basic Perception (Ingredients & Cooking Methods), Quantitative Reasoning (Portion Size &   Nutritional Profiling), and Safety-Critical Advisory (Disease-Specific Recommendations). We evaluate six   state-of-the-art VLMs, including gpt-5.1, gemini-3-flash, and qwen3-vl-8B. Our extensive experiments reveal a   startling \"Semantic-Physical Gap\": while models achieve near-human accuracy in naming dishes, they exhibit   catastrophic failure in mass estimation and frequently hallucinate benign advice for high-risk diabetic profiles. This   work establishes a rigorous standard for trustworthiness in autonomous agents deployed for public health. The code   and datasets are available in: https://anonymous.4open.science/r/OmniFood-Bench-7D0B",
+      "authors": [
+        "Qian Jiang",
+        "Zhecheng Shi",
+        "Jingpu Yang",
+        "Zirui Song",
+        "Miao Fang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-09T12:46:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.08423v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "evaluates VLMs for nutrient reasoning from food images",
+      "llm_evidence_cn": "评估视觉语言模型从食品图像进行营养推理",
+      "llm_evidence": "评估视觉语言模型从食品图像进行营养推理",
+      "canonical_evidence": "评估视觉语言模型从食品图像进行营养推理",
+      "llm_tldr_en": "OmniFood-Bench introduces a benchmark to evaluate VLMs on nutrient reasoning and personalized health advice from food images, revealing current models struggle with the asymmetry between visual appearance and nutritional composition.",
+      "llm_tldr_cn": "现有视觉语言模型基准仅关注食品类别识别，忽略从图像到营养组成再到健康建议的复杂推理链路。本文提出OmniFood-Bench基准，系统评估VLM在隐藏成分识别、质量估计和医疗建议生成上的能力。实验表明当前最佳模型在营养推理任务上表现不足，尤其在跨味觉障碍场景下。该基准为构建更安全的食品领域VLM提供了重要评估标准。",
+      "llm_tldr": "现有视觉语言模型基准仅关注食品类别识别，忽略从图像到营养组成再到健康建议的复杂推理链路。本文提出OmniFood-Bench基准，系统评估VLM在隐藏成分识别、质量估计和医疗建议生成上的能力。实验表明当前最佳模型在营养推理任务上表现不足，尤其在跨味觉障碍场景下。该基准为构建更安全的食品领域VLM提供了重要评估标准。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "multimodal vision language model food recognition nutrition",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": []
+}
