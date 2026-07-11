@@ -6,24 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-10
-- 运行时间：2026-07-10 21:15:44 UTC
+- 最新运行日期：2026-07-11
+- 运行时间：2026-07-11 19:42:53 UTC
 - 运行状态：成功
 - 本次总论文数：1
-- 精读区：1
-- 速读区：0
+- 精读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-今天精读一篇高分论文（9/10），聚焦多模态大模型在营养推理与个性化健康建议评估。该研究提出了OmniFood-Bench基准，测试视觉语言模型对食物营养成分的理解与个性化建议能力。建议关注该基准如何验证模型在真实饮食场景中的推理水平，是健康AI领域的重要测试工具。
-- 详情：[/202607/10/README](/202607/10/README)
+今天推荐一篇关于大规模细粒度食品图像检索的哈希网络研究。论文提出的RFHNet通过结合关系与频率信息，提升了细粒度图像检索效率。对图像搜索感兴趣的读者，可关注哈希技术如何优化检索速度与精度。
+- 详情：[/202607/11/README](/202607/11/README)
 
 ### 精读区论文标签
-1. [OmniFood-Bench: Evaluating VLMs for Nutrient Reasoning and Personalized Health Advice](/202607/10/2607.08423v1-omnifood-bench-evaluating-vlms-for-nutrient-reasoning-and-personalized-health-advice)  
-   标签：评分：9.0/10、query:nutritionk
-   evidence：评估视觉语言模型从食品图像进行营养推理
+- 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [RFHNet: Relational and Frequency-Aware Hashing Network for Large-Scale Fine-Grained Food Image Retrieval](/202607/11/2607.06148v1-rfhnet-relational-and-frequency-aware-hashing-network-for-large-scale-fine-grained-food-image-retrieval)  
+   标签：评分：6.0/10、query:nutritionk
+   evidence：食品图像检索用于膳食监测
 
 
 <div class="dpr-home-promo-card">

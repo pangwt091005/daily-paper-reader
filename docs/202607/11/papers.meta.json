@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-11",
+  "date": "2026-07-11",
+  "generated_at": "2026-07-11T19:42:59",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/11/2607.06148v1-rfhnet-relational-and-frequency-aware-hashing-network-for-large-scale-fine-grained-food-image-retrieval",
+      "section": "quick",
+      "title_en": "RFHNet: Relational and Frequency-Aware Hashing Network for Large-Scale Fine-Grained Food Image Retrieval",
+      "authors": "Junsong Wang, Weiqing Min, Guorui Sheng, Tao Yao, Lili Wang, Shuqiang Jiang",
+      "date": "2026-07-07",
+      "pdf": "https://arxiv.org/pdf/2607.06148v1",
+      "score": "6.0",
+      "evidence": "食品图像检索用于膳食监测",
+      "tldr": "针对细粒度食品图像检索中哈希方法无法捕获细微局部语义和频率敏感线索的问题，提出RFHNet级联层次哈希网络。通过细粒度关系建模捕获相似成分差异，多频率调制融合提取信息特征，层次语义协同自适应整合多级表示生成判别哈希码。在六个食品基准上，12比特下mAP提升4.44%至17.20%，验证了在大规模检索和智能餐饮中的有效性。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Fine-grained food image retrieval is a key task in computational gastronomy, with applications in food traceability, dietary monitoring, and smart catering systems. Although hashing-based retrieval is attractive for large-scale search due to its storage efficiency and fast Hamming-distance computation, existing methods often perform poorly in fine-grained food scenarios, where subtle local semantics and frequency-sensitive visual cues are essential. To address this challenge, we propose RFHNet, a cascaded hierarchical hashing network that captures both global structure and fine-grained local details through multi-level representations. RFHNet includes three components: (1) Fine-grained Relation Modeling (FRM) to capture subtle visual differences among similar food components; (2) Multi-Frequency Modulated Fusion (MFMF) to extract informative multi-frequency features; and (3) Hierarchical Semantic Synergy (HSS) to adaptively integrate multi-level representations and generate discriminative hash codes. Experiments on six food-specific benchmarks show that RFHNet consistently outperforms state-of-the-art hashing methods, with mAP gains of 4.44\\% to 17.20\\% at 12 bits. These results validate the effectiveness of RFHNet for large-scale visual food retrieval and smart catering applications. The source code will be released upon publication.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
