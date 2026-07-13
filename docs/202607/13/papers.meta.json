@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-13",
+  "date": "2026-07-13",
+  "generated_at": "2026-07-13T21:20:55",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/13/2607.09529v1-artificial-intelligence-and-the-generative-science-of-food-formulation",
+      "section": "quick",
+      "title_en": "Artificial Intelligence and the Generative Science of Food Formulation",
+      "authors": "Vahidullah Tac, Ellen Kuhl",
+      "date": "2026-07-10",
+      "pdf": "https://arxiv.org/pdf/2607.09529v1",
+      "score": "7.0",
+      "evidence": "食品配方AI框架，关注营养",
+      "tldr": "食品配方需平衡口味、营养、可持续性与成本，传统依赖经验与迭代。当前AI应用多为孤立任务，缺乏统一科学框架。本文定义生成科学框架，以数字食品表示为核心，使AI能预测、发现、生成、组织、模拟和优化配方。通过可持续性与营养案例，将环境与营养指标转化为设计目标。最终提出数据、模型、基准与自动化需求，推动计算食品设计成为严谨学科。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Food formulation requires balancing taste, nutrition, sustainability, and cost. Traditionally, new foods have emerged through empirical experimentation, expert intuition, and iterative refinement. Artificial intelligence is advancing rapidly across food science, yet most applications remain isolated prediction and optimization tasks rather than parts of a broader scientific framework. Here we define a unified framework for the generative science of food formulation, in which digital food representations enable artificial intelligence to predict, discover, generate, organize, simulate, and optimize. We illustrate this framework through sustainability and nutrition, where generative artificial intelligence transforms environmental and nutritional metrics from post hoc evaluation criteria into explicit design objectives. Finally, we identify the data, models, benchmarks, and automation that will establish computational food design as a rigorous scientific discipline. Together, these advances are transforming food formulation into a generative science.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

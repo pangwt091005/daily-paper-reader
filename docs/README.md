@@ -6,22 +6,24 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-12
-- 运行时间：2026-07-12 19:49:31 UTC
+- 最新运行日期：2026-07-13
+- 运行时间：2026-07-13 21:20:49 UTC
 - 运行状态：成功
-- 本次总论文数：0
+- 本次总论文数：1
 - 精读区：0
-- 速读区：0
+- 速读区：1
 
 ### 今日简报（AI）
-> 今日无新推荐，系统未产出可展示论文。
-- 详情：[/202607/12/README](/202607/12/README)
+今日速读一篇关于AI驱动食品配方生成的论文。核心方向是利用生成模型颠覆传统食品开发流程。建议有兴趣的读者关注AI在营养与风味平衡中的实际应用案例。
+- 详情：[/202607/13/README](/202607/13/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-- 本次无速读推荐。
+1. [Artificial Intelligence and the Generative Science of Food Formulation](/202607/13/2607.09529v1-artificial-intelligence-and-the-generative-science-of-food-formulation)  
+   标签：评分：7.0/10、query:nutritionk
+   evidence：食品配方AI框架，关注营养
 
 
 <div class="dpr-home-promo-card">

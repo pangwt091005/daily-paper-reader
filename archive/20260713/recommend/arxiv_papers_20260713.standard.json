@@ -1,0 +1,53 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-13T21:19:54.627430+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.09529v1",
+      "source": "arxiv",
+      "title": "Artificial Intelligence and the Generative Science of Food Formulation",
+      "abstract": "Food formulation requires balancing taste, nutrition, sustainability, and cost. Traditionally, new foods have emerged through empirical experimentation, expert intuition, and iterative refinement. Artificial intelligence is advancing rapidly across food science, yet most applications remain isolated prediction and optimization tasks rather than parts of a broader scientific framework. Here we define a unified framework for the generative science of food formulation, in which digital food representations enable artificial intelligence to predict, discover, generate, organize, simulate, and optimize. We illustrate this framework through sustainability and nutrition, where generative artificial intelligence transforms environmental and nutritional metrics from post hoc evaluation criteria into explicit design objectives. Finally, we identify the data, models, benchmarks, and automation that will establish computational food design as a rigorous scientific discipline. Together, these advances are transforming food formulation into a generative science.",
+      "authors": [
+        "Vahidullah Tac",
+        "Ellen Kuhl"
+      ],
+      "primary_category": "cs.CE",
+      "categories": [
+        "cs.CE"
+      ],
+      "published": "2026-07-10T15:36:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.09529v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "food formulation AI framework with nutrition focus",
+      "llm_evidence_cn": "食品配方AI框架，关注营养",
+      "llm_evidence": "食品配方AI框架，关注营养",
+      "canonical_evidence": "食品配方AI框架，关注营养",
+      "llm_tldr_en": "Proposes a unified generative science framework for food formulation using AI, integrating nutrition, sustainability, and cost; demonstrates on nutritional and environmental metrics.",
+      "llm_tldr_cn": "该论文提出了一个统一的生成式食品配方科学框架，利用数字食品表示和人工智能进行预测、发现、生成、组织、模拟和优化。作者通过可持续性和营养两个用例展示了该框架的有效性，使用生成式人工智能转变环境和营养评估。框架为基于图像的食品营养预测提供了可迁移的AI方法论支持。",
+      "llm_tldr": "该论文提出了一个统一的生成式食品配方科学框架，利用数字食品表示和人工智能进行预测、发现、生成、组织、模拟和优化。作者通过可持续性和营养两个用例展示了该框架的有效性，使用生成式人工智能转变环境和营养评估。框架为基于图像的食品营养预测提供了可迁移的AI方法论支持。",
+      "llm_tags": [
+        "query:nutritionk:composite"
+      ],
+      "matched_query_tag": "query:nutritionk:composite",
+      "matched_query_text": "Papers central to 请帮我查找关于nutrition5k数据集，食品图像营养成分预测，使用图文多模态模型的论文, especially work that connects or combines: Nutrition5k dataset food nutrition prediction; food image based nutritional composition prediction; multimodal vision language model food recognition nutrition; deep learning dietary assessment from food images; food nutrient estimation from images deep learning; visual nutrition analysis multimodal deep learning; find papers on Nutrition5k dataset for food nutrition prediction using multimodal models; research on image based food nutritional composition estimation with vision language models; multimodal deep learning approaches for food nutrient analysis from images.",
+      "matched_requirement_id": "req-composite-nutritionk",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
