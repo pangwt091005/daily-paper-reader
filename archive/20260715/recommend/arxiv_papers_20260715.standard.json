@@ -1,0 +1,95 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-15T21:27:25.611266+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [
+    {
+      "id": "2607.12911v1",
+      "source": "arxiv",
+      "title": "Open-KNEAD: Knowledge-grounded Nutrition Estimation via Agentic Decomposition",
+      "abstract": "Multimodal Large Language Models (MLLMs) are increasingly used for dietary assessment from meal images, where retrieval-augmented grounding was shown to sharpen nutrition estimates. However, we find this premise no longer holds for current MLLMs. A modern MLLM's direct estimate now matches or surpasses the full retrieval pipeline. This raises a question: if retrieval no longer improves the overall estimate, can it still deliver the two things clinicians value, accurate portions and a traceable, item-by-item record? We pursue this while preserving what matters for clinical adoption: minimal user burden (a single, unannotated meal image), explainability (an auditable record), and privacy (locally hosted inference). We introduce Open-KNEAD, a knowledge-grounded agentic framework for meal nutrition estimation that is training-free and locally deployable. Each decomposed food item is grounded to a Food and Nutrient Database for Dietary Studies (FNDDS) code via selective, nutrient-aware retrieval, composing an auditable per-item record. Across two open MLLM families and three cuisines, Open-KNEAD improves portion estimates over both prior grounding methods and direct estimation in most backbone-dataset settings. An agent-internal recipe-prior step further recovers the invisible cooking-added energy that biases estimates on non-US cuisine. The advantage is largest on the dietitian-verified ACETADA dataset, where the local open agent surpasses the direct portion estimates of two frontier closed models by roughly $30\\%$ and $53\\%$, all while keeping every meal image on local hardware. We release the Open-KNEAD framework and its agent-ready FNDDS knowledge base.",
+      "authors": [
+        "Bruce Coburn",
+        "Jingbo Yue",
+        "Jinge Ma",
+        "Siddeshwar Raghavan",
+        "Gautham Vinod",
+        "Fengqing Zhu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-14T15:48:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.12911v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "food image based nutritional composition prediction via MLLMs",
+      "llm_evidence_cn": "通过多模态大模型进行食品图像营养组成预测",
+      "llm_evidence": "通过多模态大模型进行食品图像营养组成预测",
+      "canonical_evidence": "通过多模态大模型进行食品图像营养组成预测",
+      "llm_tldr_en": "Open-KNEAD proposes a knowledge-grounded nutrition estimation framework from a single meal image using multimodal LLMs with agentic decomposition, achieving accurate and explainable dietary assessment.",
+      "llm_tldr_cn": "现有基于多模态大模型的饮食评估方法中，检索增强管线已不再优于直接估计，但可解释性和逐项记录对临床有价值。本文提出Open-KNEAD框架，通过智能体分解从单张未标注餐食图像进行营养估计，保留可追溯性和隐私性。在Nutrition5k等数据集上，Open-KNEAD在保持高准确度的同时提供了详细的项级营养记录，推动了临床可用的图像营养评估。",
+      "llm_tldr": "现有基于多模态大模型的饮食评估方法中，检索增强管线已不再优于直接估计，但可解释性和逐项记录对临床有价值。本文提出Open-KNEAD框架，通过智能体分解从单张未标注餐食图像进行营养估计，保留可追溯性和隐私性。在Nutrition5k等数据集上，Open-KNEAD在保持高准确度的同时提供了详细的项级营养记录，推动了临床可用的图像营养评估。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "food image based nutritional composition prediction",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.09086v1",
+      "source": "arxiv",
+      "title": "Subtoken Vision Transformer for Fine-grained Recognition",
+      "abstract": "We present Subtoken Vision Transformer (SubViT), a selective image tokenization method for fine-grained visual recognition. Standard Vision Transformers compress each fixed-size patch into a single token, although fine-grained distinctions often depend on localized variations within only a few patches. SubViT addresses this mismatch by representing discriminative patches with multiple subtokens while retaining the original token sequence for global context, thereby allocating additional capacity where it is most needed. Since attention heads encode complementary semantics and extracting attention maps at inference requires an extra backbone forward, we adopt a two-stage training strategy. Stage 1 fine-tunes the ViT using subdivision regions sampled from random attention heads, exposing the model to diverse subdivision patterns. Stage 2 identifies informative attention maps through feature-degradation distances and distills them into a lightweight single-map router, which directly predicts deterministic token-importance scores without a separate attention forward. We evaluate SubViT on Generalized Category Discovery (GCD), a challenging task requiring both fine-grained discrimination and generalization to unlabeled novel categories. Across CUB, FGVC-Aircraft, and Stanford Cars, SubViT improves the average novel-category accuracy of DINOv2 from $81.3\\%$ to $84.7\\%$, with only $0.50$ ms additional latency and $3.4\\%$ more FLOPs, while reducing latency by $73.8\\%$ relative to Retina Patch. Results on CIFAR-10 and ImageNet-100 demonstrate its broader applicability.",
+      "authors": [
+        "Jie Zhu",
+        "Ivy Zhang",
+        "Minchul Kim",
+        "Xiaoming Liu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-10T04:07:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.09086v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "fine-grained visual recognition method applicable to food images for nutrition analysis",
+      "llm_evidence_cn": "细粒度视觉识别方法可应用于食品图像营养分析",
+      "llm_evidence": "细粒度视觉识别方法可应用于食品图像营养分析",
+      "canonical_evidence": "细粒度视觉识别方法可应用于食品图像营养分析",
+      "llm_tldr_en": "SubViT introduces a selective tokenization strategy for fine-grained recognition, allocating more tokens to discriminative patches, which can improve food image understanding for nutrient estimation.",
+      "llm_tldr_cn": "标准Vision Transformer将固定大小补丁压缩为单个令牌，忽略了细粒度区分依赖的局部变化。SubViT通过为判别性补丁分配多个子令牌，在保持全局上下文的同时增加局部容量。两阶段训练策略利用注意力图引导细分区域采样。该方法在多个细粒度识别基准上取得提升，可应用于食品图像以增强营养预测的细粒度特征提取。",
+      "llm_tldr": "标准Vision Transformer将固定大小补丁压缩为单个令牌，忽略了细粒度区分依赖的局部变化。SubViT通过为判别性补丁分配多个子令牌，在保持全局上下文的同时增加局部容量。两阶段训练策略利用注意力图引导细分区域采样。该方法在多个细粒度识别基准上取得提升，可应用于食品图像以增强营养预测的细粒度特征提取。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "food image based nutritional composition prediction",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
