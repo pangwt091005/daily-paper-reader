@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-17",
+  "date": "2026-07-17",
+  "generated_at": "2026-07-17T19:46:13",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/17/2607.13437v1-clip-guided-label-free-discriminative-region-scoring-for-fine-grained-classification",
+      "section": "quick",
+      "title_en": "CLIP-Guided Label-Free Discriminative Region Scoring for Fine-Grained Classification",
+      "authors": "Yujie Zhu",
+      "date": "2026-07-15",
+      "pdf": "https://arxiv.org/pdf/2607.13437v1",
+      "score": "6.0",
+      "evidence": "基于CLIP的细粒度分类方法，可应用于食物识别",
+      "tldr": "细粒度分类中，基于CLIP的无标签区域评分方法受区域生成和评分策略影响。本文提出统一框架，结合SAM掩码与随机裁剪，评估余弦相似度、margin和熵评分，并引入两种伪标签变体。实验表明，Soft Negative Margin评分最优，伪标签评分接近真实标签；随机裁剪因保留上下文信息，在伪标签有噪声时全面超越SAM掩码。此外，SAM掩码需聚合所有区域，而随机裁剪适合小top-k子集，为细粒度分类提供新洞见。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Recent vision models such as CLIP and SAM enable training-free segmentation and semantic encoding for fine-grained classification. A common approach is to compare the representations of segmented image regions with the text prompt embeddings of the corresponding labels. However, it remains unclear how different local regions and CLIP-based scoring strategies affect the selection of discriminative evidence, especially when ground-truth labels are unavailable. In this paper, we propose a unified CLIP-guided label-free region scoring framework for fine-grained classification. The framework evaluates cosine similarity-based, margin-based, and entropy-based scoring strategies using both SAM-generated masks and random crops, and introduces two label-free pseudo-label variants based on global image embeddings and local region embeddings. We conduct experiments on five fine-grained classification datasets to systematically compare different region generation methods and scoring strategies. The results show that Soft Negative Margin scoring achieves the strongest performance, and pseudo-label scoring closely approximates true-label performance. Although SAM produces semantically meaningful masks, random-crop-based pseudo-label scoring consistently outperforms SAM-based scoring across all datasets, suggesting that random crops preserve surrounding information and provide more stable semantic context when pseudo-labels are noisy. In addition, SAM masks benefit from aggregating embeddings from all regions, whereas random crops tend to perform better with a smaller top-k subset. These findings provide new insights for fine-grained classification.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
