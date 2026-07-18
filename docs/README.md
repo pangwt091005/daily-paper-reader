@@ -6,24 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-17
-- 运行时间：2026-07-17 19:46:07 UTC
+- 最新运行日期：2026-07-18
+- 运行时间：2026-07-18 21:05:01 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日速读1篇论文，聚焦细粒度分类新方法。最值得关注的是：CLIP引导的无标签判别性区域评分技术，无需人工标注即可提升分类精度。建议关注如何将CLIP特征与区域评分结合，用于自己的图像分类任务。
-- 详情：[/202607/17/README](/202607/17/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202607/18/README](/202607/18/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [CLIP-Guided Label-Free Discriminative Region Scoring for Fine-Grained Classification](/202607/17/2607.13437v1-clip-guided-label-free-discriminative-region-scoring-for-fine-grained-classification)  
-   标签：评分：6.0/10、query:nutritionk
-   evidence：基于CLIP的细粒度分类方法，可应用于食物识别
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
