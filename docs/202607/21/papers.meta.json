@@ -1,0 +1,39 @@
+{
+  "label": "2026-07-21",
+  "date": "2026-07-21",
+  "generated_at": "2026-07-21T20:03:42",
+  "count": 2,
+  "papers": [
+    {
+      "paper_id": "202607/21/2607.16514v1-geometry-enhanced-portion-estimation-for-multimodal-llms",
+      "section": "deep",
+      "title_en": "Geometry-Enhanced Portion Estimation for Multimodal LLMs",
+      "authors": "Lin Liao, Peng Li",
+      "date": "2026-07-17",
+      "pdf": "https://arxiv.org/pdf/2607.16514v1",
+      "score": "8.0",
+      "evidence": "使用多模态大语言模型进行基于图像的膳食评估和份量估计",
+      "tldr": "图像膳食评估中，多模态大模型可零样本识别多种食物，但份量估计能力弱。本文提出几何增强的份量头，基于冻结的DINOv2和结构化softmax-ownership体积，结合MLLM提供的食物名称、边界框和密度范围，无需深度传感器或微调。在三个开放词汇基准上，份量误差相对降低33-41%，超越所有旗舰MLLM和原始图像模型，显著提升零样本估量精度。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Image-based dietary assessment promises to replace costly, bias-prone manual recalls, but portion estimation remains a major blocker. Multimodal LLMs (MLLMs) recognize a wide range of foods zero-shot in uncontrolled photos, yet they are weak at portion estimation -- a gap we measure across the current frontier (Gemini, GPT, and Claude flagships alike). We present a method that enhances a frozen, commercial MLLM with an accurate portion head: a small geometry-enhanced network on a frozen DINOv2 backbone with a structured softmax-ownership volume, consuming the MLLM's per-food name, bounding box, and density range -- no depth sensor, no MLLM fine-tuning. Evaluated fully open-vocabulary on three real-world benchmarks, the head cuts per-food portion error by 33-41% relative to the MLLM alone, outperforms every flagship MLLM's direct estimates, and surpasses each benchmark's originally published image-only model at its own reported metric.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/21/2607.14966v1-u-shaped-multi-granularity-learning-for-vision-language-models",
+      "section": "quick",
+      "title_en": "U-shaped Multi-granularity Learning for Vision-Language Models",
+      "authors": "Biao Chen, Yunqian Yu, Xiangxu Zhao, Zhongshu Chen, Mengmeng Jing, Lin Zuo",
+      "date": "2026-07-16",
+      "pdf": "https://arxiv.org/pdf/2607.14966v1",
+      "score": "6.0",
+      "evidence": "视觉语言模型的提示学习框架可应用于食品识别任务",
+      "tldr": "视觉语言模型的提示学习面临粒度困境：全局提示缺乏细粒度语义，局部提示忽略上下文关联。受U-Net启发，提出UPrompt，通过U形结构构建视觉与文本模态的并行多粒度表示，粗到细级联增强传播全局上下文以细化局部细节，细到粗分层监督保证语义一致性。在17个基准上，UPrompt在MSCOCO超越MAMET和VPKE分别4.1和7.3 rSum，base-to-novel泛化超越CoCoA-Mix 5.09%，且以1/3成本匹配PSRC。该方法有效统一多粒度学习，提升跨任务泛化能力。",
+      "tags": "query:nutritionk",
+      "abstract_en": "The prompt learning paradigm for vision-language models is effective yet faces a granularity dilemma: global prompts lack fine-grained semantic awareness, while local prompts ignore contextual associations, limiting cross-task generalization. This dilemma exists in dense prediction tasks. Inspired by U-Net, which unifies multi-level representations across granularities, we propose UPrompt, a U-shaped multi-granularity prompt learning framework for vision-language models. Similar to how U-Net integrates fine and coarse features through symmetric encoder-decoder pathways with cross-level connections, UPrompt constructs parallel multi-granularity representations in both visual and textual modalities, where coarse-to-fine cascaded enhancement propagates global context to refine local details, while fine-to-coarse hierarchical supervision ensures semantic consistency across scales. Extensive experiments on 17 benchmarks validate our effectiveness. UPrompt outperforms MAMET and VPKE by 4.1 and 7.3 rSum on MSCOCO, surpasses CoCoA-Mix by 5.09% in base-to-novel generalization, while maintaining competitive performance with minimal overhead (coarse-grained) and matching PSRC with 1/3 cost (medium-grained).",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
