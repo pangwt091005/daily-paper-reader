@@ -6,28 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-21
-- 运行时间：2026-07-21 20:03:36 UTC
+- 最新运行日期：2026-07-22
+- 运行时间：2026-07-22 21:36:35 UTC
 - 运行状态：成功
-- 本次总论文数：2
-- 精读区：1
-- 速读区：1
+- 本次总论文数：0
+- 精读区：0
+- 速读区：0
 
 ### 今日简报（AI）
-今日精读几何增强的多模态大模型份额估计（8.0分），速读U形多粒度视觉语言模型（6.0分）。  
-最值得关注：几何先验可大幅提升多模态LLM的空间关系理解；多粒度学习则补充了局部与全局特征。  
-建议优先精读几何增强论文，并尝试在自身多模态应用中集成空间推理模块。
-- 详情：[/202607/21/README](/202607/21/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202607/22/README](/202607/22/README)
 
 ### 精读区论文标签
-1. [Geometry-Enhanced Portion Estimation for Multimodal LLMs](/202607/21/2607.16514v1-geometry-enhanced-portion-estimation-for-multimodal-llms)  
-   标签：评分：8.0/10、query:nutritionk
-   evidence：使用多模态大语言模型进行基于图像的膳食评估和份量估计
+- 本次无精读推荐。
 
 ### 速读区论文标签
-1. [U-shaped Multi-granularity Learning for Vision-Language Models](/202607/21/2607.14966v1-u-shaped-multi-granularity-learning-for-vision-language-models)  
-   标签：评分：6.0/10、query:nutritionk
-   evidence：视觉语言模型的提示学习框架可应用于食品识别任务
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
