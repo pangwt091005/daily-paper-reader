@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-23",
+  "date": "2026-07-23",
+  "generated_at": "2026-07-23T21:39:02",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/23/2607.16789v1-multiloreft-decoupling-shared-and-modality-specific-subspaces-in-multimodal-learning-via-low-rank-representation-fine-tuning",
+      "section": "quick",
+      "title_en": "MultiLoReFT: Decoupling Shared and Modality-Specific Subspaces in Multimodal Learning via Low-Rank Representation Fine-Tuning",
+      "authors": "Sana Tonekaboni, Viktoria Schuster, Caroline Uhler",
+      "date": "2026-07-18",
+      "pdf": "https://arxiv.org/pdf/2607.16789v1",
+      "score": "6.0",
+      "evidence": "多模态学习的低秩微调方法",
+      "tldr": "多模态学习面临数据对齐困难和表示纠缠问题。本文提出MultiLoReFT，一种基于低秩表示微调的框架，通过可解释投影子空间解耦共享与模态特定信息。该方法在模拟和真实基准上有效，既支持多模态预测，又显式揭示信息分布。贡献在于实现了高效微调与可解释解耦的统一。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Real-world perception and decision making are inherently multimodal, integrating complementary signals across modalities. However, training multimodal models faces two main obstacles. First, collecting large-scale, well-aligned paired multimodal datasets is often impractical, making end-to-end multimodal training difficult. Second, existing multimodal representations frequently entangle information shared across modalities with modality-specific information, hindering interpretability and control. We introduce MultiLoReFT, an efficient and scalable low-rank representation fine-tuning framework for multimodal learning with pretrained unimodal models. MultiLoReFT extends low-rank adaptation to the multimodal setting and learns interpretable projection subspaces that decouple shared and modality-specific information. Across simulated and real-world benchmarks, it produces representations that support multimodal prediction while explicitly revealing how shared and modality-specific information is distributed across modalities.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
