@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-25",
+  "date": "2026-07-25",
+  "generated_at": "2026-07-25T19:59:02",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/25/2607.19975v1-forecasting-the-number-of-harvest-ready-fruits-of-sweet-peppers-using-multimodal-time-series-data",
+      "section": "quick",
+      "title_en": "Forecasting the Number of Harvest-ready Fruits of Sweet Peppers Using Multimodal Time-Series Data",
+      "authors": "Enrico Pallotta, Mohamed Farag, Esra Guclu, Chris McCool, Ribana Roscher, Juergen Gall",
+      "date": "2026-07-22",
+      "pdf": "https://arxiv.org/pdf/2607.19975v1",
+      "score": "6.0",
+      "evidence": "多模态深度学习融合图像特征和数值数据，从时间序列图像预测水果产量",
+      "tldr": "精准农业中单株产量预测因缺乏标注时序数据集而困难。本文提出多模态框架，融合DinoV3图像特征与数值计数，利用LSTM建模不等间隔时序。在两个生长季691株甜椒上，RMSE较持久性基线降低33-38%，比仅测量模型提升1.2%。通过深度集成提供校准的不确定性估计，并开源数据集与代码，促进可重复研究。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Accurate yield forecasting at the individual-plant level is critical for precision agriculture and supply-chain planning, yet public datasets capturing both visual growth dynamics and per-plant measurement labels are scarce. In this paper, we introduce a novel, annotated image time-series dataset of 691 sweet pepper plants monitored over two growing seasons, comprising 4837 images with per-plant fruit counts categorized by maturity. We propose a multimodal deep learning framework that fuses high-dimensional image features, extracted using the DinoV3 encoder, with numerical count measurements. Our architecture utilizes a Long Short-Term Memory (LSTM) network to model temporal dependencies and handles irregular sampling intervals common in greenhouse monitoring. Through quantitative experiments, we demonstrate that this multimodal approach reduces RMSE over a persistence baseline by 33% and 38% in the 2022 and 2023 seasons, respectively, with a further 1.2% average gain over a measurement-only model. Furthermore, we employ Deep Ensembles and Gaussian Negative Log-Likelihood (NLL) to provide calibrated uncertainty estimates, with an Uncertainty Calibration Error (UCE) ranging from 0.39 to 0.89 depending on the cross-season evaluation direction, offering a principled confidence signal for real-world agricultural decision-making. We release the dataset and code to support reproducible research and to accelerate development of data-driven yield forecasting methods for horticultural crops.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

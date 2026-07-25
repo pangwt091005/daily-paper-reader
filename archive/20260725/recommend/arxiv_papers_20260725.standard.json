@@ -1,0 +1,57 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-07-25T19:58:18.645553+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 1,
+    "quick_skim_target": 11,
+    "quick_selected": 1
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2607.19975v1",
+      "source": "arxiv",
+      "title": "Forecasting the Number of Harvest-ready Fruits of Sweet Peppers Using Multimodal Time-Series Data",
+      "abstract": "Accurate yield forecasting at the individual-plant level is critical for precision agriculture and supply-chain planning, yet public datasets capturing both visual growth dynamics and per-plant measurement labels are scarce. In this paper, we introduce a novel, annotated image time-series dataset of 691 sweet pepper plants monitored over two growing seasons, comprising 4837 images with per-plant fruit counts categorized by maturity. We propose a multimodal deep learning framework that fuses high-dimensional image features, extracted using the DinoV3 encoder, with numerical count measurements. Our architecture utilizes a Long Short-Term Memory (LSTM) network to model temporal dependencies and handles irregular sampling intervals common in greenhouse monitoring. Through quantitative experiments, we demonstrate that this multimodal approach reduces RMSE over a persistence baseline by 33% and 38% in the 2022 and 2023 seasons, respectively, with a further 1.2% average gain over a measurement-only model. Furthermore, we employ Deep Ensembles and Gaussian Negative Log-Likelihood (NLL) to provide calibrated uncertainty estimates, with an Uncertainty Calibration Error (UCE) ranging from 0.39 to 0.89 depending on the cross-season evaluation direction, offering a principled confidence signal for real-world agricultural decision-making. We release the dataset and code to support reproducible research and to accelerate development of data-driven yield forecasting methods for horticultural crops.",
+      "authors": [
+        "Enrico Pallotta",
+        "Mohamed Farag",
+        "Esra Guclu",
+        "Chris McCool",
+        "Ribana Roscher",
+        "Juergen Gall"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-07-22T09:58:03+00:00",
+      "link": "https://arxiv.org/pdf/2607.19975v1",
+      "tags": [
+        "keyword:nutritionk",
+        "query:nutritionk"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "multimodal deep learning fusing image features and numerical data for fruit yield prediction from time-series images",
+      "llm_evidence_cn": "多模态深度学习融合图像特征和数值数据，从时间序列图像预测水果产量",
+      "llm_evidence": "多模态深度学习融合图像特征和数值数据，从时间序列图像预测水果产量",
+      "canonical_evidence": "多模态深度学习融合图像特征和数值数据，从时间序列图像预测水果产量",
+      "llm_tldr_en": "Introduces a multimodal deep learning framework fusing DinoV3 image features with LSTM for forecasting harvest-ready fruit counts from time-series plant images, addressing a similar multimodal prediction task.",
+      "llm_tldr_cn": "该论文针对个体植物水平的水果产量预测任务，提出了一种多模态深度学习框架，融合DinoV3编码器提取的图像特征和数值计数测量，利用LSTM网络建模时间依赖关系。在691株甜椒植物的图像时间序列数据集上，该方法有效预测了不同成熟度的果实数量。虽然任务目标是农业产量而非营养预测，但所采用的多模态时间序列融合方法对食品图像营养预测具有方法学参考价值。",
+      "llm_tldr": "该论文针对个体植物水平的水果产量预测任务，提出了一种多模态深度学习框架，融合DinoV3编码器提取的图像特征和数值计数测量，利用LSTM网络建模时间依赖关系。在691株甜椒植物的图像时间序列数据集上，该方法有效预测了不同成熟度的果实数量。虽然任务目标是农业产量而非营养预测，但所采用的多模态时间序列融合方法对食品图像营养预测具有方法学参考价值。",
+      "llm_tags": [
+        "query:nutritionk"
+      ],
+      "matched_query_tag": "query:nutritionk",
+      "matched_query_text": "deep learning dietary assessment from food images",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
