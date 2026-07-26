@@ -6,26 +6,22 @@
 </div>
 
 ## 每次日报
-- 最新运行日期：2026-07-25
-- 运行时间：2026-07-25 19:58:57 UTC
+- 最新运行日期：2026-07-26
+- 运行时间：2026-07-26 20:59:54 UTC
 - 运行状态：成功
-- 本次总论文数：1
+- 本次总论文数：0
 - 精读区：0
-- 速读区：1
+- 速读区：0
 
 ### 今日简报（AI）
-今日速读了一篇利用多模态时序数据预测甜椒成熟果实数量的研究，分数6.0/10。  
-值得关注的方向是将传感器、图像等多源时序数据融合应用于农业产量预测。  
-建议读者可进一步探索多模态时序数据在精准农业中的其他应用案例。
-- 详情：[/202607/25/README](/202607/25/README)
+> 今日无新推荐，系统未产出可展示论文。
+- 详情：[/202607/26/README](/202607/26/README)
 
 ### 精读区论文标签
 - 本次无精读推荐。
 
 ### 速读区论文标签
-1. [Forecasting the Number of Harvest-ready Fruits of Sweet Peppers Using Multimodal Time-Series Data](/202607/25/2607.19975v1-forecasting-the-number-of-harvest-ready-fruits-of-sweet-peppers-using-multimodal-time-series-data)  
-   标签：评分：6.0/10、query:nutritionk
-   evidence：多模态深度学习融合图像特征和数值数据，从时间序列图像预测水果产量
+- 本次无速读推荐。
 
 
 <div class="dpr-home-promo-card">
