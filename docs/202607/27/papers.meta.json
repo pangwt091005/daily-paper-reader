@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-27",
+  "date": "2026-07-27",
+  "generated_at": "2026-07-27T20:43:05",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/27/2607.22043v1-scaling-native-multimodal-pre-training-from-scratch",
+      "section": "deep",
+      "title_en": "Scaling Native Multimodal Pre-Training From Scratch",
+      "authors": "Haoyuan Wu, Aoqi Wu, Hai Wang, Jiajia Wu, Jinxiang Ou, Bei Yu",
+      "date": "2026-07-24",
+      "pdf": "https://arxiv.org/pdf/2607.22043v1",
+      "score": "8.0",
+      "evidence": "原生多模态预训练缩放定律的研究为食品营养预测的视觉语言模型开发提供支持",
+      "tldr": "大型语言模型受限于纯文本预训练，难以感知多模态世界。本文提出从零开始训练的原生多模态预训练，在固定计算预算下系统研究模型大小和token数量的最优缩放规律，发现语言与多模态目标具有不同的缩放行为，数据混合比例显著影响计算最优配置，并通过效率前沿指导资源分配。该方法实现正跨模态迁移，提升空间推理与多模态上下文学习能力，为可预测缩放多模态基础模型奠定基础。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Although large language models (LLMs) exhibit remarkable reasoning capabilities, their reliance on text-only pre-training restricts the perception of the multimodal physical world. Native multimodal pre-training avoids this limitation by training models from scratch on multimodal inputs, thereby achieving deep cross-modal integration and mitigating optimization asymmetries inherent to traditional late-fusion architectures. Despite these advantages, the scaling properties of this paradigm remain systematically uncharacterized. To address this gap, we investigate the optimal model size and token count for training a transformer-based vision-language model under a fixed computational budget. We demonstrate that minimal objective loss adheres to a predictable compute law, whereas compute-optimal model sizes and token counts scale as power laws. Notably, language and multimodal objectives manifest distinct scaling behaviors. The language allocation law is largely invariant to the composition of the data, indicating stable language learning regardless of the multimodal data ratio. Conversely, the multimodal allocation law is highly sensitive to this composition. Specifically, text-heavy mixtures become compute-efficient only at larger model scales, shifting the optimal resource allocation toward greater model capacity. Additionally, by modeling the influence of data composition on compute laws and allocation exponents, we derive an efficiency frontier specifying precise configurations of model size, token count, and data mixture. Downstream evaluations further reveal that native multimodal pre-training induces positive cross-modal transfer, thereby enhancing pure-text spatial reasoning and enabling robust multimodal in-context learning. In summary, this empirical research establishes the essential groundwork for predictably scaling multimodal foundation models.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
