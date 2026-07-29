@@ -1,0 +1,69 @@
+{
+  "label": "2026-07-29",
+  "date": "2026-07-29",
+  "generated_at": "2026-07-29T21:37:00",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202607/29/2607.25820v1-food-image-segmentation-with-llm-derived-ingredient-labels-and-multimodal-fusion",
+      "section": "deep",
+      "title_en": "Food Image Segmentation with LLM-Derived Ingredient Labels and Multimodal Fusion",
+      "authors": "Jui-Feng Chi, Wei-Ta Chu, Sheng-Long Lin",
+      "date": "2026-07-28",
+      "pdf": "https://arxiv.org/pdf/2607.25820v1",
+      "score": "9.0",
+      "evidence": "利用LLM推导的食材标签和多模态融合进行食品图像分割，实现基于图像的营养成分估计。",
+      "tldr": "食物图像分割在营养追踪等健康应用中至关重要，但现有模型对视觉相似食材和罕见类别表现欠佳。本文提出两个即插即用多模态模块LIM-F和LIM-Q，利用大语言模型从图像推断食材标签并注入视觉分析流程，无需预先对齐图文。在FoodSeg103基准上，集成LIM-Q的Mask2Former（Swin-L）达到55.0 mIoU，LIM-F也达54.4，且GPU内存增加不超过3.8 GB，为细粒度食物理解提供了实用可扩展方案。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Food image segmentation plays a vital role in health-related applications such as nutrition tracking and personalized health monitoring. However, existing models often underperform on visually similar ingredients and rare food categories. To address this issue, we propose two plug-and-play multimodal modules that enhance the segmentation performance by leveraging ingredient labels inferred from food images using large language models (LLMs). The first module, called LIM-F (Language Injection Module for Features), is designed to pair with any image encoder that produces multi-layer outputs (e.g., Swin Transformer), while the second module, LIM-Q (Language Injection Module for Queries), targets Mask2Former-style Transformer-based decoders. Both modules enable training without the need for pre-aligning images with text by directly injecting semantic ingredient information into the visual analysis pipeline. On the FoodSeg103 benchmark, the proposed method achieves state-of-the-art performance. Specifically, integrating LIM-Q into the Mask2Former decoder with a Swin-L image encoder yields a mean Intersection over Union (mIoU) of 55.0. LIM-F also demonstrates strong generalization and competitive performance, reaching an mIoU of 54.4 under the same model (Swin-L+Mask2Former). Furthermore, its applicability extends beyond Transformer-based decoders, as evidenced by an improvement from 47.7 to 49.8 mIoU when integrated into a CNN-based architecture. Notably, the improved segmentation accuracy is achieved with only a moderate (at most 3.8 GB) increase in the GPU memory consumption during training. Thus, the proposed approach offers a practical and scalable solution for fine-grained food understanding.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.25794v1-fine-grained-food-image-understanding-via-target-aware-data-alignment",
+      "section": "deep",
+      "title_en": "Fine-Grained Food Image Understanding via Target-Aware Data Alignment",
+      "authors": "Jui-Feng Chi, Wei-Lun Chu, Bruce Coburn, Jinge Ma, Fengqing Zhu",
+      "date": "2026-07-28",
+      "pdf": "https://arxiv.org/pdf/2607.25794v1",
+      "score": "8.0",
+      "evidence": "使用CLIP风格视觉语言模型的细粒度食品图像理解，直接适用于营养成分预测",
+      "tldr": "针对细粒度食品图像理解中网络数据存在领域差异和跨模态不对齐的问题，提出目标感知数据对齐方法。先进行数据选择与VLM描述精炼，训练互补CLIP专家，再通过层次化VLM辅助融合。VLM描述精炼带来19%性能提升，全方法比纯VLM检索得分高两倍以上且更高效。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Fine-grained food visual--semantic understanding requires models to capture subtle distinctions across ingredients, cooking methods, doneness, color, texture, and plate composition. Although CLIP-style vision-language models provide a natural framework for this task, their effectiveness is limited when training relies on heterogeneous web-collected image--text pairs. Such data often exhibit a web-to-target domain gap and cross-modal misalignment, where images differ from the target distribution and captions are noisy, multilingual, or weakly grounded in visual content. We propose a data-centric multimodal alignment method for fine-grained food description and recognition. Our method first performs target-aware data selection to identify visually relevant training subsets, then applies VLM-based caption refinement to generate visually grounded, target-style descriptions. Using these curated image--caption pairs, we train complementary CLIP-style retrieval experts and further combine their decisions through a hierarchical VLM-assisted multi-expert decision-level fusion strategy that invokes the VLM only when experts disagree. Experiments show that our data refinement strategy significantly improves retrieval performance over naive web supervision, with VLM-based caption refinement alone yielding an average performance gain of approximately 19%. Our full method also achieves more than twice the retrieval score of pure VLM-based retrieval while remaining substantially more efficient.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.23070v1-dishseg24k-a-large-scale-benchmark-for-food-segmentation-with-stochastic-expert-decoding",
+      "section": "quick",
+      "title_en": "DishSeg24k: A Large-Scale Benchmark for Food Segmentation with Stochastic Expert Decoding",
+      "authors": "Yilin Wang, Haochen Shi, Guanyu Chen, Weiqing Min, Jinkai Zheng, Chenggang Yan, Shuqiang Jiang",
+      "date": "2026-07-25",
+      "pdf": "https://arxiv.org/pdf/2607.23070v1",
+      "score": "7.0",
+      "evidence": "大规模食品分割数据集，支持饮食评估，为营养预测提供基础",
+      "tldr": "针对现有食品分割基准无法真实反映复杂就餐场景的问题，构建了包含24096张图像、278个细粒度类别的DishSeg24k大规模基准。提出FEAST模型，将解码过程建模为马尔可夫决策过程，并设计双评论家解耦优化的强化学习引导混合专家模块，以应对密集重叠、类间相似和长尾分布等挑战。在DishSeg24k上，FEAST在mIoU、mDice和mAcc上分别提升3.21%、3.68%和4.00%，并在FoodSeg103上验证了有效性。数据集和代码将公开，为食品分割领域提供高保真基准和新范式。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Food segmentation is essential for applications such as intelligent catering, dietary assessment, and recommendation. However, existing benchmarks fail to capture the complexity of real-world dining scenes. The challenges of dense inter-dish overlap, fine-grained class similarity, and extreme long-tail class distributions exceed the fidelity of current datasets. To fill this gap, we introduce \\textbf{DishSeg24k}, a large-scale dish-level segmentation benchmark with 24,096 images, 112,281 instances, and 278 fine-grained categories in real-world dining environments. Based on DishSeg24k, we further propose \\textbf{Food Expert-Adaptive Segmentation Transformers (FEAST)} to address these challenges. FEAST models query-based decoding as a Markov Decision Process (MDP), where each decoder layer update is treated as a sequential decision step that explores uncertainty along dish boundaries. We further redesign the decoder with a reinforcement learning (RL)-guided Mixture-of-Experts (MoE) module, in which a dual-critic decoupled optimization scheme separates task-oriented query refinement from structure-aware expert routing. This design promotes expert specialization and prevents expert collapse under long-tail category distributions. Finally, extensive experiments on DishSeg24k demonstrate the state-of-the-art performance of FEAST, which outperforms previous methods by {+3.21\\%} mIoU, {+3.68\\%} mDice, and {+4.00\\%} mAcc, respectively. We further validate the effectiveness of FEAST on FoodSeg103. The dataset and code will be publicly released.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202607/29/2607.24424v1-mavie-a-multi-scale-adaptive-vision-encoder-for-fine-grained-visual-perception-and-efficient-multimodal-reasoning",
+      "section": "quick",
+      "title_en": "MAViE: A Multi-scale Adaptive Vision Encoder for Fine-grained Visual Perception and Efficient Multimodal Reasoning",
+      "authors": "Shaofei Lei",
+      "date": "2026-07-27",
+      "pdf": "https://arxiv.org/pdf/2607.24424v1",
+      "score": "6.0",
+      "evidence": "多尺度自适应视觉编码器，可迁移到食品识别与营养分析",
+      "tldr": "现有视觉语言模型将视觉编码器的所有token送入大模型，但高层特征丢失细节，高分辨率输入增加推理延迟。本文提出MAViE多尺度自适应视觉编码器，通过位置相关门融合深浅层特征保留全局与局部信息，再根据问题相关性、局部信息量等做条件路由压缩token。在7B语言模型模拟中，SigLIP-SO400M视觉token从729降至146，平均得分提升2.2个百分点，首token时间从228ms降至129ms。方法兼顾效率与细粒度感知。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Vision-language models commonly project all tokens produced by a pretrained vision encoder into a large language model. However, final-layer features can discard text, local attributes, and spatial relationships, while high-resolution inputs substantially increase context length and inference latency. We introduce \\method, a Multi-scale Adaptive Vision Encoder. \\method uses position-dependent gates to fuse shallow, intermediate, and deep features from a vision Transformer, preserving global semantics while enhancing edges, text, and local structure. It then performs question-conditioned token routing according to question relevance, local information content, global semantics, and spatial coverage, with a token budget that adapts to image complexity. To mitigate compression loss, we further introduce full-to-compressed representation distillation and a spatial diversity regularizer. In an illustrative simulation under a unified 7B language-model framework, \\method reduces the average number of SigLIP-SO400M visual tokens from 729 to 146 (approximately 80.0\\%) and improves the mean score on VQAv2, GQA, TextVQA, ScienceQA-IMG, and MMBench by 2.2 percentage points, while reducing single-image time to first token from 228\\,ms to 129\\,ms. We provide the full model design and evaluation protocol. All reported numbers currently serve only as placeholders for paper organization and experimental design; formal claims require real training runs, independent replications, and official benchmark evaluation.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
