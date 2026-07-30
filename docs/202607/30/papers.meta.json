@@ -1,0 +1,24 @@
+{
+  "label": "2026-07-30",
+  "date": "2026-07-30",
+  "generated_at": "2026-07-30T21:40:52",
+  "count": 1,
+  "papers": [
+    {
+      "paper_id": "202607/30/2607.22919v1-controlling-embedding-spaces-with-text-conditioned-transformations",
+      "section": "quick",
+      "title_en": "Controlling Embedding Spaces with Text-Conditioned Transformations",
+      "authors": "Joseph Fioresi, Fabian Caba Heilbron, Pankaj Nathani, Mubarak Shah, Kushal Kafle",
+      "date": "2026-07-24",
+      "pdf": "https://arxiv.org/pdf/2607.22919v1",
+      "score": "6.0",
+      "evidence": "可迁移至食品属性强调的多模态嵌入控制方法",
+      "tldr": "针对CLIP等多模态嵌入空间主要表达主体语义而抑制相机角度、色调等属性的缺陷，提出文本条件变换网络，根据属性类别描述（如“颜色”）生成仿射变换以突出相关属性。通过训练使变换后的嵌入与冻结的潜在空间对齐，实现无需重新编码的检索，并可扩展至多聚类等属性解缠任务，以近零推理成本取得属性检索与多属性组织的最优性能。",
+      "tags": "query:nutritionk",
+      "abstract_en": "Multimodal embedding spaces in models like CLIP enable powerful capabilities such as semantic similarity retrieval and cross-modal zero-shot classification. These embeddings compress high-level semantics into a single vector, which comes at the cost of primarily expressing a dominant semantics like main object while suppressing other important attributes such as camera angle or color tone. We propose a text-conditioned transformation of visual embeddings that makes such attributes explicitly accessible. Given a natural language description of an attribute category (e.g., \"color\" or \"art style\"), a network generates an affine transformation that emphasizes the specified attribute. Conditioning on text enables it to learn many attributes simultaneously, accessing them at inference time through an intuitive interface. The network is trained to align transformed embeddings with the frozen latent space, enabling retrieval using existing large-scale embeddings without any re-encoding. When applied to a full set, the same mechanism transforms the latent space for attribute disentanglement tasks such as multi-clustering. By operating directly in latent space, our method provides a unified and efficient framework for controlling embedding spaces, demonstrating state-of-the-art performance across both attribute-based retrieval and multi-attribute organization tasks with near-zero inference cost. Project page: https://joefioresi718.github.io/ControlEmbed_webpage/",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}
